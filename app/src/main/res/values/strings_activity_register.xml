@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="prompt_confirm_password">Confirm Password</string>
+    <string name="action_sign_up">Sign Up</string>
+    <string name="action_sign_in_with_account">With Account. Please Sign In Now</string>
+
+    <string name="error_invalid_confirm_password">Confirm Password Different</string>
+</resources>
