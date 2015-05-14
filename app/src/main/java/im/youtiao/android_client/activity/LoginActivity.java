@@ -31,6 +31,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import im.youtiao.android_client.R;
+import im.youtiao.java_sdk.YTClient;
+import im.youtiao.java_sdk.YTException;
+import im.youtiao.java_sdk.YTHost;
+import im.youtiao.java_sdk.YTRequestConfig;
 
 /**
  * A login screen that offers login via email/password.
@@ -274,20 +278,15 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
 
             try {
                 // Simulate network access.
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
+                YTRequestConfig config = new YTRequestConfig("test");
+                YTHost host = new YTHost("192.168.200.183:3000");
+                YTClient client = new YTClient(config, null, host);
+                client.signInUser(mEmail, mPassword);
+            } catch (YTException e) {
+                e.printStackTrace();
+                //TODO: show exception
                 return false;
             }
-
-            for (String credential : DUMMY_CREDENTIALS) {
-                String[] pieces = credential.split(":");
-                if (pieces[0].equals(mEmail)) {
-                    // Account exists, return true if the password matches.
-                    return pieces[1].equals(mPassword);
-                }
-            }
-
-            // TODO: register the new account here.
             return true;
         }
 

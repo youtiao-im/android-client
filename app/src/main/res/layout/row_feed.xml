@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="2dp"
+    android:layout_margin="10dp"
+    android:background="#ffffffff"
+    android:descendantFocusability= "blocksDescendants" >
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/creator_avatar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/ic_person_black_24dp"
+            android:layout_weight="1"
+            android:contentDescription="@string/feed_star"
+            android:layout_margin="5dp"
+            android:padding="2dp"
+            android:layout_alignParentLeft="true" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tommy"
+            android:id="@+id/creator_name"
+            android:layout_weight="1"
+            android:layout_toRightOf="@+id/creator_avatar"
+            android:phoneNumber="false"
+            android:layout_margin="5dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="56 mins ago >"
+            android:id="@+id/created_at"
+            android:layout_weight="1"
+            android:layout_alignParentRight="false"
+            android:layout_margin="5dp"
+            android:layout_toLeftOf="@+id/imageView" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/imageView"
+            android:src="@mipmap/ic_feed_forward"
+            android:layout_alignParentRight="true" />
+    </RelativeLayout>
+
+
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_margin="10dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:id="@+id/feed_text"
+            android:text="There is a new feed"
+            android:singleLine="false"
+            android:phoneNumber="false" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/imageView2"
+            android:src="@mipmap/ic_feed_photo" />
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="2px"
+        android:background="?android:attr/listDivider"
+        />
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="5dp"
+        android:layout_margin="10dp">
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/feed_star"
+            android:layout_weight="1"
+            android:src="@mipmap/ic_feed_star_false"
+            android:clickable="true"
+            android:background="#00000000"
+            android:contentDescription="@string/feed_star"
+            android:focusable="false" />
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center">
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/feed_comment"
+                android:src="@mipmap/ic_feed_comment"
+                android:adjustViewBounds="false"
+                android:longClickable="true"
+                android:background="#00000000"
+                android:contentDescription="@string/feed_comment"
+                android:focusable="false" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="4"
+                android:id="@+id/feed_comment_count"
+                android:contentDescription="@string/feed_comment" />
+
+        </LinearLayout>
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/feed_stamp"
+            android:layout_weight="1"
+            android:src="@mipmap/ic_feed_stamp_default"
+            android:focusableInTouchMode="false"
+            android:background="#00000000"
+            android:contentDescription="@string/feed_stamp"
+            android:focusable="false" />
+
+    </LinearLayout>
+
+
+</LinearLayout>

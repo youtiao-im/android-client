@@ -1,1 +1,3 @@
+include ':NewQuickAction3D'
+include ':java-sdk'
 include ':app'
