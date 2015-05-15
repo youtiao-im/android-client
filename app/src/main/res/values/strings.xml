@@ -8,4 +8,5 @@
     <string name="feed_star">star</string>
     <string name="feed_comment">feed_comment</string>
     <string name="feed_stamp">feed_stamp</string>
+    <string name="title_activity_channel_detail">ChannelDetailActivity</string>
 </resources>
