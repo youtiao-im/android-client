@@ -1,2 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merger version="3"><dataSet config="main"><source path="E:\workspace\android_studio_workspace\youtiao\android-client\NewQuickAction3D\src\main\assets"/></dataSet><dataSet config="debug"><source path="E:\workspace\android_studio_workspace\youtiao\android-client\NewQuickAction3D\src\debug\assets"/></dataSet></merger>
+<merger version="3">
+    <dataSet config="main">
+        <source
+            path="E:\workspace\android_studio_workspace\youtiao\android-client\NewQuickAction3D\src\main\assets" />
+    </dataSet>
+    <dataSet config="debug">
+        <source
+            path="E:\workspace\android_studio_workspace\youtiao\android-client\NewQuickAction3D\src\debug\assets" />
+    </dataSet>
+</merger>
