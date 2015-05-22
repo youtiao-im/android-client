@@ -39,4 +39,5 @@ dependencies {
     compile 'it.neokree:MaterialTabs:0.11'
     compile project(':java-sdk')
     compile project(':NewQuickAction3D')
+    compile files('libs/gson-2.1.jar')
 }
