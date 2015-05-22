@@ -19,7 +19,9 @@ public class FeedAdapter extends ArrayAdapter<Feed> {
 
     public static interface FeedAdapterDelegate {
         void toggleStar(View v, Feed feed);
+
         void clickStamp(View v, Feed feed);
+
         void extendComment();
     }
 
@@ -40,12 +42,12 @@ public class FeedAdapter extends ArrayAdapter<Feed> {
         if (convertView == null) {
             convertView = layoutInflater.inflate(res, null);
             viewHolder = new ViewHolder();
-            viewHolder.creatorNameTextView = (TextView)convertView.findViewById(R.id.creator_name);
-            viewHolder.createdAtTextView = (TextView)convertView.findViewById(R.id.created_at);
+            viewHolder.creatorNameTextView = (TextView) convertView.findViewById(R.id.creator_name);
+            viewHolder.createdAtTextView = (TextView) convertView.findViewById(R.id.created_at);
             viewHolder.feedContentTextView = (TextView) convertView.findViewById(R.id.feed_text);
-            viewHolder.stampButton = (ImageButton)convertView.findViewById(R.id.feed_stamp);
-            viewHolder.starButton = (ImageButton)convertView.findViewById(R.id.feed_star);
-            viewHolder.commentButton = (ImageButton)convertView.findViewById(R.id.feed_comment);
+            viewHolder.stampButton = (ImageButton) convertView.findViewById(R.id.feed_stamp);
+            viewHolder.starButton = (ImageButton) convertView.findViewById(R.id.feed_star);
+            viewHolder.commentButton = (ImageButton) convertView.findViewById(R.id.feed_comment);
             convertView.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
@@ -83,7 +85,7 @@ public class FeedAdapter extends ArrayAdapter<Feed> {
             }
         });
 
-        if(feed.isChecked()) {
+        if (feed.isChecked()) {
             viewHolder.stampButton.setImageResource(R.mipmap.ic_feed_stamp_check);
         } else if (feed.isCrossed()) {
             viewHolder.stampButton.setImageResource(R.mipmap.ic_feed_stamp_cross);

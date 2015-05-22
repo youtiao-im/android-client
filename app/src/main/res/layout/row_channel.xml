@@ -6,7 +6,7 @@
     android:padding="2dp"
     android:layout_margin="10dp"
     android:background="#ffffffff"
-    android:descendantFocusability= "blocksDescendants" >
+    android:descendantFocusability="blocksDescendants">
 
 
     <TextView
@@ -16,7 +16,8 @@
         android:id="@+id/channel_name"
         android:text="Brian Ingram"
         android:singleLine="false"
-        android:phoneNumber="false" />
+        android:phoneNumber="false"
+        android:textColor="#ff143c96" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -43,10 +44,10 @@
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/imageView"
-        android:src="@mipmap/ic_feed_forward"
+        android:id="@+id/imageView3"
         android:layout_alignParentRight="true"
-        android:layout_centerInParent="true" />
+        android:layout_centerInParent="true"
+        android:src="@mipmap/ic_feed_forward" />
 
 
 </RelativeLayout>

@@ -9,4 +9,10 @@
     <string name="feed_comment">feed_comment</string>
     <string name="feed_stamp">feed_stamp</string>
     <string name="title_activity_channel_detail">ChannelDetailActivity</string>
+    <string name="title_activity_new_channel">NewChannelActivity</string>
+    <string name="title_activity_bootstrap">BootstrapActivity</string>
+
+<!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_join_channel">JoinChannelActivity</string>
 </resources>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+    android:weightSum="1">
+
+    <ExpandableListView
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:id="@+id/channels_listview"
+        android:layout_weight="0.9"
+        android:groupIndicator="@android:drawable/arrow_up_float" />
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_below="@+id/scrollojt"
+        android:layout_alignParentBottom="true"
+        android:layout_weight="0.1"
+        android:weightSum="1">
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="New Channel"
+            android:id="@+id/add_new_channel_button"
+            android:layout_below="@+id/scrollojt"
+            android:layout_weight="0.5" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="Join Button"
+            android:id="@+id/join_channel_button"
+            android:layout_toRightOf="@+id/add_new_channel_button"
+            android:layout_below="@+id/scrollojt"
+            android:layout_weight="0.5" />
+    </LinearLayout>
+
+</LinearLayout>

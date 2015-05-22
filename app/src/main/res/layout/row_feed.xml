@@ -6,7 +6,7 @@
     android:padding="2dp"
     android:layout_margin="10dp"
     android:background="#ffffffff"
-    android:descendantFocusability= "blocksDescendants" >
+    android:descendantFocusability="blocksDescendants">
 
     <RelativeLayout
         android:layout_width="wrap_content"
@@ -52,7 +52,6 @@
     </RelativeLayout>
 
 
-
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
@@ -80,8 +79,7 @@
     <View
         android:layout_width="fill_parent"
         android:layout_height="2px"
-        android:background="?android:attr/listDivider"
-        />
+        android:background="?android:attr/listDivider" />
 
     <LinearLayout
         android:orientation="horizontal"

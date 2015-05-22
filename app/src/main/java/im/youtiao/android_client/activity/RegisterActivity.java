@@ -35,8 +35,8 @@ public class RegisterActivity extends ActionBarActivity {
         setContentView(R.layout.activity_register);
 
         mEmailView = (AutoCompleteTextView) findViewById(R.id.register_email);
-        mPasswordView = (EditText)findViewById(R.id.register_password);
-        mConfirmPasswordView = (EditText)findViewById(R.id.register_confirm_password);
+        mPasswordView = (EditText) findViewById(R.id.register_password);
+        mConfirmPasswordView = (EditText) findViewById(R.id.register_confirm_password);
 
         Button mEmailSignUpButton = (Button) findViewById(R.id.register_email_sign_up_button);
         mEmailSignUpButton.setOnClickListener(new View.OnClickListener() {
@@ -46,7 +46,7 @@ public class RegisterActivity extends ActionBarActivity {
             }
         });
 
-        Button signInWithAccountButton= (Button) findViewById(R.id.sign_in_with_account_button);
+        Button signInWithAccountButton = (Button) findViewById(R.id.sign_in_with_account_button);
         signInWithAccountButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
