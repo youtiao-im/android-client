@@ -7,9 +7,9 @@
 
     <ExpandableListView
         android:layout_width="wrap_content"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:id="@+id/channels_listview"
-        android:layout_weight="0.9"
+        android:layout_weight="0.95"
         android:groupIndicator="@android:drawable/arrow_up_float" />
 
     <LinearLayout
@@ -18,7 +18,7 @@
         android:layout_height="0dp"
         android:layout_below="@+id/scrollojt"
         android:layout_alignParentBottom="true"
-        android:layout_weight="0.1"
+        android:layout_weight="0.05"
         android:weightSum="1">
 
         <Button

@@ -3,7 +3,6 @@ package im.youtiao.android_client.api;
 import android.util.Log;
 
 import im.youtiao.android_client.exception.AndroidHacksException;
-import im.youtiao.android_client.net.HttpHelper;
 
 public class LoginServiceImpl {
 
@@ -17,11 +16,12 @@ public class LoginServiceImpl {
 
     public static String sendCredentials(String username,
                                          String password) throws AndroidHacksException {
-        String fmt = AndroidHacksUrlFactory.getInstance().getLoginUrlFmt();
-        String url = String.format(fmt, username, password);
-        String ret = HttpHelper.getHttpResponseAsString(url, null);
-
-        return ret;
+//        String fmt = AndroidHacksUrlFactory.getInstance().getLoginUrlFmt();
+//        String url = String.format(fmt, username, password);
+//        String ret = HttpHelper.getHttpResponseAsString(url, null);
+//
+//        return ret;
+          return null;
     }
 
     public static boolean hasLoggedIn(String response) {

@@ -2,45 +2,13 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:orientation="vertical">
-
-    <RelativeLayout
+    android:orientation="vertical"
+    android:weightSum="1">
+    <LinearLayout
+        android:orientation="horizontal"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:background="#AAA"
-        android:padding="5dp">
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_centerVertical="true"
-            android:text="Add New"
-            android:id="@+id/add_new_channel" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:text="Channels"
-            android:textColor="#000" />
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:text="Refresh"
-            android:onClick="refresh"
-            android:id="@+id/channel_refresh" />
-
-    </RelativeLayout>
-
-    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        tools:context="im.youtiao.android_client.activity.fragment.ChannelsFragment">
+        android:layout_height="0dp"
+        android:layout_weight="0.9">
 
         <ListView
             android:id="@android:id/list"
@@ -54,6 +22,30 @@
             android:gravity="center"
             android:text="No Data"
             android:singleLine="true" />
+    </LinearLayout>
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_alignParentBottom="true"
+        android:layout_weight="0.1"
+        android:weightSum="1">
 
-    </FrameLayout>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="New Channel"
+            android:id="@+id/add_new_channel_button"
+            android:layout_below="@+id/scrollojt"
+            android:layout_weight="0.5" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="Join Button"
+            android:id="@+id/join_channel_button"
+            android:layout_toRightOf="@+id/add_new_channel_button"
+            android:layout_below="@+id/scrollojt"
+            android:layout_weight="0.5" />
+    </LinearLayout>
 </LinearLayout>

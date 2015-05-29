@@ -5,10 +5,24 @@ import android.accounts.AccountManager;
 import android.app.Application;
 import android.content.Intent;
 
-import im.youtiao.android_client.activity.LoginActivity;
-import im.youtiao.android_client.activity.MainActivity;
+import im.youtiao.android_client.greendao.User;
+import im.youtiao.android_client.ui.activity.LoginActivity;
+import im.youtiao.android_client.ui.activity.MainActivity;
 
 public class YTApplication extends Application {
+
+    private User currentUser;
+
+    @Override
+    public void onCreate() { super.onCreate();}
+
+    public User getCurrentUser() {
+        return currentUser;
+    }
+
+    public void setCurrentUser(User user) {
+        this.currentUser = user;
+    }
 
     public Account getCurrentAccount() {
         AccountManager accountManager = AccountManager.get(this);
@@ -24,4 +38,6 @@ public class YTApplication extends Application {
             return null;
         }
     }
+
+
 }

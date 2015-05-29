@@ -10,11 +10,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
-import im.youtiao.android_client.activity.LoginActivity;
+import im.youtiao.android_client.ui.activity.LoginActivity;
 import im.youtiao.android_client.api.LoginServiceImpl;
 import im.youtiao.android_client.exception.AndroidHacksException;
-import im.youtiao.android_client.provider.ChannelContentProvider;
-import im.youtiao.android_client.provider.DatabaseHelper;
+import im.youtiao.android_client.content_providers.ChannelContentProvider;
+import im.youtiao.android_client.content_providers.DatabaseHelper;
 
 public class Authenticator extends AbstractAccountAuthenticator {
     public String[] authoritiesToSync = {ChannelContentProvider.AUTHORITY};

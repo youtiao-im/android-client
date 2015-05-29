@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="im.youtiao.android_client.activity.fragment.ChannelsFragment">
+    tools:context="im.youtiao.android_client.ui.activity.fragment.ChannelsFragment">
 
     <GridView
         android:id="@android:id/list"

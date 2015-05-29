@@ -19,12 +19,11 @@ import org.codehaus.jackson.JsonParseException;
 import java.io.IOException;
 import java.util.List;
 
-import im.youtiao.android_client.activity.LoginActivity;
-import im.youtiao.android_client.api.ChannelServiceImpl;
+import im.youtiao.android_client.ui.activity.LoginActivity;
 import im.youtiao.android_client.dao.ChannelDAO;
 import im.youtiao.android_client.exception.AndroidHacksException;
 import im.youtiao.android_client.model.Channel;
-import im.youtiao.android_client.provider.StatusFlag;
+import im.youtiao.android_client.content_providers.StatusFlag;
 
 public class ChannelSyncAdapter extends AbstractThreadedSyncAdapter {
     private static final String TAG = ChannelSyncAdapter.class
@@ -47,21 +46,21 @@ public class ChannelSyncAdapter extends AbstractThreadedSyncAdapter {
             authtoken = mAccountManager.blockingGetAuthToken(account,
                     LoginActivity.PARAM_AUTHTOKEN_TYPE, true);
             Log.i(TAG, "After get authtoken");
-            List<Channel> data = fetchData();
-            syncRemoteDeleted(data);
-            syncFromServerToLocalStorage(data);
-            syncDirtyToServer(mChannelDAO.getDirtyList(mContentResolver));
+//            List<Channel> data = fetchData();
+//            syncRemoteDeleted(data);
+//            syncFromServerToLocalStorage(data);
+//            syncDirtyToServer(mChannelDAO.getDirtyList(mContentResolver));
 
         } catch (Exception e) {
             handleException(authtoken, e, syncResult);
         }
     }
 
-    protected List<Channel> fetchData() throws AuthenticationException,
-            AndroidHacksException, JsonParseException, IOException {
-        List<Channel> list = ChannelServiceImpl.fetchChannels();
-        return list;
-    }
+//    protected List<Channel> fetchData() throws AuthenticationException,
+//            AndroidHacksException, JsonParseException, IOException {
+//        List<Channel> list = ChannelServiceImpl.fetchChannels();
+//        return list;
+//    }
 
     protected void syncRemoteDeleted(List<Channel> remoteData) {
         Log.d(TAG, "Syncing remote deleted lists...");
@@ -83,40 +82,40 @@ public class ChannelSyncAdapter extends AbstractThreadedSyncAdapter {
         }
     }
 
-    protected void syncDirtyToServer(List<Channel> dirtyList)
-            throws AuthenticationException, IOException,
-            AndroidHacksException {
-        for (Channel channel : dirtyList) {
-            Log.d(TAG, "Dirty list: " + channel);
+//    protected void syncDirtyToServer(List<Channel> dirtyList)
+//            throws AuthenticationException, IOException,
+//            AndroidHacksException {
+//        for (Channel channel : dirtyList) {
+//            Log.d(TAG, "Dirty list: " + channel);
+//
+//            switch (channel.getStatus()) {
+//                case StatusFlag.ADD:
+//                    pushNewChannel(channel);
+//                    break;
+//                case StatusFlag.MOD:
+//                    throw new AndroidHacksException(
+//                            "Todo title modification is not supported");
+//                case StatusFlag.DELETE:
+//                    pushDeleteChannel(channel);
+//                    break;
+//                default:
+//                    throw new RuntimeException("Invalid status: "
+//                            + channel.getStatus());
+//            }
+//        }
+//    }
 
-            switch (channel.getStatus()) {
-                case StatusFlag.ADD:
-                    pushNewChannel(channel);
-                    break;
-                case StatusFlag.MOD:
-                    throw new AndroidHacksException(
-                            "Todo title modification is not supported");
-                case StatusFlag.DELETE:
-                    pushDeleteChannel(channel);
-                    break;
-                default:
-                    throw new RuntimeException("Invalid status: "
-                            + channel.getStatus());
-            }
-        }
-    }
+//    private void pushNewChannel(Channel channel) throws AuthenticationException,
+//            IOException, AndroidHacksException {
+//        Channel serverChannel = ChannelServiceImpl.createChannel(channel.getName());
+//        mChannelDAO.clearAdd(mContentResolver, channel.getId(), serverChannel);
+//    }
 
-    private void pushNewChannel(Channel channel) throws AuthenticationException,
-            IOException, AndroidHacksException {
-        Channel serverChannel = ChannelServiceImpl.createChannel(channel.getName());
-        mChannelDAO.clearAdd(mContentResolver, channel.getId(), serverChannel);
-    }
-
-    private void pushDeleteChannel(Channel channel)
-            throws AuthenticationException, AndroidHacksException {
-        ChannelServiceImpl.deleteChannel(channel.getId());
-        mChannelDAO.deleteChannelForced(mContentResolver, channel.getId());
-    }
+//    private void pushDeleteChannel(Channel channel)
+//            throws AuthenticationException, AndroidHacksException {
+//        ChannelServiceImpl.deleteChannel(channel.getId());
+//        mChannelDAO.deleteChannelForced(mContentResolver, channel.getId());
+//    }
 
 
     protected void syncFromServerToLocalStorage(List<Channel> data) {

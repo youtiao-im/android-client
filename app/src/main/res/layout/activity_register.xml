@@ -8,7 +8,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="im.youtiao.android_client.activity.RegisterActivity"
+    tools:context="im.youtiao.android_client.ui.activity.RegisterActivity"
     android:weightSum="1">
 
     <!-- Login progress -->

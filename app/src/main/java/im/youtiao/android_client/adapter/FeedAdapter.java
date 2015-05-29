@@ -13,7 +13,7 @@ import android.widget.TextView;
 import java.util.List;
 
 import im.youtiao.android_client.R;
-import im.youtiao.java_sdk.core.Feed;
+import im.youtiao.android_client.core.Feed;
 
 public class FeedAdapter extends ArrayAdapter<Feed> {
 

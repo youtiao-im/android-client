@@ -8,8 +8,8 @@ import android.database.Cursor;
 import java.util.ArrayList;
 import java.util.List;
 
-import im.youtiao.android_client.provider.ChannelContentProvider;
-import im.youtiao.android_client.provider.StatusFlag;
+import im.youtiao.android_client.content_providers.ChannelContentProvider;
+import im.youtiao.android_client.content_providers.StatusFlag;
 import im.youtiao.android_client.model.Channel;
 
 public class ChannelDAO {

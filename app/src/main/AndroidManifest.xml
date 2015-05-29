@@ -22,7 +22,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name=".activity.BootstrapActivity"
+            android:name=".ui.activity.BootstrapActivity"
             android:label="@string/title_activity_bootstrap" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -31,30 +31,35 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activity.MainActivity"
+            android:name=".ui.activity.MainActivity"
             android:label="@string/app_name" />
         <activity
-            android:name=".activity.LoginActivity"
+            android:name=".ui.activity.LoginActivity"
             android:windowSoftInputMode="adjustResize|stateVisible" />
         <activity
-            android:name=".activity.RegisterActivity"
+            android:name=".ui.activity.RegisterActivity"
             android:label="@string/title_activity_register"
             android:windowSoftInputMode="adjustResize|stateVisible" />
         <activity
-            android:name=".activity.FeedDetailActivity"
+            android:name=".ui.activity.FeedDetailActivity"
             android:label="@string/title_activity_feed_detail" />
         <activity
-            android:name=".activity.ChannelDetailActivity"
+            android:name=".ui.activity.ChannelDetailActivity"
             android:label="@string/title_activity_channel_detail" />
         <activity
-            android:name=".activity.NewChannelActivity"
+            android:name=".ui.activity.NewChannelActivity"
             android:label="@string/title_activity_new_channel" />
 
         <provider
-            android:name=".provider.ChannelContentProvider"
-            android:authorities="im.youtiao.android_client.provider.ChannelContentProvider"
-            android:exported="false"
-            android:label="Channel" />
+            android:name="im.youtiao.android_client.greendao.LibraryProvider"
+            android:authorities="im.youtiao.android_client.greendao.provider"/>
+
+        <meta-data
+            android:name="roboguice.modules"
+            android:value="im.youtiao.android_client.YouTiaoModule" />
+        <meta-data
+            android:name="roboguice.annotations.packages"
+            android:value="roboguice,im.youtiao.android_client" />
 
         <service android:name=".authenticator.AuthenticationService" >
             <intent-filter>
@@ -78,7 +83,7 @@
         </service>
 
         <activity
-            android:name=".activity.JoinChannelActivity"
+            android:name=".ui.activity.JoinChannelActivity"
             android:label="@string/title_activity_join_channel" >
         </activity>
     </application>

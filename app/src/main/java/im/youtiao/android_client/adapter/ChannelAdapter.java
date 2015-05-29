@@ -3,59 +3,47 @@ package im.youtiao.android_client.adapter;
 import android.app.Activity;
 import android.content.Context;
 import android.database.Cursor;
-import android.graphics.Color;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.CursorAdapter;
 import android.widget.TextView;
 
 import im.youtiao.android_client.R;
-import im.youtiao.android_client.dao.ChannelDAO;
-import im.youtiao.android_client.provider.ChannelContentProvider;
-import im.youtiao.android_client.provider.StatusFlag;
+import im.youtiao.android_client.greendao.Channel;
+import im.youtiao.android_client.greendao.ChannelHelper;
 
 
 public class ChannelAdapter extends CursorAdapter {
 
     private LayoutInflater mInflater;
-    private final int mTitleIndex;
-    private final int mInternalIdIndex;
-    private final int mInternalStatusIndex;
     private Activity mActivity;
 
-    private static final String[] PROJECTION_IDS_TITLE_AND_STATUS = new String[]{
-            ChannelContentProvider.COLUMN_ID, ChannelContentProvider.COLUMN_NAME,
-            ChannelContentProvider.COLUMN_STATUS_FLAG};
+    private static final String TAG = ChannelAdapter.class
+            .getCanonicalName();
 
-    public ChannelAdapter(Activity activity) {
-        super(activity, getManagedCursor(activity), true);
+    public ChannelAdapter(Activity activity, Cursor cursor) {
+        super(activity, cursor, false);
         mActivity = activity;
         mInflater = LayoutInflater.from(activity);
         final Cursor c = getCursor();
 
-        mInternalIdIndex = c
-                .getColumnIndexOrThrow(ChannelContentProvider.COLUMN_ID);
-        mTitleIndex = c
-                .getColumnIndexOrThrow(ChannelContentProvider.COLUMN_NAME);
-        mInternalStatusIndex = c
-                .getColumnIndexOrThrow(ChannelContentProvider.COLUMN_STATUS_FLAG);
     }
 
-    private static Cursor getManagedCursor(Activity activity) {
-        return activity.managedQuery(ChannelContentProvider.CONTENT_URI,
-                PROJECTION_IDS_TITLE_AND_STATUS,
-                ChannelContentProvider.COLUMN_STATUS_FLAG + " != "
-                        + StatusFlag.DELETE, null,
-                ChannelContentProvider.DEFAULT_SORT_ORDER);
+    @Override
+    public void changeCursor(Cursor cursor) {
+        Log.i(TAG, "changeCursor");
+        super.changeCursor(cursor);
     }
 
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
+        Log.i(TAG, "newView");
         final View view = mInflater.inflate(R.layout.row_channel, parent,
                 false);
         ViewHolder holder = new ViewHolder();
+        holder.separator = (TextView) view.findViewById(R.id.separator);
         holder.name = (TextView) view.findViewById(R.id.channel_name);
         holder.creator = (TextView) view.findViewById(R.id.creator_name);
         view.setTag(holder);
@@ -64,13 +52,43 @@ public class ChannelAdapter extends CursorAdapter {
 
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
+        Log.i(TAG, "bindView");
         final ViewHolder holder = (ViewHolder) view.getTag();
-        holder.name.setText(cursor.getString(mTitleIndex));
-        final int status = cursor.getInt(mInternalStatusIndex);
-        final Long id = cursor.getLong(mInternalIdIndex);
+
+        boolean needSeparator = false;
+        final int position = cursor.getPosition();
+
+        final Channel channel = ChannelHelper.fromCursor(cursor);
+
+        final String name = channel.getName();
+        final String role = channel.getRole();
+
+
+        if (position == 0) {
+            needSeparator = true;
+        } else {
+            cursor.moveToPosition(position - 1);
+            Channel lastChannel = ChannelHelper.fromCursor(cursor);
+            String lastRole = lastChannel.getRole();
+            Log.i(TAG, "lastRole=" + lastRole + ", role=" + role);
+            if (!lastRole.equalsIgnoreCase(role)) {
+                Log.i(TAG, "set needSeparator be true");
+                needSeparator = true;
+            }
+            cursor.moveToPosition(position);
+        }
+
+        if (needSeparator) {
+            holder.separator.setText("owner".equalsIgnoreCase(role) ? "My Channels" : "Joined Channels");
+            holder.separator.setVisibility(View.VISIBLE);
+        } else {
+            holder.separator.setVisibility(View.GONE);
+        }
+        holder.name.setText(name);
     }
 
     private static class ViewHolder {
+        TextView separator;
         TextView name;
         TextView creator;
     }

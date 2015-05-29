@@ -1,53 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="2dp"
-    android:layout_margin="10dp"
-    android:background="#ffffffff"
     android:descendantFocusability="blocksDescendants">
 
-
     <TextView
-        android:layout_width="match_parent"
+        android:id="@+id/separator"
+        style="?android:attr/listSeparatorTextViewStyle"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:id="@+id/channel_name"
-        android:text="Brian Ingram"
-        android:singleLine="false"
-        android:phoneNumber="false"
-        android:textColor="#ff143c96" />
+        android:textColor="@android:color/white" />
 
-    <TextView
+    <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Tommy"
-        android:id="@+id/creator_name"
-        android:layout_weight="1"
-        android:layout_toRightOf="@+id/creator_avatar"
-        android:phoneNumber="false"
-        android:layout_margin="5dp"
-        android:layout_below="@+id/channel_name" />
+        android:background="#ffffffff">
 
-    <ImageView
-        android:id="@+id/creator_avatar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@mipmap/ic_person_black_24dp"
-        android:layout_weight="1"
-        android:contentDescription="@string/feed_star"
-        android:padding="2dp"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/channel_name" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:id="@+id/channel_name"
+            android:text="Brian Ingram"
+            android:singleLine="false"
+            android:phoneNumber="false"
+            android:textColor="#ff143c96" />
 
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/imageView3"
-        android:layout_alignParentRight="true"
-        android:layout_centerInParent="true"
-        android:src="@mipmap/ic_feed_forward" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tommy"
+            android:id="@+id/creator_name"
+            android:layout_weight="1"
+            android:layout_toRightOf="@+id/creator_avatar"
+            android:phoneNumber="false"
+            android:layout_margin="5dp"
+            android:layout_below="@+id/channel_name" />
 
+        <ImageView
+            android:id="@+id/creator_avatar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/ic_person_black_24dp"
+            android:layout_weight="1"
+            android:contentDescription="@string/feed_star"
+            android:padding="2dp"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/channel_name" />
 
-</RelativeLayout>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/imageView3"
+            android:layout_alignParentRight="true"
+            android:layout_centerInParent="true"
+            android:src="@mipmap/ic_feed_forward" />
+    </RelativeLayout>
+
+</LinearLayout>

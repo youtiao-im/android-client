@@ -2,28 +2,17 @@ package im.youtiao.android_client.adapter;
 
 
 import android.app.Activity;
-import android.content.ContentResolver;
 import android.content.Context;
-import android.database.CharArrayBuffer;
-import android.database.ContentObserver;
 import android.database.Cursor;
-import android.database.DataSetObserver;
 import android.database.MatrixCursor;
-import android.net.Uri;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CursorTreeAdapter;
-import android.widget.ImageButton;
-import android.widget.SimpleCursorTreeAdapter;
 import android.widget.TextView;
 
-import java.util.zip.Inflater;
-
-import im.youtiao.android_client.provider.ChannelContentProvider;
-import im.youtiao.android_client.provider.StatusFlag;
+import im.youtiao.android_client.content_providers.ChannelContentProvider;
 
 import im.youtiao.android_client.R;
 
