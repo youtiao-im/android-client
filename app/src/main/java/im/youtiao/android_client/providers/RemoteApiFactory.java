@@ -4,6 +4,7 @@ package im.youtiao.android_client.providers;
 import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.content.Context;
+import android.util.Log;
 
 import com.google.inject.Inject;
 
@@ -22,6 +23,7 @@ import retrofit.RequestInterceptor;
 import retrofit.RestAdapter;
 
 public class RemoteApiFactory {
+    private static final String TAG = RemoteApiFactory.class.getCanonicalName();
     private static RemoteEndPoint endPoint = new RemoteEndPoint();
 
     private static RestAdapter.Builder builder =  new RestAdapter.Builder();
@@ -33,23 +35,7 @@ public class RemoteApiFactory {
 
     public static RemoteApi getApi() {
         if (instance == null) {
-            Account account = ((YTApplication)mContext.getApplicationContext()).getCurrentAccount();
-            AccountManager accountManager = AccountManager.get(mContext);
-            String authtoken =  accountManager.peekAuthToken(account, LoginActivity.PARAM_AUTHTOKEN_TYPE);
-            String authorization = LoginActivity.PARAM_AUTHTOKEN_TYPE + " " + authtoken;
-            RequestInterceptor interceptor = request -> {
-                request.addHeader("Accept", "application/vnd.youtiao.im+json; version=1");
-                request.addHeader("Authorization", authorization);
-                //request.addHeader("Authorization", "bearer e2ebd31cbe7ce72fd2e3c9ac49746ef922b90bc30cf88fcc7abc7e453cf6f7a6");
-            };
-            Executor executor = Executors.newSingleThreadExecutor();
-            RestAdapter restAdapter = builder.setEndpoint(endPoint)
-                    .setExecutors(executor, executor)
-                    .setRequestInterceptor(interceptor)
-                    .setErrorHandler(new RemoteApiErrorHandler())
-                    .setConverter(new JacksonConverter(new ObjectMapper()))
-                    .build();
-            instance = restAdapter.create(RemoteApi.class);
+            Log.e(TAG, " RemoteApi is null");
         }
         return instance;
     }

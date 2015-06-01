@@ -13,6 +13,7 @@ import android.content.Loader;
 import android.database.Cursor;
 import android.net.Uri;
 
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -41,16 +42,15 @@ import im.youtiao.android_client.greendao.DaoSession;
 import im.youtiao.android_client.greendao.User;
 import im.youtiao.android_client.greendao.UserDao;
 import im.youtiao.android_client.providers.RemoteApiFactory;
+import im.youtiao.android_client.rest.LoginApi;
 import im.youtiao.android_client.rest.RemoteApi;
 import im.youtiao.android_client.rest.responses.TokenResponse;
 import im.youtiao.android_client.util.Logger;
 import roboguice.activity.RoboAccountAuthenticatorActivity;
+import roboguice.inject.InjectView;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
-/**
- * A login screen that offers login via email/password.
- */
 public class LoginActivity extends RoboAccountAuthenticatorActivity implements LoaderCallbacks<Cursor> {
 
     private static final String[] DUMMY_CREDENTIALS = new String[]{
@@ -69,23 +69,23 @@ public class LoginActivity extends RoboAccountAuthenticatorActivity implements L
     private View mLoginFormView;
 
     private String mPassword;
-    private EditText mPasswordEdit;
+    @InjectView(R.id.email) private EditText mPasswordEdit;
     private String mUsername;
     private AutoCompleteTextView mUsernameEdit;
     private Button mSignInButton;
     private final Handler mHandler = new Handler();
-    private Thread mAuthThread;
-    private String mAuthToken;
     private String mAuthTokenType;
     private Boolean mConfirmCredentials = false;
 
     @Inject
-    private RemoteApi remoteApi;
+    private LoginApi loginApi;
 
     @Inject
     private DaoSession daoSession;
 
     private AccountManager mAccountManager;
+
+    public static final String KEY_ERROR_MESSAGE = "ERR_MSG";
 
     /**
      * Was the original caller asking for an entirely new account?
@@ -112,7 +112,6 @@ public class LoginActivity extends RoboAccountAuthenticatorActivity implements L
 
 
         // Set up the login form.
-        mUsernameEdit = (AutoCompleteTextView) findViewById(R.id.email);
         if (mUser != null) {
             mUsernameEdit.setText(mUser);
         }
@@ -162,10 +161,6 @@ public class LoginActivity extends RoboAccountAuthenticatorActivity implements L
      * errors are presented and no actual login attempt is made.
      */
     public void attemptLogin() {
-        if (mAuthThread != null) {
-            return;
-        }
-
         // Reset errors.
         mUsernameEdit.setError(null);
         mPasswordEdit.setError(null);
@@ -199,9 +194,45 @@ public class LoginActivity extends RoboAccountAuthenticatorActivity implements L
             focusView.requestFocus();
         } else {
             showProgress(true);
-            remoteApi.getToken("password", mUsername, mPassword).subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(this::onAuthenticationSuccess, this::onAuthenticationFailed);
+//            loginApi.getToken("password", mUsername, mPassword).subscribeOn(Schedulers.io())
+//                    .observeOn(AndroidSchedulers.mainThread())
+//                    .subscribe(this::onAuthenticationSuccess, this::onAuthenticationFailed);
+            new AsyncTask<String, Void, Intent>() {
+
+                @Override
+                protected Intent doInBackground(String... params) {
+
+                    Log.d("udinic", TAG + "> Started authenticating");
+
+                    String authtoken = null;
+                    Bundle data = new Bundle();
+                    try {
+                        TokenResponse tokenResponse = loginApi.getToken("password", mUsername, mPassword);
+                        data.putString(AccountManager.KEY_ACCOUNT_NAME, mUsername);
+                        data.putString(AccountManager.KEY_ACCOUNT_TYPE, LoginActivity.PARAM_ACCOUNT_TYPE);
+                        data.putString(AccountManager.KEY_AUTHTOKEN, tokenResponse.accessToken);
+                        //data.putString(PARAM_USER_PASS, userPass);
+
+                    } catch (Exception e) {
+                        data.putString(KEY_ERROR_MESSAGE, e.getMessage());
+                    }
+
+                    final Intent res = new Intent();
+                    res.putExtras(data);
+                    return res;
+                }
+
+                @Override
+                protected void onPostExecute(Intent intent) {
+                    if (intent.hasExtra(KEY_ERROR_MESSAGE)) {
+                        Log.e(TAG, "onAuthenticationResult: failed to authenticate");
+                        mPasswordEdit.setError(getString(R.string.error_incorrect_password));
+                        mPasswordEdit.requestFocus();
+                    } else {
+                        finishLogin(intent);
+                    }
+                }
+            }.execute();
         }
     }
 
@@ -214,24 +245,10 @@ public class LoginActivity extends RoboAccountAuthenticatorActivity implements L
         return password.length() >= 4;
     }
 
-    public void onAuthenticationSuccess(TokenResponse res) {
-        showProgress(false);
-        this.mAuthTokenType = res.tokenType;
-        this.mAuthToken = res.accessToken;
-        if (!mConfirmCredentials) {
-            finishLogin();
-        }
-    }
-
-    public void onAuthenticationFailed(Throwable throwable) {
-        Log.e(TAG, "onAuthenticationResult: failed to authenticate");
-        mPasswordEdit.setError(getString(R.string.error_incorrect_password));
-        mPasswordEdit.requestFocus();
-    }
-
-    private void finishLogin() {
+    private void finishLogin(Intent intent) {
+        String authtoken = intent.getStringExtra(AccountManager.KEY_AUTHTOKEN);
         final Account account = new Account(mUsername, PARAM_ACCOUNT_TYPE);
-        mAccountManager.setAuthToken(account, mAuthTokenType, mAuthToken);
+        mAccountManager.setAuthToken(account, mAuthTokenType, authtoken);
         if (mRequestNewAccount) {
             mAccountManager.addAccountExplicitly(account, mPassword, null);
             ContentResolver.setSyncAutomatically(account, ChannelContentProvider.AUTHORITY, true);
@@ -239,15 +256,11 @@ public class LoginActivity extends RoboAccountAuthenticatorActivity implements L
             mAccountManager.setPassword(account, mPassword);
         }
 
-        final Intent intent = new Intent();
-        intent.putExtra(AccountManager.KEY_ACCOUNT_NAME, mUsername);
-        intent.putExtra(AccountManager.KEY_ACCOUNT_TYPE, PARAM_ACCOUNT_TYPE);
-
         if (mAuthTokenType != null
                 && mAuthTokenType.equals(PARAM_AUTHTOKEN_TYPE)) {
-            intent.putExtra(AccountManager.KEY_AUTHTOKEN, mAuthToken);
-            RemoteApiFactory.setApiToken(mAuthTokenType, mAuthToken);
-            remoteApi = RemoteApiFactory.getApi();
+            intent.putExtra(AccountManager.KEY_AUTHTOKEN, authtoken);
+            RemoteApiFactory.setApiToken(mAuthTokenType, authtoken);
+            RemoteApi remoteApi = RemoteApiFactory.getApi();
             remoteApi.getAuthenticatedUser().subscribeOn(Schedulers.io()).observeOn(Schedulers.io())
                     .subscribe(res -> {
                         UserDao userDao = daoSession.getUserDao();
@@ -354,62 +367,5 @@ public class LoginActivity extends RoboAccountAuthenticatorActivity implements L
 
         mUsernameEdit.setAdapter(adapter);
     }
-
-    /**
-     * Represents an asynchronous login/registration task used to authenticate
-     * the user.
-     */
-
-    /*
-    public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
-
-        private final String mEmail;
-        private final String mPassword;
-
-        UserLoginTask(String email, String password) {
-            mEmail = email;
-            mPassword = password;
-        }
-
-        @Override
-        protected Boolean doInBackground(Void... params) {
-            // TODO: attempt authentication against a network service.
-
-            try {
-                // Simulate network access.
-                YTRequestConfig config = new YTRequestConfig("test");
-                YTHost host = new YTHost("192.168.200.183:3000");
-                YTClient client = new YTClient(config, null, host);
-                client.signInUser(mEmail, mPassword);
-            } catch (YTException e) {
-                e.printStackTrace();
-                //TODO: show exception
-                return false;
-            }
-            return true;
-        }
-
-        @Override
-        protected void onPostExecute(final Boolean success) {
-            mAuthTask = null;
-            showProgress(false);
-
-            if (success) {
-                finish();
-                Intent myIntent = new Intent(LoginActivity.this, MainActivity.class);
-                LoginActivity.this.startActivity(myIntent);
-            } else {
-                mPasswordView.setError(getString(R.string.error_incorrect_password));
-                mPasswordView.requestFocus();
-            }
-        }
-
-        @Override
-        protected void onCancelled() {
-            mAuthTask = null;
-            showProgress(false);
-        }
-    }
-    */
 }
 

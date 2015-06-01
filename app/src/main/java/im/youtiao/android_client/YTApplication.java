@@ -38,6 +38,4 @@ public class YTApplication extends Application {
             return null;
         }
     }
-
-
 }

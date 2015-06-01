@@ -19,8 +19,6 @@ import im.youtiao.android_client.ui.activity.LoginActivity;
 public class RemoteApiProvider implements Provider<RemoteApi> {
     private static final String TAG = RemoteApiProvider.class.getCanonicalName();
 
-
-
     @Override
     public RemoteApi get() {
         Log.e(TAG, "Inject get RemoteApi");

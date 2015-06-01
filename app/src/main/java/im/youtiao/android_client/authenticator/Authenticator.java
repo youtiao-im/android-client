@@ -9,14 +9,20 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.Log;
 
+import im.youtiao.android_client.providers.LoginApiFactory;
+import im.youtiao.android_client.rest.responses.TokenResponse;
 import im.youtiao.android_client.ui.activity.LoginActivity;
 import im.youtiao.android_client.api.LoginServiceImpl;
 import im.youtiao.android_client.exception.AndroidHacksException;
 import im.youtiao.android_client.content_providers.ChannelContentProvider;
 import im.youtiao.android_client.content_providers.DatabaseHelper;
+import rx.schedulers.Schedulers;
 
 public class Authenticator extends AbstractAccountAuthenticator {
+    private static final String TAG = Authenticator.class.getCanonicalName();
     public String[] authoritiesToSync = {ChannelContentProvider.AUTHORITY};
     private final Context mContext;
 
@@ -72,38 +78,45 @@ public class Authenticator extends AbstractAccountAuthenticator {
             return result;
         }
 
+        // Extract the username and password from the Account Manager, and ask
+        // the server for an appropriate AuthToken.
         final AccountManager am = AccountManager.get(mContext);
-        final String password = am.getPassword(account);
 
-        if (password != null) {
-            boolean verified = false;
+        String authToken = am.peekAuthToken(account, authTokenType);
 
-            String loginResponse = null;
-            try {
-                loginResponse = LoginServiceImpl.sendCredentials(account.name,
-                        password);
-                verified = LoginServiceImpl.hasLoggedIn(loginResponse);
-            } catch (AndroidHacksException e) {
-                verified = false;
-            }
+        Log.d("udinic", TAG + "> peekAuthToken returned - " + authToken);
 
-            if (verified) {
-                final Bundle result = new Bundle();
-                result.putString(AccountManager.KEY_ACCOUNT_NAME, account.name);
-                result.putString(AccountManager.KEY_ACCOUNT_TYPE,
-                        LoginActivity.PARAM_ACCOUNT_TYPE);
-
-                return result;
+        // Lets give another try to authenticate the user
+        if (TextUtils.isEmpty(authToken)) {
+            final String password = am.getPassword(account);
+            if (password != null) {
+                try {
+                    Log.d(TAG, " > re-authenticating with the existing password");
+                    TokenResponse tokenResponse = LoginApiFactory.getLoginApi().getToken("password", account.name, password);
+                    authToken = tokenResponse.accessToken;
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         }
-        // Password is missing or incorrect
-        final Intent intent = new Intent(mContext,
-                LoginActivity.class);
+
+        // If we get an authToken - we return it
+        if (!TextUtils.isEmpty(authToken)) {
+            final Bundle result = new Bundle();
+            result.putString(AccountManager.KEY_ACCOUNT_NAME, account.name);
+            result.putString(AccountManager.KEY_ACCOUNT_TYPE, account.type);
+            result.putString(AccountManager.KEY_AUTHTOKEN, authToken);
+            return result;
+        }
+
+        // If we get here, then we couldn't access the user's password - so we
+        // need to re-prompt them for their credentials. We do that by creating
+        // an intent to display our AuthenticatorActivity.
+        final Intent intent = new Intent(mContext, LoginActivity.class);
+        intent.putExtra(AccountManager.KEY_ACCOUNT_AUTHENTICATOR_RESPONSE, response);
+        intent.putExtra(LoginActivity.PARAM_ACCOUNT_TYPE, account.type);
+        intent.putExtra(LoginActivity.PARAM_AUTHTOKEN_TYPE, authTokenType);
         intent.putExtra(LoginActivity.PARAM_USER, account.name);
-        intent.putExtra(LoginActivity.PARAM_AUTHTOKEN_TYPE,
-                authTokenType);
-        intent.putExtra(AccountManager.KEY_ACCOUNT_AUTHENTICATOR_RESPONSE,
-                response);
         final Bundle bundle = new Bundle();
         bundle.putParcelable(AccountManager.KEY_INTENT, intent);
         return bundle;

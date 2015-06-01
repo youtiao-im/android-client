@@ -39,8 +39,6 @@ public class MainActivity extends RoboFragmentActivity implements MaterialTabLis
     ViewPager pager;
     ViewPagerAdapter adapter;
     Resources res;
-    @Inject
-    RemoteApi remoteApi;
 
 
     @Override
@@ -60,7 +58,6 @@ public class MainActivity extends RoboFragmentActivity implements MaterialTabLis
             public void onPageSelected(int position) {
                 // when user do a swipe the selected tab change
                 tabHost.setSelectedNavigationItem(position);
-
             }
         });
 

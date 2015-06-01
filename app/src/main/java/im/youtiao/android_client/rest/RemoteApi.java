@@ -24,10 +24,6 @@ import rx.Observable;
 public interface RemoteApi {
     final String PREFIX = "/api/v1";
 
-    //OAuth
-    @POST("/oauth/token")
-    Observable<TokenResponse> getToken(@Query("grant_type") String grantType, @Query("username") String username, @Query("password") String password);
-
     // users
     @GET(PREFIX + "/user")
     Observable<UserResponse> getAuthenticatedUser();
