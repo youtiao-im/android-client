@@ -50,6 +50,8 @@ public final class FeedHelper {
         return PROJECTION;
     }
 
+    public static String DEFAULT_SORT_ORDER = CREATEDBY + " DESC";
+
     public static Feed fromCursor(Cursor data) {
         final Feed entity = new Feed();
         entity.setId(data.getLong(data.getColumnIndex(ID)));

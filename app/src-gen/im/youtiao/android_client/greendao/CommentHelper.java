@@ -48,6 +48,8 @@ public final class CommentHelper {
         return PROJECTION;
     }
 
+    public static String DEFAULT_SORT_ORDER = CREATEDBY + " DESC";
+
     public static Comment fromCursor(Cursor data) {
         final Comment entity = new Comment();
         entity.setId(data.getLong(data.getColumnIndex(ID)));

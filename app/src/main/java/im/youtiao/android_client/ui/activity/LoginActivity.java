@@ -60,7 +60,8 @@ public class LoginActivity extends RoboAccountAuthenticatorActivity implements L
     private static final String TAG = LoginActivity.class
             .getCanonicalName();
     public static final String PARAM_ACCOUNT_TYPE = "im.youtiao.android_client";
-    public static final String PARAM_AUTHTOKEN_TYPE = "bearer";
+    public static final String PARAM_AUTHTOKEN_TYPE = "im.youtiao.android_client.authtoken";
+    public static final String AUTHTOKEN_TYPE = "bearer";
 
     public static final String PARAM_USER = "user";
     public static final String PARAM_CONFIRMCREDENTIALS = "confirmCredentials";
@@ -69,9 +70,9 @@ public class LoginActivity extends RoboAccountAuthenticatorActivity implements L
     private View mLoginFormView;
 
     private String mPassword;
-    @InjectView(R.id.email) private EditText mPasswordEdit;
+    private EditText mPasswordEdit;
     private String mUsername;
-    private AutoCompleteTextView mUsernameEdit;
+    @InjectView(R.id.email) private AutoCompleteTextView mUsernameEdit;
     private Button mSignInButton;
     private final Handler mHandler = new Handler();
     private String mAuthTokenType;
@@ -105,6 +106,9 @@ public class LoginActivity extends RoboAccountAuthenticatorActivity implements L
 
         mUser = intent.getStringExtra(PARAM_USER);
         mAuthTokenType = intent.getStringExtra(PARAM_AUTHTOKEN_TYPE);
+        if (mAuthTokenType == null) {
+            mAuthTokenType = AUTHTOKEN_TYPE;
+        }
         mRequestNewAccount = mUser == null;
         mConfirmCredentials = intent.getBooleanExtra(
                 PARAM_CONFIRMCREDENTIALS, false);
@@ -112,6 +116,7 @@ public class LoginActivity extends RoboAccountAuthenticatorActivity implements L
 
 
         // Set up the login form.
+
         if (mUser != null) {
             mUsernameEdit.setText(mUser);
         }
@@ -211,6 +216,7 @@ public class LoginActivity extends RoboAccountAuthenticatorActivity implements L
                         data.putString(AccountManager.KEY_ACCOUNT_NAME, mUsername);
                         data.putString(AccountManager.KEY_ACCOUNT_TYPE, LoginActivity.PARAM_ACCOUNT_TYPE);
                         data.putString(AccountManager.KEY_AUTHTOKEN, tokenResponse.accessToken);
+                        data.putString(PARAM_AUTHTOKEN_TYPE, tokenResponse.tokenType);
                         //data.putString(PARAM_USER_PASS, userPass);
 
                     } catch (Exception e) {
@@ -246,9 +252,11 @@ public class LoginActivity extends RoboAccountAuthenticatorActivity implements L
     }
 
     private void finishLogin(Intent intent) {
-        String authtoken = intent.getStringExtra(AccountManager.KEY_AUTHTOKEN);
+        String authToken = intent.getStringExtra(AccountManager.KEY_AUTHTOKEN);
+        String tokenType = intent.getStringExtra(PARAM_AUTHTOKEN_TYPE);
         final Account account = new Account(mUsername, PARAM_ACCOUNT_TYPE);
-        mAccountManager.setAuthToken(account, mAuthTokenType, authtoken);
+
+        mAccountManager.setAuthToken(account, mAuthTokenType, authToken);
         if (mRequestNewAccount) {
             mAccountManager.addAccountExplicitly(account, mPassword, null);
             ContentResolver.setSyncAutomatically(account, ChannelContentProvider.AUTHORITY, true);
@@ -257,9 +265,9 @@ public class LoginActivity extends RoboAccountAuthenticatorActivity implements L
         }
 
         if (mAuthTokenType != null
-                && mAuthTokenType.equals(PARAM_AUTHTOKEN_TYPE)) {
-            intent.putExtra(AccountManager.KEY_AUTHTOKEN, authtoken);
-            RemoteApiFactory.setApiToken(mAuthTokenType, authtoken);
+                && mAuthTokenType.equals(tokenType)) {
+            intent.putExtra(AccountManager.KEY_AUTHTOKEN, authToken);
+            RemoteApiFactory.setApiToken(mAuthTokenType, authToken);
             RemoteApi remoteApi = RemoteApiFactory.getApi();
             remoteApi.getAuthenticatedUser().subscribeOn(Schedulers.io()).observeOn(Schedulers.io())
                     .subscribe(res -> {

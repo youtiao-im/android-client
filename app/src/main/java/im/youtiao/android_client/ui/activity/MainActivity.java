@@ -14,6 +14,8 @@ import android.view.MenuItem;
 
 import com.google.inject.Inject;
 
+import im.youtiao.android_client.greendao.Channel;
+import im.youtiao.android_client.greendao.Feed;
 import im.youtiao.android_client.providers.RemoteApiFactory;
 import im.youtiao.android_client.rest.RemoteApi;
 import im.youtiao.android_client.rest.responses.TokenResponse;
@@ -115,8 +117,11 @@ public class MainActivity extends RoboFragmentActivity implements MaterialTabLis
     }
 
     @Override
-    public void onFeedsFragmentInteraction(String id) {
+    public void onFeedsFragmentInteraction(Feed feed) {
+        Bundle data = new Bundle();
+        data.putSerializable(FeedDetailActivity.PARAM_FEED, feed);
         Intent intent = new Intent(this, FeedDetailActivity.class);
+        intent.putExtras(data);
         startActivity(intent);
     }
 
@@ -144,9 +149,12 @@ public class MainActivity extends RoboFragmentActivity implements MaterialTabLis
     }
 
     @Override
-    public void onChannelsItemClick(String id) {
+    public void onChannelsItemClick(Channel channel) {
+        Bundle data = new Bundle();
+        data.putSerializable(ChannelDetailActivity.PARAM_CHANNEL, channel);
         Intent intent = new Intent(this, ChannelDetailActivity.class);
-        startActivityForResult(intent, 1);
+        intent.putExtras(data);
+        startActivity(intent);
     }
 
 

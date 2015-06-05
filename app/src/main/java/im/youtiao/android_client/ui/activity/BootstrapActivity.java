@@ -7,9 +7,19 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.google.inject.Inject;
+
 import im.youtiao.android_client.R;
+import im.youtiao.android_client.YTApplication;
+import im.youtiao.android_client.data.DaoHelper;
+import im.youtiao.android_client.greendao.DaoSession;
+import im.youtiao.android_client.greendao.User;
+import im.youtiao.android_client.greendao.UserDao;
 import im.youtiao.android_client.providers.RemoteApiFactory;
+import im.youtiao.android_client.rest.RemoteApi;
+import im.youtiao.android_client.util.Logger;
 import roboguice.activity.RoboActivity;
+import rx.schedulers.Schedulers;
 
 public class BootstrapActivity extends RoboActivity {
     private static final String TAG = BootstrapActivity.class
@@ -17,6 +27,8 @@ public class BootstrapActivity extends RoboActivity {
     private static final int NEW_ACCOUNT = 0;
     private static final int EXISTING_ACCOUNT = 1;
     private AccountManager mAccountManager;
+    @Inject
+    DaoSession daoSession;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,7 +68,20 @@ public class BootstrapActivity extends RoboActivity {
                         try {
                             Bundle bnd = future.getResult();
                             final String authtoken = bnd.getString(AccountManager.KEY_AUTHTOKEN);
-                            RemoteApiFactory.setApiToken(LoginActivity.PARAM_AUTHTOKEN_TYPE, authtoken);
+                            RemoteApiFactory.setApiToken(LoginActivity.AUTHTOKEN_TYPE, authtoken);
+                            RemoteApi remoteApi = RemoteApiFactory.getApi();
+                            remoteApi.getAuthenticatedUser().subscribeOn(Schedulers.io()).observeOn(Schedulers.io())
+                                    .subscribe(res -> {
+                                        UserDao userDao = daoSession.getUserDao();
+                                        User user = new User();
+                                        user.setServerId(res.id);
+                                        user.setEmail(res.email);
+                                        user.setServerId(res.id);
+                                        user.setCreatedAt(res.createdAt);
+                                        user.setUpdatedAt(res.updatedAt);
+                                        user = DaoHelper.insertOrUpdate(daoSession, user);
+                                        ((YTApplication) getApplication()).setCurrentUser(user);
+                                    }, Logger::logThrowable);
                             // The user is already logged in. Go ahead!
                             startActivity(new Intent(BootstrapActivity.this, MainActivity.class));
                             finish();

@@ -20,6 +20,7 @@ import im.youtiao.android_client.R;
 
 import im.youtiao.android_client.adapter.ChannelAdapter;
 import im.youtiao.android_client.data.SyncManager;
+import im.youtiao.android_client.greendao.Channel;
 import im.youtiao.android_client.greendao.ChannelHelper;
 import roboguice.fragment.RoboFragment;
 import roboguice.inject.InjectView;
@@ -51,6 +52,11 @@ public class ChannelsFragment extends RoboFragment implements LoaderManager.Load
         Log.i(TAG, "OnCreate");
         super.onCreate(savedInstanceState);
 
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
         getLoaderManager().initLoader(URL_LOADER, null, this);
     }
 
@@ -88,7 +94,8 @@ public class ChannelsFragment extends RoboFragment implements LoaderManager.Load
                 Log.i(TAG, "OnItemClick");
                 if (null != mListener) {
                     Cursor cursor = (Cursor) mAdapter.getItem(position);
-                    mListener.onChannelsItemClick(cursor.getString(cursor.getColumnIndex(ChannelHelper.SERVERID)));
+                    Channel channel = ChannelHelper.fromCursor(cursor);
+                    mListener.onChannelsItemClick(channel);
                 }
             }
         });
@@ -117,7 +124,7 @@ public class ChannelsFragment extends RoboFragment implements LoaderManager.Load
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         Log.i(TAG, "OnCreateLoader");
         return new CursorLoader(getActivity(), ChannelHelper.CONTENT_URI,
-                ChannelHelper.getProjection(), null, null, null);
+                ChannelHelper.getProjection(), null, null, ChannelHelper.DEFAULT_SORT_ORDER);
     }
 
     @Override
@@ -133,7 +140,7 @@ public class ChannelsFragment extends RoboFragment implements LoaderManager.Load
 
 
     public interface OnChannelsFragmentInteractionListener {
-        public void onChannelsItemClick(String id);
+        public void onChannelsItemClick(Channel channel);
 
         public void onNewChannelButtonClick();
 

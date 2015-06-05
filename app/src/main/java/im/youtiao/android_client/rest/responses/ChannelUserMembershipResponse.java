@@ -5,8 +5,6 @@ import org.codehaus.jackson.annotate.JsonProperty;
 
 import java.util.Date;
 
-import im.youtiao.android_client.core.User;
-
 public class ChannelUserMembershipResponse {
     public String role;
 
@@ -17,5 +15,5 @@ public class ChannelUserMembershipResponse {
     public Date updatedAt;
 
     @JsonProperty("created_by")
-    public User createdBy;
+    public UserResponse createdBy;
 }

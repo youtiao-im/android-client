@@ -2,38 +2,49 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:descendantFocusability="blocksDescendants">
+    android:orientation="vertical">
 
     <include layout="@layout/row_feed" />
 
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:weightSum="1">
 
         <ListView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/listView" />
+            android:layout_height="0dp"
+            android:id="@+id/comment_list"
+            android:layout_weight="0.8"
+            android:background="#fff4f4f4" />
 
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:weightSum="1">
+            android:layout_height="0dp"
+            android:weightSum="1"
+            android:layout_weight="0.2"
+            android:background="#ffdee2e6"
+            android:padding="2dp">
 
             <EditText
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/editText"
-                android:layout_weight="0.9" />
+                android:layout_height="match_parent"
+                android:id="@+id/comment_text"
+                android:layout_weight="0.9"
+                android:hint="Comment..."
+                android:textColorHint="#AAAAAA"
+                android:background="@drawable/bg_edittext"
+                android:layout_margin="6dp"
+                android:textSize="15dip"
+                android:singleLine="true" />
 
             <Button
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:text="submit"
-                android:id="@+id/button"
+                android:id="@+id/comment_submit"
                 android:layout_weight="0.1" />
 
         </LinearLayout>

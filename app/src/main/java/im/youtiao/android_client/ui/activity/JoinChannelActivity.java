@@ -62,6 +62,7 @@ public class JoinChannelActivity extends RoboActionBarActivity {
 
     public void joinNew(View v) {
         String name = mTitle.getText().toString().trim();
+        //TODO:
         if (name != null && name.length() != 0) {
             remoteApi.createChannel(name).subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())

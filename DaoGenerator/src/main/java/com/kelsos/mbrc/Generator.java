@@ -14,13 +14,15 @@ public final class Generator {
 
   public static void main(String[] args) throws Exception {
     Schema schema = new Schema(11, "im.youtiao.android_client.greendao");
+    schema.enableKeepSectionsByDefault();
 
     Entity user = schema.addEntity("User");
     user.addIdProperty();
-    user.addStringProperty("serverId").unique().notNull().index();
+    user.addStringProperty("serverId").notNull().unique().index();
     user.addStringProperty("email").unique().notNull().index();
     user.addDateProperty("createdAt");
     user.addDateProperty("updatedAt");
+    user.setHasKeepSections(true);
 
     Entity channel = schema.addEntity("Channel");
     channel.addIdProperty();
@@ -64,6 +66,6 @@ public final class Generator {
 
     final String outDir = "app/src-gen/";
     new DaoGenerator().generateAll(schema, outDir);
-    new HelperGenerator().generateAll(schema, outDir);
+    //new HelperGenerator().generateAll(schema, outDir);
   }
 }

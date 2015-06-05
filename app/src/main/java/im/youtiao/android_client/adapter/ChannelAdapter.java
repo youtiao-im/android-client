@@ -28,7 +28,6 @@ public class ChannelAdapter extends CursorAdapter {
         mActivity = activity;
         mInflater = LayoutInflater.from(activity);
         final Cursor c = getCursor();
-
     }
 
     @Override

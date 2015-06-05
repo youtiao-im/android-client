@@ -3,8 +3,6 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="2dp"
-    android:layout_margin="10dp"
     android:background="#ffffffff"
     android:descendantFocusability="blocksDescendants">
 
@@ -36,7 +34,16 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="56 mins ago >"
+            android:text="New Text"
+            android:id="@+id/channel_name"
+            android:layout_toRightOf="@+id/creator_name"
+            android:layout_margin="5dp"
+            android:textColor="#ff104896" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="56 mins ago"
             android:id="@+id/created_at"
             android:layout_weight="1"
             android:layout_alignParentRight="false"
@@ -78,7 +85,7 @@
 
     <View
         android:layout_width="fill_parent"
-        android:layout_height="2px"
+        android:layout_height="5px"
         android:background="?android:attr/listDivider" />
 
     <LinearLayout

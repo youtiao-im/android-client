@@ -5,7 +5,6 @@ import org.codehaus.jackson.annotate.JsonProperty;
 
 import java.util.Date;
 
-import im.youtiao.android_client.core.User;
 
 public class FeedResponse {
     public String id;
@@ -37,5 +36,5 @@ public class FeedResponse {
     public StarResponse starResponse;
 
     @JsonProperty("created_by")
-    public User createdBy;
+    public UserResponse createdBy;
 }

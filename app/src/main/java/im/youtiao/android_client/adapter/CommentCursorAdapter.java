@@ -1,0 +1,62 @@
+package im.youtiao.android_client.adapter;
+
+
+import android.app.Activity;
+import android.content.Context;
+import android.database.Cursor;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.CursorAdapter;
+import android.widget.TextView;
+
+import com.google.inject.Inject;
+
+import im.youtiao.android_client.R;
+import im.youtiao.android_client.greendao.Comment;
+import im.youtiao.android_client.greendao.CommentHelper;
+import im.youtiao.android_client.greendao.DaoSession;
+
+public class CommentCursorAdapter extends CursorAdapter {
+    private static final String TAG = CommentCursorAdapter.class
+            .getCanonicalName();
+    private LayoutInflater mInflater;
+    private Activity mActivity;
+    private DaoSession daoSession;
+
+    @Inject
+    public CommentCursorAdapter(Activity activity, DaoSession daoSession) {
+        super(activity, null, false);
+        mActivity = activity;
+        mInflater = LayoutInflater.from(activity);
+        this.daoSession = daoSession;
+    }
+    @Override
+    public View newView(Context context, Cursor cursor, ViewGroup parent) {
+        final View view = mInflater.inflate(R.layout.row_comment, parent,
+                false);
+        ViewHolder viewHolder = new ViewHolder();
+        viewHolder.creatorNameTextView = (TextView)view.findViewById(R.id.creator_name);
+        viewHolder.createdAtTextView = (TextView)view.findViewById(R.id.created_at);
+        viewHolder.commentContentTextView = (TextView)view.findViewById(R.id.comment_content);
+        view.setTag(viewHolder);
+        return view;
+    }
+
+    @Override
+    public void bindView(View view, Context context, Cursor cursor) {
+        final ViewHolder viewHolder = (ViewHolder) view.getTag();
+        final Comment comment = CommentHelper.fromCursor(cursor);
+        comment.__setDaoSession(daoSession);
+        String email = comment.getUser().getEmail();
+        viewHolder.creatorNameTextView.setText(email.substring(0, email.indexOf("@")));
+        viewHolder.commentContentTextView.setText(comment.getText());
+        viewHolder.createdAtTextView.setText("3 mins ago");
+    }
+
+    static class ViewHolder {
+        public TextView creatorNameTextView;
+        public TextView commentContentTextView;
+        public TextView createdAtTextView;
+    }
+}

@@ -4,8 +4,6 @@ import org.codehaus.jackson.annotate.JsonProperty;
 
 import java.util.Date;
 
-import im.youtiao.android_client.core.User;
-
 public class CommentResponse {
     public String id;
     public String text;
@@ -17,5 +15,5 @@ public class CommentResponse {
     public Date updatedAt;
 
     @JsonProperty("created_by")
-    public User createdBy;
+    public UserResponse createdBy;
 }

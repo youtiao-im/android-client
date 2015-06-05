@@ -50,6 +50,8 @@ public final class ChannelHelper {
         return PROJECTION;
     }
 
+    public static String DEFAULT_SORT_ORDER = ROLE + " DESC";
+
     public static Channel fromCursor(Cursor data) {
         final Channel entity = new Channel();
         entity.setId(data.getLong(data.getColumnIndex(ID)));

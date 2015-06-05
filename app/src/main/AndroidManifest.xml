@@ -51,8 +51,8 @@
             android:label="@string/title_activity_new_channel" />
 
         <provider
-            android:name="im.youtiao.android_client.greendao.LibraryProvider"
-            android:authorities="im.youtiao.android_client.greendao.provider"/>
+            android:name=".greendao.LibraryProvider"
+            android:authorities="im.youtiao.android_client.greendao.provider" />
 
         <meta-data
             android:name="roboguice.modules"
@@ -85,6 +85,18 @@
         <activity
             android:name=".ui.activity.JoinChannelActivity"
             android:label="@string/title_activity_join_channel" >
+        </activity>
+        <activity
+            android:name=".ui.activity.ChannelProfileActivity"
+            android:label="@string/title_activity_channel_profile" >
+        </activity>
+        <activity
+            android:name=".ui.activity.ChannelMemberActivity"
+            android:label="@string/title_activity_channel_member" >
+        </activity>
+        <activity
+            android:name=".ui.activity.ChannelCodeActivity"
+            android:label="@string/title_activity_channel_code" >
         </activity>
     </application>
 
