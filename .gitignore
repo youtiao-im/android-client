@@ -6,3 +6,6 @@
 /build
 /captures
 /NewQuickAction3D/build
+/DaoGenerator/build
+/tmp
+/.idea
