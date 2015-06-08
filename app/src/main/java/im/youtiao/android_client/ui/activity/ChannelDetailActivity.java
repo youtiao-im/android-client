@@ -18,11 +18,15 @@ import android.widget.ListView;
 
 import com.google.inject.Inject;
 
+import de.greenrobot.event.EventBus;
 import im.youtiao.android_client.R;
 import im.youtiao.android_client.adapter.FeedCursorAdapter;
+import im.youtiao.android_client.event.FeedStarEvent;
 import im.youtiao.android_client.greendao.Channel;
 import im.youtiao.android_client.greendao.ChannelHelper;
+import im.youtiao.android_client.greendao.DaoSession;
 import im.youtiao.android_client.greendao.Feed;
+import im.youtiao.android_client.greendao.FeedDao;
 import im.youtiao.android_client.greendao.FeedHelper;
 import roboguice.activity.RoboActionBarActivity;
 import roboguice.inject.InjectView;
@@ -43,6 +47,15 @@ public class ChannelDetailActivity extends RoboActionBarActivity implements Load
 
     @Inject
     private FeedCursorAdapter mAdapter;
+
+    @Inject
+    private DaoSession daoSession;
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,6 +93,12 @@ public class ChannelDetailActivity extends RoboActionBarActivity implements Load
                 startActivity(intent);
             }
         });
+    }
+
+    @Override
+    public void onStop() {
+        EventBus.getDefault().unregister(this);
+        super.onStop();
     }
 
     @Override
@@ -122,5 +141,15 @@ public class ChannelDetailActivity extends RoboActionBarActivity implements Load
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
         mAdapter.swapCursor(null);
+    }
+
+    public void onEventAsync(FeedStarEvent event) {
+        Log.i(TAG, "onEventAsync");
+        Feed feed = event.feed;
+        feed.setIsStarred(!feed.getIsStarred());
+        //TODO: seed request to server
+        FeedDao feedDao = daoSession.getFeedDao();
+        feedDao.update(feed);
+        getContentResolver().notifyChange(FeedHelper.CONTENT_URI, null);
     }
 }

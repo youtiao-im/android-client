@@ -15,15 +15,15 @@ import im.youtiao.android_client.greendao.Channel;
 import im.youtiao.android_client.greendao.ChannelHelper;
 
 
-public class ChannelAdapter extends CursorAdapter {
+public class ChannelCursorAdapter extends CursorAdapter {
 
     private LayoutInflater mInflater;
     private Activity mActivity;
 
-    private static final String TAG = ChannelAdapter.class
+    private static final String TAG = ChannelCursorAdapter.class
             .getCanonicalName();
 
-    public ChannelAdapter(Activity activity, Cursor cursor) {
+    public ChannelCursorAdapter(Activity activity, Cursor cursor) {
         super(activity, cursor, false);
         mActivity = activity;
         mInflater = LayoutInflater.from(activity);
@@ -42,9 +42,9 @@ public class ChannelAdapter extends CursorAdapter {
         final View view = mInflater.inflate(R.layout.row_channel, parent,
                 false);
         ViewHolder holder = new ViewHolder();
-        holder.separator = (TextView) view.findViewById(R.id.separator);
-        holder.name = (TextView) view.findViewById(R.id.channel_name);
-        holder.creator = (TextView) view.findViewById(R.id.creator_name);
+        holder.separatorTv = (TextView) view.findViewById(R.id.tv_separator);
+        holder.nameTv = (TextView) view.findViewById(R.id.tv_channel_name);
+        holder.creatorTv = (TextView) view.findViewById(R.id.tv_creator_name);
         view.setTag(holder);
         return view;
     }
@@ -78,18 +78,18 @@ public class ChannelAdapter extends CursorAdapter {
         }
 
         if (needSeparator) {
-            holder.separator.setText("owner".equalsIgnoreCase(role) ? "My Channels" : "Joined Channels");
-            holder.separator.setVisibility(View.VISIBLE);
+            holder.separatorTv.setText("owner".equalsIgnoreCase(role) ? "My Channels" : "Joined Channels");
+            holder.separatorTv.setVisibility(View.VISIBLE);
         } else {
-            holder.separator.setVisibility(View.GONE);
+            holder.separatorTv.setVisibility(View.GONE);
         }
-        holder.name.setText(name);
+        holder.nameTv.setText(name);
     }
 
     private static class ViewHolder {
-        TextView separator;
-        TextView name;
-        TextView creator;
+        TextView separatorTv;
+        TextView nameTv;
+        TextView creatorTv;
     }
 
 }

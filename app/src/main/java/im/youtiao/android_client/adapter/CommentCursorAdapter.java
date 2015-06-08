@@ -36,9 +36,9 @@ public class CommentCursorAdapter extends CursorAdapter {
         final View view = mInflater.inflate(R.layout.row_comment, parent,
                 false);
         ViewHolder viewHolder = new ViewHolder();
-        viewHolder.creatorNameTextView = (TextView)view.findViewById(R.id.creator_name);
-        viewHolder.createdAtTextView = (TextView)view.findViewById(R.id.created_at);
-        viewHolder.commentContentTextView = (TextView)view.findViewById(R.id.comment_content);
+        viewHolder.creatorNameTv = (TextView)view.findViewById(R.id.tv_creator_name);
+        viewHolder.createdAtTv = (TextView)view.findViewById(R.id.tv_created_at);
+        viewHolder.commentContentTv = (TextView)view.findViewById(R.id.tv_comment_content);
         view.setTag(viewHolder);
         return view;
     }
@@ -49,14 +49,14 @@ public class CommentCursorAdapter extends CursorAdapter {
         final Comment comment = CommentHelper.fromCursor(cursor);
         comment.__setDaoSession(daoSession);
         String email = comment.getUser().getEmail();
-        viewHolder.creatorNameTextView.setText(email.substring(0, email.indexOf("@")));
-        viewHolder.commentContentTextView.setText(comment.getText());
-        viewHolder.createdAtTextView.setText("3 mins ago");
+        viewHolder.creatorNameTv.setText(email.substring(0, email.indexOf("@")));
+        viewHolder.commentContentTv.setText(comment.getText());
+        viewHolder.createdAtTv.setText("3 mins ago");
     }
 
     static class ViewHolder {
-        public TextView creatorNameTextView;
-        public TextView commentContentTextView;
-        public TextView createdAtTextView;
+        public TextView creatorNameTv;
+        public TextView commentContentTv;
+        public TextView createdAtTv;
     }
 }

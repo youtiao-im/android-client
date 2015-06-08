@@ -98,6 +98,10 @@
             android:name=".ui.activity.ChannelCodeActivity"
             android:label="@string/title_activity_channel_code" >
         </activity>
+        <activity
+            android:name=".ui.activity.ChannelMemberProfileActivity"
+            android:label="@string/title_activity_channel_member_profile" >
+        </activity>
     </application>
 
 </manifest>

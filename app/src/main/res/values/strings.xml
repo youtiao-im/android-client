@@ -20,4 +20,5 @@
     <string name="title_activity_channel_profile">ChannelProfileActivity</string>
     <string name="title_activity_channel_member">ChannelMemberActivity</string>
     <string name="title_activity_channel_code">ChannelCodeActivity</string>
+    <string name="title_activity_channel_member_profile">ChannelMemberProfileActivity</string>
 </resources>

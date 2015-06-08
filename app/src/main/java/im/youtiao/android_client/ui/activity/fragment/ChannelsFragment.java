@@ -18,7 +18,7 @@ import com.google.inject.Inject;
 
 import im.youtiao.android_client.R;
 
-import im.youtiao.android_client.adapter.ChannelAdapter;
+import im.youtiao.android_client.adapter.ChannelCursorAdapter;
 import im.youtiao.android_client.data.SyncManager;
 import im.youtiao.android_client.greendao.Channel;
 import im.youtiao.android_client.greendao.ChannelHelper;
@@ -34,7 +34,7 @@ public class ChannelsFragment extends RoboFragment implements LoaderManager.Load
     @InjectView(android.R.id.list)
     private AbsListView mListView;
     @Inject private SyncManager syncManager;
-    private ChannelAdapter mAdapter;
+    private ChannelCursorAdapter mAdapter;
 
     private static final int URL_LOADER = 1921;
 
@@ -70,7 +70,7 @@ public class ChannelsFragment extends RoboFragment implements LoaderManager.Load
     @Override public void onViewCreated(View view, Bundle savedInstanceState) {
         Log.i(TAG, "OnViewCreate");
         super.onViewCreated(view, savedInstanceState);
-        mAdapter = new ChannelAdapter(this.getActivity(), null);
+        mAdapter = new ChannelCursorAdapter(this.getActivity(), null);
         mListView.setAdapter(mAdapter);
         Button addNewChannelButton = (Button) view.findViewById(R.id.add_new_channel_button);
         addNewChannelButton.setOnClickListener(new View.OnClickListener() {

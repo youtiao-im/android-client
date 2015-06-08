@@ -13,20 +13,29 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.google.inject.Inject;
 
+import net.londatiga.android.ActionItem;
+import net.londatiga.android.QuickAction;
+
+import de.greenrobot.event.EventBus;
 import im.youtiao.android_client.R;
 import im.youtiao.android_client.YTApplication;
 import im.youtiao.android_client.adapter.CommentCursorAdapter;
+import im.youtiao.android_client.data.State;
 import im.youtiao.android_client.data.SyncManager;
-import im.youtiao.android_client.greendao.Channel;
+import im.youtiao.android_client.event.FeedStampEvent;
+import im.youtiao.android_client.event.FeedStarEvent;
 import im.youtiao.android_client.greendao.Comment;
 import im.youtiao.android_client.greendao.CommentDao;
 import im.youtiao.android_client.greendao.CommentHelper;
 import im.youtiao.android_client.greendao.DaoSession;
 import im.youtiao.android_client.greendao.Feed;
+import im.youtiao.android_client.greendao.FeedDao;
 import im.youtiao.android_client.greendao.FeedHelper;
 import im.youtiao.android_client.rest.RemoteApi;
 import im.youtiao.android_client.util.Logger;
@@ -47,28 +56,109 @@ public class FeedDetailActivity extends RoboActionBarActivity implements LoaderM
     @Inject
     DaoSession daoSession;
 
-    @InjectView(R.id.comment_list)
-    ListView commentListView;
-
-    @InjectView(R.id.comment_submit)
+    @InjectView(R.id.lv_comments)
+    ListView commentsLv;
+    @InjectView(R.id.btn_comment_submit)
     Button commentSubmitBtn;
+    @InjectView(R.id.edtTxt_comment_content)
+    EditText commentContentEdtText;
 
-    @InjectView(R.id.comment_text)
-    EditText commentEditText;
+    @InjectView(R.id.tv_creator_name)
+    TextView feedCreatorNameTv;
+    @InjectView(R.id.tv_created_at)
+    TextView feedCreatedAtTv;
+    @InjectView(R.id.tv_feed_text)
+    TextView feedTextTv;
+    @InjectView(R.id.tv_channel_name)
+    TextView feedChannelNameTv;
+    @InjectView(R.id.tv_feed_comment_count)
+    TextView feedCommentCountTv;
+    @InjectView(R.id.imgBtn_feed_stamp)
+    ImageButton stampImgBtn;
+    @InjectView(R.id.imgBtn_feed_star)
+    ImageButton starImgBtn;
+    @InjectView(R.id.imgBtn_feed_comment)
+    ImageButton commentImgBtn;
 
     @Inject
     RemoteApi remoteApi;
 
-    @Inject private SyncManager syncManager;
+    @Inject
+    private SyncManager syncManager;
 
+    private static final int ID_CHECK = 1;
+    private static final int ID_CROSS = 2;
+    private static final int ID_QUESTION = 3;
+    private QuickAction quickAction;
 
     private static final int URL_LOADER = 1919;
 
-    @Override public void onStart() {
+    @Override
+    public void onStart() {
         Log.i(TAG, "OnStart");
         super.onStart();
+        EventBus.getDefault().register(this);
         syncManager.startCommentSyncForFeed(feed);
+    }
 
+    @Override
+    public void onStop() {
+        EventBus.getDefault().unregister(this);
+        super.onStop();
+    }
+
+    protected void initView() {
+        feed.__setDaoSession(daoSession);
+        String email = feed.getUser().getEmail();
+        feedCreatorNameTv.setText(email.substring(0, email.indexOf("@")));
+        feedTextTv.setText(feed.getText());
+        //viewHolder.createdAtTv.setText(TimeWrap.wrapTimeDisplyValue(feed.getCreatedAt().getTime()));
+        feedCreatedAtTv.setText("3 mins ago");
+        feedChannelNameTv.setText("#" + feed.getChannel().getName());
+        feedCommentCountTv.setText("" + feed.getComments().size());
+        if (feed.getIsStarred()) {
+            starImgBtn.setImageResource(R.mipmap.ic_feed_star_true);
+        } else {
+            starImgBtn.setImageResource(R.mipmap.ic_feed_star_false);
+        }
+        starImgBtn.setOnClickListener(v -> {
+            Log.i(TAG, "starImgBtn clicked");
+            EventBus.getDefault().post(new FeedStarEvent(feed));
+        });
+
+        commentImgBtn.setOnClickListener(v -> {
+            Log.i(TAG, "starImgBtn clicked");
+            EventBus.getDefault().post(new FeedStarEvent(feed));
+        });
+
+        State.Mark mark = feed.getSymbol() != null ? State.Mark.valueOf(feed.getSymbol()) : State.Mark.DEFAULT;
+        switch (mark) {
+            case CHECK:
+                stampImgBtn.setImageResource(R.mipmap.ic_feed_stamp_check);
+                break;
+            case CROSS:
+                stampImgBtn.setImageResource(R.mipmap.ic_feed_stamp_cross);
+                break;
+            case QUESTION:
+                stampImgBtn.setImageResource(R.mipmap.ic_feed_stamp_question);
+                break;
+            default:
+                stampImgBtn.setImageResource(R.mipmap.ic_feed_stamp_default);
+        }
+
+        stampImgBtn.setOnClickListener(v -> {
+            Log.i(TAG, "stampImgBtn clicked");
+            EventBus.getDefault().post(new FeedStampEvent(v, feed));
+        });
+
+        ActionItem checkItem = new ActionItem(ID_CHECK, "Check", getResources().getDrawable(R.mipmap.ic_feed_stamp_check));
+        ActionItem crossItem = new ActionItem(ID_CROSS, "Cross", getResources().getDrawable(R.mipmap.ic_feed_stamp_cross));
+        ActionItem questionItem = new ActionItem(ID_QUESTION, "Question", getResources().getDrawable(R.mipmap.ic_feed_stamp_question));
+
+        quickAction = new QuickAction(this, QuickAction.HORIZONTAL);
+        quickAction.addActionItem(checkItem);
+        quickAction.addActionItem(crossItem);
+        quickAction.addActionItem(questionItem);
     }
 
     @Override
@@ -84,30 +174,30 @@ public class FeedDetailActivity extends RoboActionBarActivity implements LoaderM
         Intent intent = getIntent();
         feed = (Feed) intent.getSerializableExtra(PARAM_FEED);
 
-        getLoaderManager().initLoader(URL_LOADER, null, this);
-        commentListView.setAdapter(mAdapter);
+        initView();
 
-        commentSubmitBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String content = commentEditText.getText().toString();
-                remoteApi.createFeedComment(feed.getServerId(), content).subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(res -> {
-                            commentEditText.setText("");
-                            commentEditText.setHint("Comment..");
-                            CommentDao commentDao = daoSession.getCommentDao();
-                            Comment comment = new Comment();
-                            comment.setServerId(res.id);
-                            comment.setText(res.text);
-                            comment.setCreatedAt(res.createdAt);
-                            comment.setFeedId(feed.getId());
-                            comment.setCreatedBy(((YTApplication) getApplication()).getCurrentUser().getId());
-                            comment.setUpdatedAt(res.updatedAt);
-                            commentDao.insert(comment);
-                            getContentResolver().notifyChange(CommentHelper.CONTENT_URI, null);
-                        }, Logger::logThrowable);
-            }
+        getLoaderManager().initLoader(URL_LOADER, null, this);
+        commentsLv.setAdapter(mAdapter);
+
+        commentSubmitBtn.setOnClickListener(v -> {
+            String content = commentContentEdtText.getText().toString();
+            remoteApi.createFeedComment(feed.getServerId(), content).subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(res -> {
+                        commentContentEdtText.setText("");
+                        commentContentEdtText.setHint("Comment..");
+                        CommentDao commentDao = daoSession.getCommentDao();
+                        Comment comment = new Comment();
+                        comment.setServerId(res.id);
+                        comment.setText(res.text);
+                        comment.setCreatedAt(res.createdAt);
+                        comment.setFeedId(feed.getId());
+                        comment.setCreatedBy(((YTApplication) getApplication()).getCurrentUser().getId());
+                        comment.setUpdatedAt(res.updatedAt);
+                        commentDao.insert(comment);
+                        getContentResolver().notifyChange(CommentHelper.CONTENT_URI, null);
+                    }, Logger::logThrowable);
+
         });
     }
 
@@ -150,5 +240,66 @@ public class FeedDetailActivity extends RoboActionBarActivity implements LoaderM
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
         mAdapter.swapCursor(null);
+    }
+
+    public void onEventMainThread(FeedStarEvent event) {
+        Log.i(TAG, "onEventMainThread");
+        Feed feed = event.feed;
+        feed.setIsStarred(!feed.getIsStarred());
+        //TODO: seed request to server
+        // update feed on local db
+        FeedDao feedDao = daoSession.getFeedDao();
+        feedDao.update(feed);
+
+        // update ui
+        if (feed.getIsStarred()) {
+            starImgBtn.setImageResource(R.mipmap.ic_feed_star_true);
+        } else {
+            starImgBtn.setImageResource(R.mipmap.ic_feed_star_false);
+        }
+        getContentResolver().notifyChange(FeedHelper.CONTENT_URI, null);
+    }
+
+    public void onEventMainThread(FeedStampEvent event) {
+        final Feed fd = event.feed;
+        final View v = event.view;
+        quickAction.setOnActionItemClickListener(new QuickAction.OnActionItemClickListener() {
+            @Override
+            public void onItemClick(QuickAction source, int pos, int actionId) {
+                ActionItem actionItem = quickAction.getActionItem(pos);
+                Log.i("FeedsFragment", "actionItem = " + actionItem.getActionId());
+                switch (actionItem.getActionId()) {
+                    case ID_CHECK:
+                        fd.setSymbol(State.Mark.CHECK.toString());
+                        break;
+                    case ID_CROSS:
+                        fd.setSymbol(State.Mark.CROSS.toString());
+                        break;
+                    case ID_QUESTION:
+                        fd.setSymbol(State.Mark.QUESTION.toString());
+                        break;
+                }
+                FeedDao feedDao = daoSession.getFeedDao();
+                feedDao.update(fd);
+
+                State.Mark mark = feed.getSymbol() != null ? State.Mark.valueOf(feed.getSymbol()) : State.Mark.DEFAULT;
+                switch(mark) {
+                    case CHECK:
+                        stampImgBtn.setImageResource(R.mipmap.ic_feed_stamp_check);
+                        break;
+                    case CROSS:
+                        stampImgBtn.setImageResource(R.mipmap.ic_feed_stamp_cross);
+                        break;
+                    case QUESTION:
+                        stampImgBtn.setImageResource(R.mipmap.ic_feed_stamp_question);
+                        break;
+                    default:
+                        stampImgBtn.setImageResource(R.mipmap.ic_feed_stamp_default);
+                }
+
+                getContentResolver().notifyChange(FeedHelper.CONTENT_URI, null);
+            }
+        });
+        quickAction.show(v);
     }
 }

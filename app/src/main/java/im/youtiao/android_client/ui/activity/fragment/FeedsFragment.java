@@ -13,10 +13,13 @@ import android.widget.ListView;
 
 import com.google.inject.Inject;
 
+import de.greenrobot.event.EventBus;
 import im.youtiao.android_client.R;
 import im.youtiao.android_client.adapter.FeedCursorAdapter;
 import im.youtiao.android_client.data.State;
 import im.youtiao.android_client.data.SyncManager;
+import im.youtiao.android_client.event.FeedStampEvent;
+import im.youtiao.android_client.event.FeedStarEvent;
 import im.youtiao.android_client.greendao.DaoSession;
 import im.youtiao.android_client.greendao.Feed;
 import im.youtiao.android_client.greendao.FeedDao;
@@ -33,7 +36,7 @@ import net.londatiga.android.QuickAction;
  * Activities containing this fragment MUST implement the {@link OnFeedsFragmentInteractionListener}
  * interface.
  */
-public class FeedsFragment extends RoboListFragment implements FeedCursorAdapter.FeedAdapterDelegate, LoaderManager.LoaderCallbacks<Cursor> {
+public class FeedsFragment extends RoboListFragment implements LoaderManager.LoaderCallbacks<Cursor> {
     private static final String TAG = FeedsFragment.class.getCanonicalName();
 
 
@@ -65,6 +68,7 @@ public class FeedsFragment extends RoboListFragment implements FeedCursorAdapter
         Log.i(TAG, "OnStart");
         super.onStart();
         syncManager.startSync();
+        EventBus.getDefault().register(this);
     }
 
     @Override
@@ -98,13 +102,17 @@ public class FeedsFragment extends RoboListFragment implements FeedCursorAdapter
     @Override
     public void onResume() {
         super.onResume();
-        mAdapter.setDelegate(this);
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        mAdapter.setDelegate(null);
+    }
+
+    @Override
+    public void onStop() {
+        EventBus.getDefault().unregister(this);
+        super.onStop();
     }
 
 
@@ -136,49 +144,49 @@ public class FeedsFragment extends RoboListFragment implements FeedCursorAdapter
         }
     }
 
-    @Override
-    public void toggleStar(View v, Feed feed) {
-        ImageButton imageButton = (ImageButton) v;
-        feed.setIsStarred(!feed.getIsStarred());
-        //TODO: seed request to server
-        FeedDao feedDao = daoSession.getFeedDao();
-        feedDao.update(feed);
-        getActivity().getContentResolver().notifyChange(FeedHelper.CONTENT_URI, null);
-    }
-
-    @Override
-    public void clickStamp(View v, Feed feed) {
-        //TODO:
-        final Feed fd = feed;
-        quickAction.setOnActionItemClickListener(new QuickAction.OnActionItemClickListener() {
-            @Override
-            public void onItemClick(QuickAction source, int pos, int actionId) {
-                ActionItem actionItem = quickAction.getActionItem(pos);
-                Log.i("FeedsFragment", "actionItem = " + actionItem.getActionId());
-                switch (actionItem.getActionId()) {
-                    case ID_CHECK:
-                        fd.setSymbol(State.Mark.CHECK.toString());
-                        break;
-                    case ID_CROSS:
-                        fd.setSymbol(State.Mark.CROSS.toString());
-                        break;
-                    case ID_QUESTION:
-                        fd.setSymbol(State.Mark.QUESTION.toString());
-                        break;
-                }
-                FeedDao feedDao = daoSession.getFeedDao();
-                feedDao.update(fd);
-                getActivity().getContentResolver().notifyChange(FeedHelper.CONTENT_URI, null);
-            }
-        });
-
-        quickAction.show(v);
-    }
-
-    @Override
-    public void extendComment() {
-        //TODO:
-    }
+//    @Override
+//    public void toggleStar(View v, Feed feed) {
+//        ImageButton imageButton = (ImageButton) v;
+//        feed.setIsStarred(!feed.getIsStarred());
+//        //TODO: seed request to server
+//        FeedDao feedDao = daoSession.getFeedDao();
+//        feedDao.update(feed);
+//        getActivity().getContentResolver().notifyChange(FeedHelper.CONTENT_URI, null);
+//    }
+//
+//    @Override
+//    public void clickStamp(View v, Feed feed) {
+//        //TODO:
+//        final Feed fd = feed;
+//        quickAction.setOnActionItemClickListener(new QuickAction.OnActionItemClickListener() {
+//            @Override
+//            public void onItemClick(QuickAction source, int pos, int actionId) {
+//                ActionItem actionItem = quickAction.getActionItem(pos);
+//                Log.i("FeedsFragment", "actionItem = " + actionItem.getActionId());
+//                switch (actionItem.getActionId()) {
+//                    case ID_CHECK:
+//                        fd.setSymbol(State.Mark.CHECK.toString());
+//                        break;
+//                    case ID_CROSS:
+//                        fd.setSymbol(State.Mark.CROSS.toString());
+//                        break;
+//                    case ID_QUESTION:
+//                        fd.setSymbol(State.Mark.QUESTION.toString());
+//                        break;
+//                }
+//                FeedDao feedDao = daoSession.getFeedDao();
+//                feedDao.update(fd);
+//                getActivity().getContentResolver().notifyChange(FeedHelper.CONTENT_URI, null);
+//            }
+//        });
+//
+//        quickAction.show(v);
+//    }
+//
+//    @Override
+//    public void extendComment() {
+//        //TODO:
+//    }
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
@@ -203,4 +211,40 @@ public class FeedsFragment extends RoboListFragment implements FeedCursorAdapter
         public void onFeedsFragmentInteraction(Feed feed);
     }
 
+    public void onEventAsync(FeedStarEvent event) {
+        Log.i(TAG, "onEventAsync");
+        Feed feed = event.feed;
+        feed.setIsStarred(!feed.getIsStarred());
+        //TODO: seed request to server
+        FeedDao feedDao = daoSession.getFeedDao();
+        feedDao.update(feed);
+        getActivity().getContentResolver().notifyChange(FeedHelper.CONTENT_URI, null);
+    }
+
+    public void onEventMainThread(FeedStampEvent event) {
+        final Feed fd = event.feed;
+        final View v = event.view;
+        quickAction.setOnActionItemClickListener(new QuickAction.OnActionItemClickListener() {
+            @Override
+            public void onItemClick(QuickAction source, int pos, int actionId) {
+                ActionItem actionItem = quickAction.getActionItem(pos);
+                Log.i("FeedsFragment", "actionItem = " + actionItem.getActionId());
+                switch (actionItem.getActionId()) {
+                    case ID_CHECK:
+                        fd.setSymbol(State.Mark.CHECK.toString());
+                        break;
+                    case ID_CROSS:
+                        fd.setSymbol(State.Mark.CROSS.toString());
+                        break;
+                    case ID_QUESTION:
+                        fd.setSymbol(State.Mark.QUESTION.toString());
+                        break;
+                }
+                FeedDao feedDao = daoSession.getFeedDao();
+                feedDao.update(fd);
+                getActivity().getContentResolver().notifyChange(FeedHelper.CONTENT_URI, null);
+            }
+        });
+        quickAction.show(v);
+    }
 }

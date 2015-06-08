@@ -11,7 +11,7 @@
         android:layout_height="wrap_content">
 
         <ImageView
-            android:id="@+id/creator_avatar"
+            android:id="@+id/iv_creator_avatar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@mipmap/ic_person_black_24dp"
@@ -25,9 +25,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Tommy"
-            android:id="@+id/creator_name"
+            android:id="@+id/tv_creator_name"
             android:layout_weight="1"
-            android:layout_toRightOf="@+id/creator_avatar"
+            android:layout_toRightOf="@+id/iv_creator_avatar"
             android:phoneNumber="false"
             android:layout_margin="5dp" />
 
@@ -35,8 +35,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="New Text"
-            android:id="@+id/channel_name"
-            android:layout_toRightOf="@+id/creator_name"
+            android:id="@+id/tv_channel_name"
+            android:layout_toRightOf="@+id/tv_creator_name"
             android:layout_margin="5dp"
             android:textColor="#ff104896" />
 
@@ -44,16 +44,16 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="56 mins ago"
-            android:id="@+id/created_at"
+            android:id="@+id/tv_created_at"
             android:layout_weight="1"
             android:layout_alignParentRight="false"
             android:layout_margin="5dp"
-            android:layout_toLeftOf="@+id/imageView" />
+            android:layout_toLeftOf="@+id/iv_forward" />
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/imageView"
+            android:id="@+id/iv_forward"
             android:src="@mipmap/ic_feed_forward"
             android:layout_alignParentRight="true" />
     </RelativeLayout>
@@ -70,7 +70,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:id="@+id/feed_text"
+            android:id="@+id/tv_feed_text"
             android:text="There is a new feed"
             android:singleLine="false"
             android:phoneNumber="false" />
@@ -78,7 +78,7 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/imageView2"
+            android:id="@+id/iv_feed_photo"
             android:src="@mipmap/ic_feed_photo" />
 
     </LinearLayout>
@@ -98,7 +98,7 @@
         <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/feed_star"
+            android:id="@+id/imgBtn_feed_star"
             android:layout_weight="1"
             android:src="@mipmap/ic_feed_star_false"
             android:clickable="true"
@@ -116,7 +116,7 @@
             <ImageButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/feed_comment"
+                android:id="@+id/imgBtn_feed_comment"
                 android:src="@mipmap/ic_feed_comment"
                 android:adjustViewBounds="false"
                 android:longClickable="true"
@@ -128,7 +128,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="4"
-                android:id="@+id/feed_comment_count"
+                android:id="@+id/tv_feed_comment_count"
                 android:contentDescription="@string/feed_comment" />
 
         </LinearLayout>
@@ -136,15 +136,12 @@
         <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/feed_stamp"
+            android:id="@+id/imgBtn_feed_stamp"
             android:layout_weight="1"
             android:src="@mipmap/ic_feed_stamp_default"
             android:focusableInTouchMode="false"
             android:background="#00000000"
             android:contentDescription="@string/feed_stamp"
             android:focusable="false" />
-
     </LinearLayout>
-
-
 </LinearLayout>
