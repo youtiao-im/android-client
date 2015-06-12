@@ -10,24 +10,29 @@ import android.view.ViewGroup;
 import android.widget.CursorAdapter;
 import android.widget.TextView;
 
+import com.google.inject.Inject;
+
 import im.youtiao.android_client.R;
 import im.youtiao.android_client.greendao.Channel;
 import im.youtiao.android_client.greendao.ChannelHelper;
+import im.youtiao.android_client.greendao.DaoSession;
 
 
 public class ChannelCursorAdapter extends CursorAdapter {
 
     private LayoutInflater mInflater;
     private Activity mActivity;
+    private DaoSession daoSession;
 
     private static final String TAG = ChannelCursorAdapter.class
             .getCanonicalName();
 
-    public ChannelCursorAdapter(Activity activity, Cursor cursor) {
-        super(activity, cursor, false);
-        mActivity = activity;
-        mInflater = LayoutInflater.from(activity);
-        final Cursor c = getCursor();
+    @Inject
+    public ChannelCursorAdapter(Activity activity, DaoSession daoSession) {
+        super(activity, null, false);
+        this.mActivity = activity;
+        this.mInflater = LayoutInflater.from(activity);
+        this.daoSession = daoSession;
     }
 
     @Override
@@ -38,7 +43,7 @@ public class ChannelCursorAdapter extends CursorAdapter {
 
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
-        Log.i(TAG, "newView");
+        Log.i(TAG, "newView:" + this.getCount());
         final View view = mInflater.inflate(R.layout.row_channel, parent,
                 false);
         ViewHolder holder = new ViewHolder();
@@ -51,16 +56,18 @@ public class ChannelCursorAdapter extends CursorAdapter {
 
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
-        Log.i(TAG, "bindView");
+        Log.i(TAG, "bindView:" + this.getCount());
         final ViewHolder holder = (ViewHolder) view.getTag();
 
         boolean needSeparator = false;
         final int position = cursor.getPosition();
 
         final Channel channel = ChannelHelper.fromCursor(cursor);
+        channel.__setDaoSession(this.daoSession);
 
         final String name = channel.getName();
         final String role = channel.getRole();
+        final String creator = channel.getUser().getEmail();
 
 
         if (position == 0) {
@@ -84,6 +91,7 @@ public class ChannelCursorAdapter extends CursorAdapter {
             holder.separatorTv.setVisibility(View.GONE);
         }
         holder.nameTv.setText(name);
+        holder.creatorTv.setText(creator);
     }
 
     private static class ViewHolder {

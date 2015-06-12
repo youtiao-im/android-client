@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="5dp">
+
+        <TextView
+            style="@style/user_text"
+            android:text="@string/feed_receiver"
+            android:layout_marginRight="10dp" />
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="New Text"
+            android:id="@+id/tv_feed_recevier"
+            android:layout_weight="1" />
+    </LinearLayout>
+
+    <View style="@style/bg_line"/>
+
+    <EditText
+        android:id="@+id/edtTxt_feed_content"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textMultiLine"
+        android:hint="name"/>
+
+
+    <Button
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:onClick="addNewFeed"
+        android:text="@string/add_feed"
+        android:id="@+id/btn_add_feed" />
+
+</LinearLayout>

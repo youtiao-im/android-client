@@ -75,12 +75,6 @@
             android:singleLine="false"
             android:phoneNumber="false" />
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/iv_feed_photo"
-            android:src="@mipmap/ic_feed_photo" />
-
     </LinearLayout>
 
     <View

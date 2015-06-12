@@ -22,6 +22,7 @@ import im.youtiao.android_client.adapter.ChannelCursorAdapter;
 import im.youtiao.android_client.data.SyncManager;
 import im.youtiao.android_client.greendao.Channel;
 import im.youtiao.android_client.greendao.ChannelHelper;
+import im.youtiao.android_client.greendao.DaoSession;
 import roboguice.fragment.RoboFragment;
 import roboguice.inject.InjectView;
 
@@ -33,15 +34,19 @@ public class ChannelsFragment extends RoboFragment implements LoaderManager.Load
 
     @InjectView(android.R.id.list)
     private AbsListView mListView;
-    @Inject private SyncManager syncManager;
-    private ChannelCursorAdapter mAdapter;
+    @Inject
+    private SyncManager syncManager;
+    @Inject
+    private DaoSession daoSession;
+    @Inject private ChannelCursorAdapter mAdapter;
 
     private static final int URL_LOADER = 1921;
 
     public ChannelsFragment() {
     }
 
-    @Override public void onStart() {
+    @Override
+    public void onStart() {
         Log.i(TAG, "OnStart");
         super.onStart();
         syncManager.startChannelsSync();
@@ -67,10 +72,10 @@ public class ChannelsFragment extends RoboFragment implements LoaderManager.Load
         return inflater.inflate(R.layout.fragment_channels, container, false);
     }
 
-    @Override public void onViewCreated(View view, Bundle savedInstanceState) {
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
         Log.i(TAG, "OnViewCreate");
         super.onViewCreated(view, savedInstanceState);
-        mAdapter = new ChannelCursorAdapter(this.getActivity(), null);
         mListView.setAdapter(mAdapter);
         Button addNewChannelButton = (Button) view.findViewById(R.id.add_new_channel_button);
         addNewChannelButton.setOnClickListener(new View.OnClickListener() {
@@ -97,6 +102,18 @@ public class ChannelsFragment extends RoboFragment implements LoaderManager.Load
                     Channel channel = ChannelHelper.fromCursor(cursor);
                     mListener.onChannelsItemClick(channel);
                 }
+            }
+        });
+
+        mListView.setOnScrollListener(new AbsListView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+
+            }
+
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                Log.i("onScroll ", firstVisibleItem + "-" + visibleItemCount + "-" + totalItemCount);
             }
         });
     }

@@ -4,21 +4,22 @@
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="action_profile">Profile</string>
-    <string name="title_activity_register">RegisterActivity</string>
-    <string name="title_activity_feed_detail">Feed</string>
+
     <string name="feed_star">star</string>
     <string name="feed_comment">feed_comment</string>
     <string name="feed_stamp">feed_stamp</string>
-    <string name="title_activity_channel_detail">ChannelDetailActivity</string>
-    <string name="title_activity_new_channel">NewChannelActivity</string>
-    <string name="title_activity_bootstrap">BootstrapActivity</string>
-
-<!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="title_activity_join_channel">JoinChannelActivity</string>
     <string name="new_feed">Create New Feed</string>
-    <string name="title_activity_channel_profile">ChannelProfileActivity</string>
-    <string name="title_activity_channel_member">ChannelMemberActivity</string>
-    <string name="title_activity_channel_code">ChannelCodeActivity</string>
-    <string name="title_activity_channel_member_profile">ChannelMemberProfileActivity</string>
+
+    <string name="title_activity_register">Register</string>
+    <string name="title_activity_feed_detail">Feed Detail</string>
+    <string name="title_activity_channel_detail">Channel</string>
+    <string name="title_activity_new_channel">New Channel</string>
+    <string name="title_activity_bootstrap">Bootstrap</string>
+    <string name="title_activity_join_channel">Join Channel</string>
+    <string name="title_activity_channel_profile">Channel Profile</string>
+    <string name="title_activity_channel_member">Channel Members</string>
+    <string name="title_activity_channel_code">Channel Code</string>
+    <string name="title_activity_channel_member_profile">Member Profile</string>
+    <string name="title_activity_new_feed">New Feed</string>
 </resources>

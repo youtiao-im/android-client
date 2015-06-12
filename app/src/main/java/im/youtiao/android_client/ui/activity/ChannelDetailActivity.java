@@ -28,6 +28,7 @@ import im.youtiao.android_client.greendao.DaoSession;
 import im.youtiao.android_client.greendao.Feed;
 import im.youtiao.android_client.greendao.FeedDao;
 import im.youtiao.android_client.greendao.FeedHelper;
+import im.youtiao.android_client.rest.RemoteApi;
 import roboguice.activity.RoboActionBarActivity;
 import roboguice.inject.InjectView;
 
@@ -42,14 +43,17 @@ public class ChannelDetailActivity extends RoboActionBarActivity implements Load
     @InjectView(R.id.feed_list)
     ListView feedList;
 
-    @InjectView(R.id.new_feed)
-    Button newFeedBtn;
+    @InjectView(R.id.btn_create_new_feed)
+    Button createNewFeedBtn;
 
     @Inject
     private FeedCursorAdapter mAdapter;
 
     @Inject
     private DaoSession daoSession;
+
+    @Inject
+    private RemoteApi remoteApi;
 
     @Override
     public void onStart() {
@@ -77,7 +81,7 @@ public class ChannelDetailActivity extends RoboActionBarActivity implements Load
         feedList.setDividerHeight(20);
 
         if (channel.getRole().equalsIgnoreCase("member")) {
-            newFeedBtn.setVisibility(View.GONE);
+            createNewFeedBtn.setVisibility(View.GONE);
         }
 
         feedList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -92,6 +96,14 @@ public class ChannelDetailActivity extends RoboActionBarActivity implements Load
                 intent.putExtras(data);
                 startActivity(intent);
             }
+        });
+
+        createNewFeedBtn.setOnClickListener( v -> {
+            Bundle data = new Bundle();
+            data.putSerializable(NewFeedActivity.PARAM_CHANNEL, channel);
+            Intent newIntent = new Intent(ChannelDetailActivity.this, NewFeedActivity.class);
+            newIntent.putExtras(data);
+            startActivity(newIntent);
         });
     }
 

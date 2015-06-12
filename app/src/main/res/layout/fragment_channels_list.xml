@@ -32,17 +32,17 @@
         android:weightSum="1">
 
         <Button
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:text="New Channel"
+            android:text="@string/create_new_channel"
             android:id="@+id/add_new_channel_button"
             android:layout_below="@+id/scrollojt"
             android:layout_weight="0.5" />
 
         <Button
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:text="Join Button"
+            android:text="@string/join_new_channel"
             android:id="@+id/join_channel_button"
             android:layout_toRightOf="@+id/add_new_channel_button"
             android:layout_below="@+id/scrollojt"

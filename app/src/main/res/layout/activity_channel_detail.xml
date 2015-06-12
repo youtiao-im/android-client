@@ -3,7 +3,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:weightSum="1"
     tools:context="im.youtiao.android_client.ui.activity.ChannelDetailActivity">
 
     <ListView
@@ -12,22 +11,21 @@
         android:id="@+id/feed_list"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_weight="0.9" />
+        android:layout_weight="1" />
 
     <TextView
         android:id="@+id/empty"
-        android:layout_width="match_parent"
+        android:layout_width="fill_parent"
         android:layout_height="0dp"
         android:gravity="center"
-        android:layout_weight="0.9"
+        android:layout_weight="1"
         android:text="NO FEEDS"/>
 
     <Button
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
         android:text="@string/new_feed"
-        android:id="@+id/new_feed"
-        android:layout_weight="0.1" />
+        android:id="@+id/btn_create_new_feed" />
 
 
 

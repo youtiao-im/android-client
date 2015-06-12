@@ -102,6 +102,10 @@
             android:name=".ui.activity.ChannelMemberProfileActivity"
             android:label="@string/title_activity_channel_member_profile" >
         </activity>
+        <activity
+            android:name=".ui.activity.NewFeedActivity"
+            android:label="@string/title_activity_new_feed" >
+        </activity>
     </application>
 
 </manifest>

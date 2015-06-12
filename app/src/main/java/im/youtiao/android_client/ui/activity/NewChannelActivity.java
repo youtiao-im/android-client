@@ -11,6 +11,7 @@ import android.widget.EditText;
 import com.google.inject.Inject;
 
 import im.youtiao.android_client.R;
+import im.youtiao.android_client.YTApplication;
 import im.youtiao.android_client.data.SyncManager;
 import im.youtiao.android_client.greendao.Channel;
 import im.youtiao.android_client.greendao.ChannelDao;
@@ -76,6 +77,7 @@ public class NewChannelActivity extends RoboActionBarActivity {
                         channel.setCreatedAt(resp.createdAt);
                         channel.setServerId(resp.id);
                         channel.setUsersCount(resp.membershipsCount);
+                        channel.setUserId(((YTApplication) getApplication()).getCurrentUser().getId());
                         channelDao.insertOrReplace(channel);
                         getContentResolver().notifyChange(ChannelHelper.CONTENT_URI, null);
                         finish();

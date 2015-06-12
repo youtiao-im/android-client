@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="prompt_email">邮箱</string>
+    <string name="prompt_password">密码</string>
+    <string name="action_sign_in">登陆</string>
+    <string name="action_sign_up_without_account">注册</string>
+    <string name="error_invalid_email">无效邮箱</string>
+    <string name="error_invalid_password">无效密码</string>
+    <string name="error_field_required">必须的域</string>
+    <string name="error_incorrect_password">错误密码</string>
+</resources>
