@@ -95,7 +95,6 @@ dependencies {
     compile 'in.srain.cube:ultra-ptr:1.0.10'
     compile 'com.github.medyo:fancybuttons:1.4@aar'
     compile project(':trineaandroidcommon')
-    compile project(':pulltorefresh-and-loadmore')
 }
 
 project.tasks.withType(JavaCompile) {

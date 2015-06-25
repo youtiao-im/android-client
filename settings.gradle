@@ -1,4 +1,4 @@
-include ':DaoGenerator', ':pulltorefresh-and-loadmore'
+include ':DaoGenerator'
 include ':NewQuickAction3D'
 //include ':java-sdk'
 include ':app'
