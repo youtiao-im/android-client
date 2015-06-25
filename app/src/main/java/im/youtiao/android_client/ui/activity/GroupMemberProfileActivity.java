@@ -7,7 +7,7 @@ import android.view.MenuItem;
 
 import im.youtiao.android_client.R;
 
-public class ChannelMemberProfileActivity extends ActionBarActivity {
+public class GroupMemberProfileActivity extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

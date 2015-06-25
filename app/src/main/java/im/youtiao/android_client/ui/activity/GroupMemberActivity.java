@@ -7,12 +7,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import im.youtiao.android_client.R;
-import im.youtiao.android_client.greendao.Channel;
+import im.youtiao.android_client.model.Group;
 import roboguice.activity.RoboActionBarActivity;
 
-public class ChannelMemberActivity extends RoboActionBarActivity {
+public class GroupMemberActivity extends RoboActionBarActivity {
 
-    private Channel channel;
+    private Group group;
     public static final String PARAM_CHANNEL = "current_channel";
 
     @Override

@@ -1,16 +1,11 @@
 package im.youtiao.android_client.ui.activity;
 
-import android.app.LoaderManager;
-import android.content.CursorLoader;
 import android.content.Intent;
-import android.content.Loader;
-import android.database.Cursor;
 import android.support.v7.app.ActionBar;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -19,34 +14,19 @@ import android.widget.TextView;
 
 import com.google.inject.Inject;
 
-import net.londatiga.android.ActionItem;
 import net.londatiga.android.QuickAction;
 
 import de.greenrobot.event.EventBus;
 import im.youtiao.android_client.R;
-import im.youtiao.android_client.YTApplication;
 import im.youtiao.android_client.adapter.CommentCursorAdapter;
-import im.youtiao.android_client.data.State;
+import im.youtiao.android_client.dao.DaoSession;
 import im.youtiao.android_client.data.SyncManager;
-import im.youtiao.android_client.event.FeedStampEvent;
-import im.youtiao.android_client.event.FeedStarEvent;
-import im.youtiao.android_client.greendao.Comment;
-import im.youtiao.android_client.greendao.CommentDao;
-import im.youtiao.android_client.greendao.CommentHelper;
-import im.youtiao.android_client.greendao.DaoSession;
-import im.youtiao.android_client.greendao.Feed;
-import im.youtiao.android_client.greendao.FeedDao;
-import im.youtiao.android_client.greendao.FeedHelper;
 import im.youtiao.android_client.rest.RemoteApi;
-import im.youtiao.android_client.util.Logger;
 import roboguice.activity.RoboActionBarActivity;
 import roboguice.inject.InjectView;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
-public class FeedDetailActivity extends RoboActionBarActivity implements LoaderManager.LoaderCallbacks<Cursor> {
-    private static final String TAG = FeedDetailActivity.class.getCanonicalName();
-    private Feed feed;
+public class BulletinDetailActivity extends RoboActionBarActivity {
+    private static final String TAG = BulletinDetailActivity.class.getCanonicalName();
 
     public static final String PARAM_FEED = "current_feed";
 
@@ -98,7 +78,7 @@ public class FeedDetailActivity extends RoboActionBarActivity implements LoaderM
         Log.i(TAG, "OnStart");
         super.onStart();
         EventBus.getDefault().register(this);
-        syncManager.startCommentSyncForFeed(feed);
+        //syncManager.startCommentSyncForFeed(feed);
     }
 
     @Override
@@ -108,57 +88,57 @@ public class FeedDetailActivity extends RoboActionBarActivity implements LoaderM
     }
 
     protected void initView() {
-        feed.__setDaoSession(daoSession);
-        String email = feed.getUser().getEmail();
-        feedCreatorNameTv.setText(email.substring(0, email.indexOf("@")));
-        feedTextTv.setText(feed.getText());
-        //viewHolder.createdAtTv.setText(TimeWrap.wrapTimeDisplyValue(feed.getCreatedAt().getTime()));
-        feedCreatedAtTv.setText("3 mins ago");
-        feedChannelNameTv.setText("#" + feed.getChannel().getName());
-        feedCommentCountTv.setText("" + feed.getComments().size());
-        if (feed.getIsStarred()) {
-            starImgBtn.setImageResource(R.mipmap.ic_feed_star_true);
-        } else {
-            starImgBtn.setImageResource(R.mipmap.ic_feed_star_false);
-        }
-        starImgBtn.setOnClickListener(v -> {
-            Log.i(TAG, "starImgBtn clicked");
-            EventBus.getDefault().post(new FeedStarEvent(feed));
-        });
-
-        commentImgBtn.setOnClickListener(v -> {
-            Log.i(TAG, "starImgBtn clicked");
-            EventBus.getDefault().post(new FeedStarEvent(feed));
-        });
-
-        State.Mark mark = feed.getSymbol() != null ? State.Mark.valueOf(feed.getSymbol()) : State.Mark.DEFAULT;
-        switch (mark) {
-            case CHECK:
-                stampImgBtn.setImageResource(R.mipmap.ic_feed_stamp_check);
-                break;
-            case CROSS:
-                stampImgBtn.setImageResource(R.mipmap.ic_feed_stamp_cross);
-                break;
-            case QUESTION:
-                stampImgBtn.setImageResource(R.mipmap.ic_feed_stamp_question);
-                break;
-            default:
-                stampImgBtn.setImageResource(R.mipmap.ic_feed_stamp_default);
-        }
-
-        stampImgBtn.setOnClickListener(v -> {
-            Log.i(TAG, "stampImgBtn clicked");
-            EventBus.getDefault().post(new FeedStampEvent(v, feed));
-        });
-
-        ActionItem checkItem = new ActionItem(ID_CHECK, "Check", getResources().getDrawable(R.mipmap.ic_feed_stamp_check));
-        ActionItem crossItem = new ActionItem(ID_CROSS, "Cross", getResources().getDrawable(R.mipmap.ic_feed_stamp_cross));
-        ActionItem questionItem = new ActionItem(ID_QUESTION, "Question", getResources().getDrawable(R.mipmap.ic_feed_stamp_question));
-
-        quickAction = new QuickAction(this, QuickAction.HORIZONTAL);
-        quickAction.addActionItem(checkItem);
-        quickAction.addActionItem(crossItem);
-        quickAction.addActionItem(questionItem);
+//        feed.__setDaoSession(daoSession);
+//        String email = feed.getUser().getEmail();
+//        feedCreatorNameTv.setText(email.substring(0, email.indexOf("@")));
+//        feedTextTv.setText(feed.getText());
+//        //viewHolder.createdAtTv.setText(TimeWrap.wrapTimeDisplyValue(feed.getCreatedAt().getTime()));
+//        feedCreatedAtTv.setText("3 mins ago");
+//        feedChannelNameTv.setText("#" + feed.getChannel().getName());
+//        feedCommentCountTv.setText("" + feed.getComments().size());
+//        if (feed.getIsStarred()) {
+//            starImgBtn.setImageResource(R.mipmap.ic_feed_star_true);
+//        } else {
+//            starImgBtn.setImageResource(R.mipmap.ic_feed_star_false);
+//        }
+//        starImgBtn.setOnClickListener(v -> {
+//            Log.i(TAG, "starImgBtn clicked");
+//            EventBus.getDefault().post(new FeedStarEvent(feed));
+//        });
+//
+//        commentImgBtn.setOnClickListener(v -> {
+//            Log.i(TAG, "starImgBtn clicked");
+//            EventBus.getDefault().post(new FeedStarEvent(feed));
+//        });
+//
+//        State.Mark mark = feed.getSymbol() != null ? State.Mark.valueOf(feed.getSymbol()) : State.Mark.DEFAULT;
+//        switch (mark) {
+//            case CHECK:
+//                stampImgBtn.setImageResource(R.mipmap.ic_feed_stamp_check);
+//                break;
+//            case CROSS:
+//                stampImgBtn.setImageResource(R.mipmap.ic_feed_stamp_cross);
+//                break;
+//            case QUESTION:
+//                stampImgBtn.setImageResource(R.mipmap.ic_feed_stamp_question);
+//                break;
+//            default:
+//                stampImgBtn.setImageResource(R.mipmap.ic_feed_stamp_default);
+//        }
+//
+//        stampImgBtn.setOnClickListener(v -> {
+//            Log.i(TAG, "stampImgBtn clicked");
+//            EventBus.getDefault().post(new FeedStampEvent(v, feed));
+//        });
+//
+//        ActionItem checkItem = new ActionItem(ID_CHECK, "Check", getResources().getDrawable(R.mipmap.ic_feed_stamp_check));
+//        ActionItem crossItem = new ActionItem(ID_CROSS, "Cross", getResources().getDrawable(R.mipmap.ic_feed_stamp_cross));
+//        ActionItem questionItem = new ActionItem(ID_QUESTION, "Question", getResources().getDrawable(R.mipmap.ic_feed_stamp_question));
+//
+//        quickAction = new QuickAction(this, QuickAction.HORIZONTAL);
+//        quickAction.addActionItem(checkItem);
+//        quickAction.addActionItem(crossItem);
+//        quickAction.addActionItem(questionItem);
     }
 
     @Override
@@ -172,31 +152,31 @@ public class FeedDetailActivity extends RoboActionBarActivity implements LoaderM
         actionBar.setDisplayHomeAsUpEnabled(true);
 
         Intent intent = getIntent();
-        feed = (Feed) intent.getSerializableExtra(PARAM_FEED);
+        //feed = (Feed) intent.getSerializableExtra(PARAM_FEED);
 
         initView();
 
-        getLoaderManager().initLoader(URL_LOADER, null, this);
+        //getLoaderManager().initLoader(URL_LOADER, null, this);
         commentsLv.setAdapter(mAdapter);
 
         commentSubmitBtn.setOnClickListener(v -> {
             String content = commentContentEdtText.getText().toString();
-            remoteApi.createFeedComment(feed.getServerId(), content).subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(res -> {
-                        commentContentEdtText.setText("");
-                        commentContentEdtText.setHint("Comment..");
-                        CommentDao commentDao = daoSession.getCommentDao();
-                        Comment comment = new Comment();
-                        comment.setServerId(res.id);
-                        comment.setText(res.text);
-                        comment.setCreatedAt(res.createdAt);
-                        comment.setFeedId(feed.getId());
-                        comment.setCreatedBy(((YTApplication) getApplication()).getCurrentUser().getId());
-                        comment.setUpdatedAt(res.updatedAt);
-                        commentDao.insert(comment);
-                        getContentResolver().notifyChange(CommentHelper.CONTENT_URI, null);
-                    }, Logger::logThrowable);
+//            remoteApi.createFeedComment(feed.getServerId(), content).subscribeOn(Schedulers.io())
+//                    .observeOn(AndroidSchedulers.mainThread())
+//                    .subscribe(res -> {
+//                        commentContentEdtText.setText("");
+//                        commentContentEdtText.setHint("Comment..");
+//                        CommentDao commentDao = daoSession.getCommentDao();
+//                        Comment comment = new Comment();
+//                        comment.setServerId(res.id);
+//                        comment.setText(res.text);
+//                        comment.setCreatedAt(res.createdAt);
+//                        comment.setFeedId(feed.getId());
+//                        comment.setCreatedBy(((YTApplication) getApplication()).getCurrentUser().getId());
+//                        comment.setUpdatedAt(res.updatedAt);
+//                        commentDao.insert(comment);
+//                        getContentResolver().notifyChange(CommentHelper.CONTENT_URI, null);
+//                    }, Logger::logThrowable);
 
         });
     }
@@ -223,25 +203,7 @@ public class FeedDetailActivity extends RoboActionBarActivity implements LoaderM
         }
     }
 
-    @Override
-    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        Log.i(TAG, "OnCreateLoader");
-        return new CursorLoader(this, CommentHelper.CONTENT_URI,
-                CommentHelper.getProjection(), CommentHelper.FEEDID + " = '" + feed.getId() + "'", null, CommentHelper.DEFAULT_SORT_ORDER);
-    }
-
-    @Override
-    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        Log.i(TAG, "onLoadFinished: " + data.getCount());
-        mAdapter.swapCursor(data);
-    }
-
-
-    @Override
-    public void onLoaderReset(Loader<Cursor> loader) {
-        mAdapter.swapCursor(null);
-    }
-
+    /*
     public void onEventMainThread(FeedStarEvent event) {
         Log.i(TAG, "onEventMainThread");
         Feed feed = event.feed;
@@ -302,4 +264,5 @@ public class FeedDetailActivity extends RoboActionBarActivity implements LoaderM
         });
         quickAction.show(v);
     }
+    */
 }

@@ -2,7 +2,6 @@ package im.youtiao.android_client.ui.activity;
 
 import android.content.Intent;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -13,21 +12,13 @@ import android.widget.TextView;
 import com.google.inject.Inject;
 
 import im.youtiao.android_client.R;
-import im.youtiao.android_client.YTApplication;
-import im.youtiao.android_client.greendao.Channel;
-import im.youtiao.android_client.greendao.ChannelDao;
-import im.youtiao.android_client.greendao.DaoSession;
-import im.youtiao.android_client.greendao.Feed;
-import im.youtiao.android_client.greendao.FeedDao;
-import im.youtiao.android_client.greendao.FeedHelper;
+import im.youtiao.android_client.dao.DaoSession;
+import im.youtiao.android_client.model.Group;
 import im.youtiao.android_client.rest.RemoteApi;
-import im.youtiao.android_client.util.Logger;
 import roboguice.activity.RoboActionBarActivity;
 import roboguice.inject.InjectView;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
-public class NewFeedActivity extends RoboActionBarActivity {
+public class NewBulletinActivity extends RoboActionBarActivity {
 
     public static final String PARAM_CHANNEL = "current_channel";
 
@@ -40,7 +31,7 @@ public class NewFeedActivity extends RoboActionBarActivity {
     @InjectView(R.id.btn_add_feed)
     Button addFeedBtn;
 
-    private Channel channel;
+    private Group group;
 
     @Inject
     RemoteApi remoteApi;
@@ -57,28 +48,28 @@ public class NewFeedActivity extends RoboActionBarActivity {
         actionBar.setDisplayHomeAsUpEnabled(true);
 
         Intent intent = getIntent();
-        channel = (Channel) intent.getSerializableExtra(PARAM_CHANNEL);
-        feedReceiverTv.setText(channel.getName());
+        group = (Group) intent.getSerializableExtra(PARAM_CHANNEL);
+        feedReceiverTv.setText(group.name);
 
         addFeedBtn.setOnClickListener( v -> {
             String content = feedContentEdtTxt.getText().toString().trim();
-            if (content != null && content.length() != 0) {
-                remoteApi.createChannelFeed(channel.getServerId(), content).observeOn(Schedulers.io())
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(resp -> {
-                            FeedDao feedDao = daoSession.getFeedDao();
-                            Feed feed = new Feed();
-                            feed.setServerId(resp.id);
-                            feed.setCreatedAt(resp.createdAt);
-                            feed.setChannelId(channel.getId());
-                            feed.setCreatedBy(((YTApplication) getApplication()).getCurrentUser().getId());
-                            feed.setText(resp.text);
-                            feedDao.insert(feed);
-                            getContentResolver().notifyChange(FeedHelper.CONTENT_URI, null);
-                            finish();
-                        }, Logger::logThrowable);
-            }
+//            if (content != null && content.length() != 0) {
+//                remoteApi.createChannelFeed(channel.getServerId(), content).observeOn(Schedulers.io())
+//                        .subscribeOn(Schedulers.io())
+//                        .observeOn(AndroidSchedulers.mainThread())
+//                        .subscribe(resp -> {
+//                            FeedDao feedDao = daoSession.getFeedDao();
+//                            Feed feed = new Feed();
+//                            feed.setServerId(resp.id);
+//                            feed.setCreatedAt(resp.createdAt);
+//                            feed.setChannelId(channel.getId());
+//                            feed.setCreatedBy(((YTApplication) getApplication()).getCurrentUser().getId());
+//                            feed.setText(resp.text);
+//                            feedDao.insert(feed);
+//                            getContentResolver().notifyChange(FeedHelper.CONTENT_URI, null);
+//                            finish();
+//                        }, Logger::logThrowable);
+//            }
         });
     }
 

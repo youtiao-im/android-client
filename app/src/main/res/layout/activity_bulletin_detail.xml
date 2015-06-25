@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <include layout="@layout/row_feed" />
+    <include layout="@layout/row_bulletin" />
 
     <LinearLayout
         android:orientation="vertical"

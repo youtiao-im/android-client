@@ -2,7 +2,6 @@ package im.youtiao.android_client.ui.activity;
 
 import android.content.Intent;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -13,16 +12,16 @@ import android.widget.TextView;
 import com.google.inject.Inject;
 
 import im.youtiao.android_client.R;
-import im.youtiao.android_client.greendao.Channel;
-import im.youtiao.android_client.greendao.DaoSession;
+import im.youtiao.android_client.dao.DaoSession;
+import im.youtiao.android_client.model.Group;
 import roboguice.activity.RoboActionBarActivity;
 import roboguice.inject.InjectView;
 
-public class ChannelProfileActivity extends RoboActionBarActivity {
-    private static final String TAG = ChannelProfileActivity.class.getCanonicalName();
+public class GroupProfileActivity extends RoboActionBarActivity {
+    private static final String TAG = GroupProfileActivity.class.getCanonicalName();
     public static final String PARAM_CHANNEL = "current_channel";
 
-    private Channel channel;
+    private Group group;
 
     @InjectView(R.id.tv_channel_name) TextView channelNameTv;
     @InjectView(R.id.tv_channel_number) TextView channelNumTv;
@@ -31,7 +30,8 @@ public class ChannelProfileActivity extends RoboActionBarActivity {
     @InjectView(R.id.tv_channel_members_count) TextView channelMembersCountTv;
     @InjectView(R.id.iv_channel_memeber_forward) ImageView channelMemberForwardImageView;
 
-    @Inject DaoSession daoSession;
+    @Inject
+    DaoSession daoSession;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,21 +43,21 @@ public class ChannelProfileActivity extends RoboActionBarActivity {
         actionBar.setDisplayHomeAsUpEnabled(true);
 
         Intent intent = getIntent();
-        channel = (Channel) intent.getSerializableExtra(PARAM_CHANNEL);
+        group = (Group) intent.getSerializableExtra(PARAM_CHANNEL);
 
-        channel.__setDaoSession(daoSession);
-        channelNameTv.setText(channel.getName());
-        channelNumTv.setText(channel.getServerId());
-        channelCodeTv.setText("");
-        channelAdminTv.setText(channel.getUser().getEmail());
-        channelMembersCountTv.setText("" + channel.getUsersCount());
+//        channel.__setDaoSession(daoSession);
+//        channelNameTv.setText(channel.getName());
+//        channelNumTv.setText(channel.getServerId());
+//        channelCodeTv.setText("");
+//        channelAdminTv.setText(channel.getUser().getEmail());
+//        channelMembersCountTv.setText("" + channel.getUsersCount());
 
         channelMemberForwardImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Bundle data = new Bundle();
-                data.putSerializable(ChannelMemberActivity.PARAM_CHANNEL, channel);
-                Intent intent = new Intent(ChannelProfileActivity.this, ChannelMemberActivity.class);
+                //data.putSerializable(ChannelMemberActivity.PARAM_CHANNEL, channel);
+                Intent intent = new Intent(GroupProfileActivity.this, ChannelMemberActivity.class);
                 intent.putExtras(data);
                 startActivity(intent);
             }

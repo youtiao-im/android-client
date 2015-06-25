@@ -4,26 +4,18 @@ import android.app.Activity;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
-import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.util.Log;
 import android.view.View;
-import android.widget.ImageButton;
 import android.widget.ListView;
 
 import com.google.inject.Inject;
 
 import de.greenrobot.event.EventBus;
 import im.youtiao.android_client.R;
-import im.youtiao.android_client.adapter.FeedCursorAdapter;
-import im.youtiao.android_client.data.State;
+import im.youtiao.android_client.adapter.BulletinCursorAdapter;
+import im.youtiao.android_client.dao.DaoSession;
 import im.youtiao.android_client.data.SyncManager;
-import im.youtiao.android_client.event.FeedStampEvent;
-import im.youtiao.android_client.event.FeedStarEvent;
-import im.youtiao.android_client.greendao.DaoSession;
-import im.youtiao.android_client.greendao.Feed;
-import im.youtiao.android_client.greendao.FeedDao;
-import im.youtiao.android_client.greendao.FeedHelper;
 import roboguice.fragment.RoboListFragment;
 
 import net.londatiga.android.ActionItem;
@@ -36,15 +28,15 @@ import net.londatiga.android.QuickAction;
  * Activities containing this fragment MUST implement the {@link OnFeedsFragmentInteractionListener}
  * interface.
  */
-public class FeedsFragment extends RoboListFragment implements LoaderManager.LoaderCallbacks<Cursor> {
-    private static final String TAG = FeedsFragment.class.getCanonicalName();
+public class BulletinsFragment extends RoboListFragment implements LoaderManager.LoaderCallbacks<Cursor> {
+    private static final String TAG = BulletinsFragment.class.getCanonicalName();
 
 
     private static final int ID_CHECK = 1;
     private static final int ID_CROSS = 2;
     private static final int ID_QUESTION = 3;
 
-    @Inject private FeedCursorAdapter mAdapter;
+    @Inject private BulletinCursorAdapter mAdapter;
     private QuickAction quickAction;
 
     @Inject
@@ -61,23 +53,25 @@ public class FeedsFragment extends RoboListFragment implements LoaderManager.Loa
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
      */
-    public FeedsFragment() {
+    public BulletinsFragment() {
     }
 
     @Override public void onStart() {
         Log.i(TAG, "OnStart");
         super.onStart();
-        syncManager.startSync();
-        EventBus.getDefault().register(this);
+        //syncManager.startSync();
+        //EventBus.getDefault().register(this);
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        Log.i(TAG, "OnCreate");
         super.onCreate(savedInstanceState);
         getLoaderManager().initLoader(URL_LOADER, null, this);
     }
 
     @Override public void onViewCreated(View view, Bundle savedInstanceState) {
+        Log.i(TAG, "OnViewCreated");
         super.onViewCreated(view, savedInstanceState);
         setListAdapter(mAdapter);
 
@@ -95,22 +89,26 @@ public class FeedsFragment extends RoboListFragment implements LoaderManager.Loa
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
+        Log.i(TAG, "OnActivityCreated");
         super.onActivityCreated(savedInstanceState);
         getListView().setDividerHeight(20);
     }
 
     @Override
     public void onResume() {
+        Log.i(TAG, "OnResume");
         super.onResume();
     }
 
     @Override
     public void onPause() {
+        Log.i(TAG, "OnPause");
         super.onPause();
     }
 
     @Override
     public void onStop() {
+        Log.i(TAG, "OnStop");
         EventBus.getDefault().unregister(this);
         super.onStop();
     }
@@ -135,64 +133,22 @@ public class FeedsFragment extends RoboListFragment implements LoaderManager.Loa
 
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
-        Log.i("FeedsFragment", "OnListItemClick");
+        Log.i("BulletinsFragment", "OnListItemClick");
         super.onListItemClick(l, v, position, id);
         if (null != mListener) {
             Cursor cursor = (Cursor) mAdapter.getItem(position);
-            Feed feed = FeedHelper.fromCursor(cursor);
-            mListener.onFeedsFragmentInteraction(feed);
+            //Feed feed = FeedHelper.fromCursor(cursor);
+            //mListener.onFeedsFragmentInteraction(feed);
         }
     }
 
-//    @Override
-//    public void toggleStar(View v, Feed feed) {
-//        ImageButton imageButton = (ImageButton) v;
-//        feed.setIsStarred(!feed.getIsStarred());
-//        //TODO: seed request to server
-//        FeedDao feedDao = daoSession.getFeedDao();
-//        feedDao.update(feed);
-//        getActivity().getContentResolver().notifyChange(FeedHelper.CONTENT_URI, null);
-//    }
-//
-//    @Override
-//    public void clickStamp(View v, Feed feed) {
-//        //TODO:
-//        final Feed fd = feed;
-//        quickAction.setOnActionItemClickListener(new QuickAction.OnActionItemClickListener() {
-//            @Override
-//            public void onItemClick(QuickAction source, int pos, int actionId) {
-//                ActionItem actionItem = quickAction.getActionItem(pos);
-//                Log.i("FeedsFragment", "actionItem = " + actionItem.getActionId());
-//                switch (actionItem.getActionId()) {
-//                    case ID_CHECK:
-//                        fd.setSymbol(State.Mark.CHECK.toString());
-//                        break;
-//                    case ID_CROSS:
-//                        fd.setSymbol(State.Mark.CROSS.toString());
-//                        break;
-//                    case ID_QUESTION:
-//                        fd.setSymbol(State.Mark.QUESTION.toString());
-//                        break;
-//                }
-//                FeedDao feedDao = daoSession.getFeedDao();
-//                feedDao.update(fd);
-//                getActivity().getContentResolver().notifyChange(FeedHelper.CONTENT_URI, null);
-//            }
-//        });
-//
-//        quickAction.show(v);
-//    }
-//
-//    @Override
-//    public void extendComment() {
-//        //TODO:
-//    }
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         Log.i(TAG, "OnCreateLoader");
-        return new CursorLoader(getActivity(), FeedHelper.CONTENT_URI,
-                FeedHelper.getProjection(), null, null, FeedHelper.DEFAULT_SORT_ORDER);
+//        return new CursorLoader(getActivity(), FeedHelper.CONTENT_URI,
+//                FeedHelper.getProjection(), null, null, FeedHelper.DEFAULT_SORT_ORDER);
+        return null;
     }
 
     @Override
@@ -208,9 +164,10 @@ public class FeedsFragment extends RoboListFragment implements LoaderManager.Loa
 
 
     public interface OnFeedsFragmentInteractionListener {
-        public void onFeedsFragmentInteraction(Feed feed);
+        //public void onFeedsFragmentInteraction(Feed feed);
     }
 
+    /*
     public void onEventAsync(FeedStarEvent event) {
         Log.i(TAG, "onEventAsync");
         Feed feed = event.feed;
@@ -228,7 +185,7 @@ public class FeedsFragment extends RoboListFragment implements LoaderManager.Loa
             @Override
             public void onItemClick(QuickAction source, int pos, int actionId) {
                 ActionItem actionItem = quickAction.getActionItem(pos);
-                Log.i("FeedsFragment", "actionItem = " + actionItem.getActionId());
+                Log.i("BulletinsFragment", "actionItem = " + actionItem.getActionId());
                 switch (actionItem.getActionId()) {
                     case ID_CHECK:
                         fd.setSymbol(State.Mark.CHECK.toString());
@@ -247,4 +204,5 @@ public class FeedsFragment extends RoboListFragment implements LoaderManager.Loa
         });
         quickAction.show(v);
     }
+    */
 }
