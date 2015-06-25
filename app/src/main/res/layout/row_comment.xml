@@ -15,7 +15,7 @@
             android:layout_height="wrap_content"
             android:src="@mipmap/ic_person_black_24dp"
             android:layout_weight="1"
-            android:contentDescription="@string/feed_star"
+            android:contentDescription="@string/bulletin_check"
             android:layout_margin="5dp"
             android:padding="2dp"
             android:layout_alignParentLeft="true" />
@@ -24,7 +24,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Tommy"
-            android:id="@+id/tv_creator_name"
+            android:id="@+id/tv_user_name"
             android:layout_weight="1"
             android:layout_toRightOf="@+id/iv_creator_avatar"
             android:phoneNumber="false"
@@ -44,8 +44,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="New Text"
-            android:id="@+id/tv_comment_content"
-            android:layout_below="@+id/tv_creator_name"
+            android:id="@+id/tv_user_alias"
+            android:layout_below="@+id/tv_user_name"
             android:layout_toRightOf="@+id/iv_creator_avatar"
             android:layout_margin="5dp"
             android:textColor="#ff020a0a" />

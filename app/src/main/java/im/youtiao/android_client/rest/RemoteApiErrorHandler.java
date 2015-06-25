@@ -11,7 +11,7 @@ public class RemoteApiErrorHandler implements ErrorHandler{
     @Override
     public Throwable handleError(RetrofitError retrofitError) {
         Response r = retrofitError.getResponse();
-        Log.i(TAG, r.getReason());
+        Log.e(TAG, r.getReason() + " : " + r.getStatus());
         return retrofitError;
     }
 }

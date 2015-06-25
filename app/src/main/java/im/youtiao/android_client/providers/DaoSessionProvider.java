@@ -6,8 +6,8 @@ import android.database.sqlite.SQLiteDatabase;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 
-import im.youtiao.android_client.greendao.DaoMaster;
-import im.youtiao.android_client.greendao.DaoSession;
+import im.youtiao.android_client.dao.DaoMaster;
+import im.youtiao.android_client.dao.DaoSession;
 
 public class DaoSessionProvider implements Provider<DaoSession> {
     @Inject
@@ -16,7 +16,7 @@ public class DaoSessionProvider implements Provider<DaoSession> {
     @Override public DaoSession get() {
         final DaoMaster daoMaster;
         SQLiteDatabase db;
-        DaoMaster.DevOpenHelper helper = new DaoMaster.DevOpenHelper(mContext, "youtiao-db", null);
+        DaoMaster.DevOpenHelper helper = new DaoMaster.DevOpenHelper(mContext, "youtiao-db-2", null);
         db = helper.getWritableDatabase();
         daoMaster = new DaoMaster(db);
         return daoMaster.newSession();

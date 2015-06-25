@@ -35,7 +35,7 @@ public class NewGroupActivity extends RoboActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_new_channel);
+        setContentView(R.layout.activity_new_group);
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setHomeButtonEnabled(true);
@@ -44,7 +44,7 @@ public class NewGroupActivity extends RoboActionBarActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_new_channel, menu);
+        getMenuInflater().inflate(R.menu.menu_new_group, menu);
         return true;
     }
 

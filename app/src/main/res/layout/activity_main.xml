@@ -5,18 +5,19 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+    <!--
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="#009688" />
+        android:background="#009688" /> -->
 
     <it.neokree.materialtabs.MaterialTabHost
         android:id="@+id/tabHost"
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        app:primaryColor="#ff0d5e96"
-        app:accentColor="#ff0a0909"
+        app:primaryColor="@color/app_primary_background_color"
+        app:accentColor="@color/tab_icon_selected_color"
         app:hasIcons="true" />
 
     <android.support.v4.view.ViewPager

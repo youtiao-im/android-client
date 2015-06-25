@@ -13,6 +13,32 @@ public final class Generator {
   private Generator() { }
 
   public static void main(String[] args) throws Exception {
+     gen2();
+  }
+
+  public static void gen2() throws Exception {
+    Schema schema = new Schema(17, "im.youtiao.android_client.dao");
+    schema.enableKeepSectionsByDefault();
+
+    Entity group = schema.addEntity("Group");
+    group.setTableName("GROUPS");
+    group.addIdProperty();
+    group.addStringProperty("serverId").notNull().unique().index();
+    group.addStringProperty("role");
+    group.addStringProperty("json");
+
+    Entity bulletin = schema.addEntity("Bulletin");
+    bulletin.setTableName("BULLETINS");
+    bulletin.addIdProperty();
+    bulletin.addStringProperty("serverId").notNull().unique();
+    bulletin.addStringProperty("json");
+
+    final String outDir = "app/src/main/java";
+    new DaoGenerator().generateAll(schema, outDir);
+    new HelperGenerator().generateAll(schema, outDir);
+  }
+
+  public static void gen1() throws Exception {
     Schema schema = new Schema(11, "im.youtiao.android_client.greendao");
     schema.enableKeepSectionsByDefault();
 
@@ -66,6 +92,6 @@ public final class Generator {
 
     final String outDir = "app/src-gen/";
     new DaoGenerator().generateAll(schema, outDir);
-    //new HelperGenerator().generateAll(schema, outDir);
+    new HelperGenerator().generateAll(schema, outDir);
   }
 }

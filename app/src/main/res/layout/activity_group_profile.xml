@@ -17,7 +17,7 @@
                 android:id="@+id/textView"/>
             <TextView style="@style/user_text"
                 android:text="Breaking"
-                android:id="@+id/tv_channel_name"
+                android:id="@+id/tv_group_name"
                 android:layout_alignParentRight="false"
                 android:layout_toLeftOf="@+id/imageView1" />
             <ImageView
@@ -36,7 +36,7 @@
                 android:id="@+id/textView3"/>
             <TextView style="@style/user_text"
                 android:text="#Breaking THU"
-                android:id="@+id/tv_channel_number"
+                android:id="@+id/tv_group_number"
                 android:layout_alignParentRight="true" />
         </RelativeLayout>
 
@@ -48,7 +48,7 @@
                 android:id="@+id/textView5"/>
             <TextView style="@style/user_text"
                 android:text="#Breaking THU"
-                android:id="@+id/tv_channel_code"
+                android:id="@+id/tv_group_code"
                 android:layout_alignParentRight="false"
                 android:layout_toLeftOf="@+id/imageView2" />
             <ImageView
@@ -67,26 +67,27 @@
                 android:id="@+id/textView7"/>
             <TextView style="@style/user_text"
                 android:text="Xiaoming"
-                android:id="@+id/tv_channel_admin"
+                android:id="@+id/tv_group_admin"
                 android:layout_alignParentRight="true"/>
         </RelativeLayout>
 
         <View  style="@style/bg_line"/>
 
-        <RelativeLayout style="@style/column_layout">
+        <RelativeLayout style="@style/column_layout"
+            android:id="@+id/layout_group_members">
             <TextView style="@style/user_text"
                 android:text="Channel Members"
                 android:id="@+id/textView9"/>
             <TextView style="@style/user_text"
                 android:text="6 Person"
-                android:id="@+id/tv_channel_members_count"
+                android:id="@+id/tv_group_members_count"
                 android:layout_alignParentRight="false"
-                android:layout_toLeftOf="@+id/iv_channel_memeber_forward" />
+                android:layout_toLeftOf="@+id/iv_group_memeber_forward" />
 
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/iv_channel_memeber_forward"
+                android:id="@+id/iv_group_memeber_forward"
                 android:src="@mipmap/ic_feed_forward"
                 android:layout_alignParentRight="true"
                 android:longClickable="false" />
@@ -100,10 +101,8 @@
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="New Button"
-        android:id="@+id/btn_channel_action"
+        android:text="Delete Group"
+        android:id="@+id/btn_group_action"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="10dp" />>
-
-
+        android:layout_marginTop="10dp" />
 </LinearLayout>

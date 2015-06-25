@@ -5,7 +5,7 @@ import android.app.Application;
 
 import com.google.inject.AbstractModule;
 
-import im.youtiao.android_client.greendao.DaoSession;
+import im.youtiao.android_client.dao.DaoSession;
 import im.youtiao.android_client.providers.DaoSessionProvider;
 import im.youtiao.android_client.providers.LoginApiProvider;
 import im.youtiao.android_client.providers.RemoteApiProvider;

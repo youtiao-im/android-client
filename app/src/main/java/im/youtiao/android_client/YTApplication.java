@@ -5,7 +5,7 @@ import android.accounts.AccountManager;
 import android.app.Application;
 import android.content.Intent;
 
-import im.youtiao.android_client.greendao.User;
+import im.youtiao.android_client.model.User;
 import im.youtiao.android_client.ui.activity.LoginActivity;
 import im.youtiao.android_client.ui.activity.MainActivity;
 

@@ -12,13 +12,13 @@ public class GroupCodeActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_channel_code);
+        setContentView(R.layout.activity_group_code);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_channel_code, menu);
+        getMenuInflater().inflate(R.menu.menu_group_code, menu);
         return true;
     }
 

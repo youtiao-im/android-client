@@ -11,10 +11,7 @@ import com.google.inject.Inject;
 
 import im.youtiao.android_client.R;
 import im.youtiao.android_client.YTApplication;
-import im.youtiao.android_client.data.DaoHelper;
-import im.youtiao.android_client.greendao.DaoSession;
-import im.youtiao.android_client.greendao.User;
-import im.youtiao.android_client.greendao.UserDao;
+import im.youtiao.android_client.dao.DaoSession;
 import im.youtiao.android_client.providers.RemoteApiFactory;
 import im.youtiao.android_client.rest.RemoteApi;
 import im.youtiao.android_client.util.Logger;
@@ -48,6 +45,7 @@ public class BootstrapActivity extends RoboActivity {
             startActivityForResult(intent, NEW_ACCOUNT);
         } else {
             // For now we assume that there's only one account.
+            //mAccountManager.clearPassword(accounts[0]);
             Account account = accounts[0];
             String password = mAccountManager.getPassword(accounts[0]);
             Log.d(TAG, "Using account with name " + accounts[0].name);
@@ -72,15 +70,7 @@ public class BootstrapActivity extends RoboActivity {
                             RemoteApi remoteApi = RemoteApiFactory.getApi();
                             remoteApi.getAuthenticatedUser().subscribeOn(Schedulers.io()).observeOn(Schedulers.io())
                                     .subscribe(res -> {
-                                        UserDao userDao = daoSession.getUserDao();
-                                        User user = new User();
-                                        user.setServerId(res.id);
-                                        user.setEmail(res.email);
-                                        user.setServerId(res.id);
-                                        user.setCreatedAt(res.createdAt);
-                                        user.setUpdatedAt(res.updatedAt);
-                                        user = DaoHelper.insertOrUpdate(daoSession, user);
-                                        ((YTApplication) getApplication()).setCurrentUser(user);
+                                        ((YTApplication) getApplication()).setCurrentUser(res);
                                     }, Logger::logThrowable);
                             // The user is already logged in. Go ahead!
                             startActivity(new Intent(BootstrapActivity.this, MainActivity.class));

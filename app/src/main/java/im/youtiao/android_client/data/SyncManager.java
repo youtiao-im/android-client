@@ -2,36 +2,13 @@ package im.youtiao.android_client.data;
 
 
 import android.content.Context;
-import android.util.Log;
 
 import com.google.inject.Inject;
 
 import org.codehaus.jackson.map.ObjectMapper;
 
-import java.util.List;
-
-import im.youtiao.android_client.greendao.Channel;
-import im.youtiao.android_client.greendao.ChannelDao;
-import im.youtiao.android_client.greendao.ChannelHelper;
-import im.youtiao.android_client.greendao.Comment;
-import im.youtiao.android_client.greendao.CommentDao;
-import im.youtiao.android_client.greendao.CommentHelper;
-import im.youtiao.android_client.greendao.DaoSession;
-import im.youtiao.android_client.greendao.Feed;
-import im.youtiao.android_client.greendao.FeedDao;
-import im.youtiao.android_client.greendao.FeedHelper;
-import im.youtiao.android_client.greendao.User;
-import im.youtiao.android_client.greendao.UserDao;
+import im.youtiao.android_client.dao.DaoSession;
 import im.youtiao.android_client.rest.RemoteApi;
-import im.youtiao.android_client.rest.responses.ChannelResponse;
-import im.youtiao.android_client.rest.responses.CommentResponse;
-import im.youtiao.android_client.rest.responses.FeedResponse;
-import im.youtiao.android_client.rest.responses.UserChannelMembershipResponse;
-import im.youtiao.android_client.rest.responses.UserResponse;
-import im.youtiao.android_client.util.Logger;
-import rx.Observable;
-import rx.Subscriber;
-import rx.schedulers.Schedulers;
 
 public class SyncManager {
     private static final String TAG = SyncManager.class.getCanonicalName();
@@ -50,10 +27,15 @@ public class SyncManager {
         this.daoSession = daoSession;
     }
 
+    /*
     public void startSync(){
         Log.i(TAG, "startSync");
         startChannelsSync();
         startFeedsSync();
+    }
+
+    public void startFeedSyncForChannel(Channel channel, int page, int perPage) {
+        getChannelFeeds(channel.getServerId(), page, perPage).subscribe(resp -> processFeeds(resp, channel), Logger::logThrowable);
     }
 
     public void startCommentSyncForFeed(Feed feed) {
@@ -93,8 +75,8 @@ public class SyncManager {
         getChannels(STARTING_OFFSET, LIMIT).subscribe(this::processChannels, Logger::logThrowable);
     }
 
-    private Observable<List<UserChannelMembershipResponse>> getChannels(int offset, int limit) {
-        return api.getUserChannelMemberships().observeOn(Schedulers.io()).subscribeOn(Schedulers.io());
+    private Observable<List<UserChannelMembershipResponse>> getChannels(int page, int perPage) {
+        return api.getUserChannelMemberships(page, perPage).observeOn(Schedulers.io()).subscribeOn(Schedulers.io());
     }
 
     private void processChannels(List<UserChannelMembershipResponse> data) {
@@ -140,7 +122,7 @@ public class SyncManager {
 
     private Observable<List<FeedResponse>> getChannelFeeds(String channelId, int offset,
                                                                 int limit) {
-        return api.getChannelFeeds(channelId)
+        return api.getChannelFeeds(channelId, offset, limit)
                 .observeOn(Schedulers.io())
                 .subscribeOn(Schedulers.io());
     }
@@ -151,6 +133,7 @@ public class SyncManager {
         FeedDao feedDao = daoSession.getFeedDao();
         UserDao userDao = daoSession.getUserDao();
         daoSession.runInTx(() -> {
+            Log.i(TAG, "After Sleep");
             for (FeedResponse item : data) {
                 UserResponse uRes = item.createdBy;
                 User user = new User(null, uRes.id, uRes.email, uRes.createdAt, uRes.updatedAt);
@@ -169,4 +152,5 @@ public class SyncManager {
         Log.i(TAG, "feedDao size =" + feedDao.count());
         mContext.getContentResolver().notifyChange(FeedHelper.CONTENT_URI, null);
     }
+    */
 }

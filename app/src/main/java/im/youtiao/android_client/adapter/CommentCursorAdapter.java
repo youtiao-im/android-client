@@ -13,9 +13,8 @@ import android.widget.TextView;
 import com.google.inject.Inject;
 
 import im.youtiao.android_client.R;
-import im.youtiao.android_client.greendao.Comment;
-import im.youtiao.android_client.greendao.CommentHelper;
-import im.youtiao.android_client.greendao.DaoSession;
+import im.youtiao.android_client.dao.DaoSession;
+
 
 public class CommentCursorAdapter extends CursorAdapter {
     private static final String TAG = CommentCursorAdapter.class
@@ -36,22 +35,22 @@ public class CommentCursorAdapter extends CursorAdapter {
         final View view = mInflater.inflate(R.layout.row_comment, parent,
                 false);
         ViewHolder viewHolder = new ViewHolder();
-        viewHolder.creatorNameTv = (TextView)view.findViewById(R.id.tv_creator_name);
+        viewHolder.creatorNameTv = (TextView)view.findViewById(R.id.tv_user_name);
         viewHolder.createdAtTv = (TextView)view.findViewById(R.id.tv_created_at);
-        viewHolder.commentContentTv = (TextView)view.findViewById(R.id.tv_comment_content);
+        viewHolder.commentContentTv = (TextView)view.findViewById(R.id.tv_user_alias);
         view.setTag(viewHolder);
         return view;
     }
 
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
-        final ViewHolder viewHolder = (ViewHolder) view.getTag();
-        final Comment comment = CommentHelper.fromCursor(cursor);
-        comment.__setDaoSession(daoSession);
-        String email = comment.getUser().getEmail();
-        viewHolder.creatorNameTv.setText(email.substring(0, email.indexOf("@")));
-        viewHolder.commentContentTv.setText(comment.getText());
-        viewHolder.createdAtTv.setText("3 mins ago");
+//        final ViewHolder viewHolder = (ViewHolder) view.getTag();
+//        final Comment comment = CommentHelper.fromCursor(cursor);
+//        comment.__setDaoSession(daoSession);
+//        String email = comment.getUser().getEmail();
+//        viewHolder.creatorNameTv.setText(email.substring(0, email.indexOf("@")));
+//        viewHolder.commentContentTv.setText(comment.getText());
+//        viewHolder.createdAtTv.setText("3 mins ago");
     }
 
     static class ViewHolder {

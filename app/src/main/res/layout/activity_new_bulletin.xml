@@ -12,7 +12,7 @@
 
         <TextView
             style="@style/user_text"
-            android:text="@string/feed_receiver"
+            android:text="@string/bulletin_receiver"
             android:layout_marginRight="10dp" />
 
 
@@ -20,14 +20,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="New Text"
-            android:id="@+id/tv_feed_recevier"
+            android:id="@+id/tv_bulletin_recevier"
             android:layout_weight="1" />
     </LinearLayout>
 
     <View style="@style/bg_line"/>
 
     <EditText
-        android:id="@+id/edtTxt_feed_content"
+        android:id="@+id/edtTxt_bulletin_content"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:inputType="textMultiLine"
@@ -38,8 +38,8 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
-        android:onClick="addNewFeed"
-        android:text="@string/add_feed"
-        android:id="@+id/btn_add_feed" />
+        android:onClick="createNewBulletin"
+        android:text="@string/add_bulletin"
+        android:id="@+id/btn_add_bulletin" />
 
 </LinearLayout>

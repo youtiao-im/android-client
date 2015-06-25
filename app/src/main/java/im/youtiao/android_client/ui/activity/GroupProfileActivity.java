@@ -3,10 +3,12 @@ package im.youtiao.android_client.ui.activity;
 import android.content.Intent;
 import android.support.v7.app.ActionBar;
 import android.os.Bundle;
+import android.text.Layout;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.google.inject.Inject;
@@ -19,16 +21,17 @@ import roboguice.inject.InjectView;
 
 public class GroupProfileActivity extends RoboActionBarActivity {
     private static final String TAG = GroupProfileActivity.class.getCanonicalName();
-    public static final String PARAM_CHANNEL = "current_channel";
+    public static final String PARAM_GROUP = "current_group";
 
     private Group group;
 
-    @InjectView(R.id.tv_channel_name) TextView channelNameTv;
-    @InjectView(R.id.tv_channel_number) TextView channelNumTv;
-    @InjectView(R.id.tv_channel_code) TextView channelCodeTv;
-    @InjectView(R.id.tv_channel_admin) TextView channelAdminTv;
-    @InjectView(R.id.tv_channel_members_count) TextView channelMembersCountTv;
-    @InjectView(R.id.iv_channel_memeber_forward) ImageView channelMemberForwardImageView;
+    @InjectView(R.id.tv_group_name) TextView groupNameTv;
+    @InjectView(R.id.tv_group_number) TextView groupNumTv;
+    @InjectView(R.id.tv_group_code) TextView groupCodeTv;
+    @InjectView(R.id.tv_group_admin) TextView groupAdminTv;
+    @InjectView(R.id.tv_group_members_count) TextView groupMembersCountTv;
+    @InjectView(R.id.iv_group_memeber_forward) ImageView groupMemberForwardImageView;
+    @InjectView(R.id.layout_group_members) RelativeLayout groupMemsLayout;
 
     @Inject
     DaoSession daoSession;
@@ -36,28 +39,27 @@ public class GroupProfileActivity extends RoboActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_channel_profile);
+        setContentView(R.layout.activity_group_profile);
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setHomeButtonEnabled(true);
         actionBar.setDisplayHomeAsUpEnabled(true);
 
         Intent intent = getIntent();
-        group = (Group) intent.getSerializableExtra(PARAM_CHANNEL);
+        group = (Group) intent.getSerializableExtra(PARAM_GROUP);
 
-//        channel.__setDaoSession(daoSession);
-//        channelNameTv.setText(channel.getName());
-//        channelNumTv.setText(channel.getServerId());
-//        channelCodeTv.setText("");
-//        channelAdminTv.setText(channel.getUser().getEmail());
-//        channelMembersCountTv.setText("" + channel.getUsersCount());
+        groupNameTv.setText(group.name);
+        groupNumTv.setText(group.id);
+        groupCodeTv.setText("");
+        //groupAdminTv.setText();
+        groupMembersCountTv.setText("" + group.membershipsCount);
 
-        channelMemberForwardImageView.setOnClickListener(new View.OnClickListener() {
+        groupMemsLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Bundle data = new Bundle();
-                //data.putSerializable(ChannelMemberActivity.PARAM_CHANNEL, channel);
-                Intent intent = new Intent(GroupProfileActivity.this, ChannelMemberActivity.class);
+                data.putSerializable(GroupMemberActivity.PARAM_GROUP, group);
+                Intent intent = new Intent(GroupProfileActivity.this, GroupMemberActivity.class);
                 intent.putExtras(data);
                 startActivity(intent);
             }
@@ -67,7 +69,7 @@ public class GroupProfileActivity extends RoboActionBarActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_channel_profile, menu);
+        getMenuInflater().inflate(R.menu.menu_group_profile, menu);
         return true;
     }
 

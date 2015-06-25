@@ -27,7 +27,7 @@ public class JoinGroupActivity extends RoboActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_join_channel);
+        setContentView(R.layout.activity_join_group);
 
         mTitle = (EditText) findViewById(R.id.joined_channel_name);
 
@@ -38,7 +38,7 @@ public class JoinGroupActivity extends RoboActionBarActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_join_channel, menu);
+        getMenuInflater().inflate(R.menu.menu_join_group, menu);
         return true;
     }
 

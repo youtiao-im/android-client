@@ -38,9 +38,7 @@ import java.util.List;
 import im.youtiao.android_client.R;
 import im.youtiao.android_client.YTApplication;
 import im.youtiao.android_client.content_providers.ChannelContentProvider;
-import im.youtiao.android_client.greendao.DaoSession;
-import im.youtiao.android_client.greendao.User;
-import im.youtiao.android_client.greendao.UserDao;
+import im.youtiao.android_client.dao.DaoSession;
 import im.youtiao.android_client.providers.RemoteApiFactory;
 import im.youtiao.android_client.rest.LoginApi;
 import im.youtiao.android_client.rest.RemoteApi;
@@ -48,7 +46,6 @@ import im.youtiao.android_client.rest.responses.TokenResponse;
 import im.youtiao.android_client.util.Logger;
 import roboguice.activity.RoboAccountAuthenticatorActivity;
 import roboguice.inject.InjectView;
-import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 public class LoginActivity extends RoboAccountAuthenticatorActivity implements LoaderCallbacks<Cursor> {
@@ -271,14 +268,14 @@ public class LoginActivity extends RoboAccountAuthenticatorActivity implements L
             RemoteApi remoteApi = RemoteApiFactory.getApi();
             remoteApi.getAuthenticatedUser().subscribeOn(Schedulers.io()).observeOn(Schedulers.io())
                     .subscribe(res -> {
-                        UserDao userDao = daoSession.getUserDao();
-                        User user = new User();
-                        user.setEmail(res.email);
-                        user.setServerId(res.id);
-                        user.setCreatedAt(res.createdAt);
-                        user.setUpdatedAt(res.updatedAt);
-                        userDao.insertOrReplace(user);
-                        ((YTApplication) getApplication()).setCurrentUser(user);
+//                        UserDao userDao = daoSession.getUserDao();
+//                        User user = new User();
+//                        user.setEmail(res.email);
+//                        user.setServerId(res.id);
+//                        user.setCreatedAt(res.createdAt);
+//                        user.setUpdatedAt(res.updatedAt);
+//                        userDao.insertOrReplace(user);
+                        ((YTApplication) getApplication()).setCurrentUser(res);
                     }, Logger::logThrowable);
         }
         setAccountAuthenticatorResult(intent.getExtras());

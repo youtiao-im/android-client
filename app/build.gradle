@@ -63,7 +63,7 @@ android {
         main {
             java {
                 srcDir 'src/main'
-                srcDir 'src-gen'
+                //srcDir 'src-gen'
             }
         }
     }
@@ -92,6 +92,10 @@ dependencies {
     compile 'com.squareup.okhttp:okhttp:2.0.0'
     compile 'io.reactivex:rxandroid:0.24.0'
     compile 'com.android.support:support-v4:22.1.1'
+    compile 'in.srain.cube:ultra-ptr:1.0.10'
+    compile 'com.github.medyo:fancybuttons:1.4@aar'
+    compile project(':trineaandroidcommon')
+    compile project(':pulltorefresh-and-loadmore')
 }
 
 project.tasks.withType(JavaCompile) {

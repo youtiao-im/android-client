@@ -2,6 +2,11 @@ package im.youtiao.android_client.rest;
 
 import java.util.List;
 
+import im.youtiao.android_client.model.Bulletin;
+import im.youtiao.android_client.model.Comment;
+import im.youtiao.android_client.model.Group;
+import im.youtiao.android_client.model.Membership;
+import im.youtiao.android_client.model.User;
 import im.youtiao.android_client.rest.responses.ChannelResponse;
 import im.youtiao.android_client.rest.responses.ChannelUserMembershipResponse;
 import im.youtiao.android_client.rest.responses.CommentResponse;
@@ -24,83 +29,45 @@ import rx.Observable;
 public interface RemoteApi {
     final String PREFIX = "/api/v1";
 
-    // users
     @GET(PREFIX + "/user")
-    Observable<UserResponse> getAuthenticatedUser();
+    Observable<User> getAuthenticatedUser();
 
-    @GET(PREFIX + "/user/memberships")
-    Observable<List<UserChannelMembershipResponse>> getUserChannelMemberships();
+    @GET(PREFIX + "/groups")
+    Observable<List<Group>> listGroups();
 
-    @GET(PREFIX + "/user/memberships/channels/{channel_id}")
-    Observable<UserChannelMembershipResponse> getUserChannelMembership(@Query("channel_id") String channelId);
+    @GET(PREFIX + "/groups/{group_id}")
+    Observable<Group> getGroup(@Path("group_id") String groupId);
 
-    @PUT(PREFIX + "/user/memberships/channels/{channel_id}")
-    Observable<UserChannelMembershipResponse> createUserChannelMembership(@Query("channel_id") String channelId);
+    @POST(PREFIX + "/groups")
+    Observable<Group> createGroup(@Query("name") String name);
 
-    @GET(PREFIX + "/user/marks")
-    Observable<List<UserFeedMarkResponse>> getUserFeedMarks();
+    @POST(PREFIX + "/groups/{group_id}/join")
+    Observable<Group> joinGroup(@Path("group_id") String groupId);
 
-    @GET(PREFIX + "/user/marks/feeds/{feed_id}")
-    Observable<UserFeedMarkResponse> getUserFeedMark(@Path("feed_id") String feedId);
+    @GET(PREFIX + "/groups/{group_id}/memberships")
+    Observable<List<Membership>> listGroupMemberships(@Path("group_id") String groupId, @Query("after_id") String beforeId, @Query("limit") Integer limit);
 
-    @PUT(PREFIX + "/user/marks/feeds/{feed_id}")
-    Observable<UserFeedMarkResponse> createUserFeedMark(@Path("feed_id") String feedId, @Query("symbol") String symbol);
+    @GET(PREFIX + "/bulletins")
+    Observable<List<Bulletin>> listBulletins(@Query("before_id") String beforeId, @Query("limit") Integer limit);
 
-    @PATCH(PREFIX + "/user/marks/feeds/{feed_id}")
-    Observable<UserFeedMarkResponse> updateUserFeedMark(@Path("feed_id") String feedId, @Query("symbol") String symbol);
+    @GET(PREFIX + "/groups/{group_id}/bulletins")
+    Observable<List<Bulletin>> listGroupBulletins(@Path("group_id") String groupId, @Query("before_id") String beforeId, @Query("limit") Integer limit);
 
-    @GET(PREFIX + "/user/stars")
-    Observable<List<UserFeedStarResponse>> getUserFeedStars();
+    @GET(PREFIX + "/bulletins/{bulletin_id}")
+    Observable<Bulletin> getBulletin(@Query("bulletin_id") String bulletinId);
 
-    @GET(PREFIX + "/user/stars/feeds/{feed_id}")
-    Observable<UserFeedStarResponse> getUserFeedStar(@Path("feed_id") String feedId);
+    @POST(PREFIX + "/groups/{group_id}/bulletins")
+    Observable<Bulletin> createBulletin(@Path("group_id") String groupId, @Query("text") String text);
 
-    @PUT(PREFIX + "/user/stars/feeds/{feed_id}")
-    Observable<UserFeedStarResponse> createUserFeedStar(@Path("feed_id") String feedId, @Query("symbol") String symbol);
+    @POST(PREFIX + "/bulletins/{bulletin_id}/stamp")
+    Observable<Bulletin> markBulletin(@Path("bulletin_id") String bulletinId, @Query("symbol") String symbol);
 
-    // channels
-    @GET(PREFIX + "/channels/{channel_id}")
-    Observable<ChannelResponse> getChannel(@Path("channel_id") String channelId);
-
-    @POST(PREFIX + "/channels")
-    Observable<ChannelResponse> createChannel(@Query("name") String name);
-
-    @GET(PREFIX + "/channels/{channel_id}/memberships")
-    Observable<List<ChannelUserMembershipResponse>> getChannelUserMemberships(@Path("channel_id") String channelId);
-
-    @GET(PREFIX + "/channels/{channel_id}/memberships/users/{user_id}")
-    Observable<ChannelUserMembershipResponse> getChannelUserMemberships(@Path("channel_id") String channelId, @Path("user_id") String userId);
-
-    // feeds
-    @GET(PREFIX + "/channels/{channel_id}/feeds")
-    Observable<List<FeedResponse>> getChannelFeeds(@Path("channel_id") String channelId);
-
-    @POST(PREFIX + "/channels/{channel_id}/feeds")
-    Observable<FeedResponse> createChannelFeed(@Path("channel_id") String channelId, @Query("text") String text);
-
-    @GET(PREFIX + "/feeds/{feed_id}")
-    Observable<FeedResponse> getFeed(@Path("feed_id") String feedId);
-
-    @GET(PREFIX + "/feeds/{feed_id}/marks")
-    Observable<List<MarkResponse>> getFeedMarks(@Path("feed_id") String feedId);
-
-    @GET(PREFIX + "/feeds/{feed_id}/marks/users/{user_id}")
-    Observable<MarkResponse> getFeedMarkByUser(@Path("feed_id") String feedId, @Path("user_id") String userId);
-
-    @GET(PREFIX + "/feeds/{feed_id}/stars")
-    Observable<List<StarResponse>> getFeedStars(@Path("feed_id") String feedId);
-
-    @GET(PREFIX + "/feeds/{feed_id}/stars/users/{user_id}")
-    Observable<StarResponse> getFeedStarByUser(@Path("feed_id") String feedId, @Path("user_id") String userId);
-
-    @GET(PREFIX + "/feeds/{feed_id}/comments")
-    Observable<List<CommentResponse>> getFeedComments(@Path("feed_id") String feedId);
+    @GET(PREFIX + "/bulletins/{bulletin_id}/comments")
+    Observable<List<Comment>> listComments(@Path("bulletin_id") String bulletinId, @Query("after_id") String beforeId, @Query("limit") Integer limit);
 
     @GET(PREFIX + "/comments/{comment_id}")
-    Observable<CommentResponse> getComment(@Path("comment_id") String commentId);
+    Observable<Comment> getComment(@Path("comment_id") String comentId);
 
-    @POST(PREFIX + "/feeds/{feed_id}/comments")
-    Observable<CommentResponse> createFeedComment(@Path("feed_id") String feedId, @Query("text") String text);
-
-
+    @POST(PREFIX + "/bulletins/{bulletin_id}/comments")
+    Observable<Comment> createComment(@Path("bulletin_id") String bulletinId, @Query("text") String text);
 }

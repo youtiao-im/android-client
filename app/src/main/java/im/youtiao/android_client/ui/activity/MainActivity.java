@@ -2,6 +2,7 @@ package im.youtiao.android_client.ui.activity;
 
 import android.content.Intent;
 import android.content.res.Resources;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -12,28 +13,24 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.google.inject.Inject;
-
-import im.youtiao.android_client.greendao.Channel;
-import im.youtiao.android_client.greendao.Feed;
-import im.youtiao.android_client.providers.RemoteApiFactory;
-import im.youtiao.android_client.rest.RemoteApi;
-import im.youtiao.android_client.rest.responses.TokenResponse;
-import im.youtiao.android_client.ui.activity.fragment.ChannelsFragment;
-import im.youtiao.android_client.ui.activity.fragment.ChatsFragment;
-import im.youtiao.android_client.ui.activity.fragment.FeedsFragment;
+import de.greenrobot.event.EventBus;
+import im.youtiao.android_client.event.BulletinCommentClickEvent;
+import im.youtiao.android_client.event.BulletinStampEvent;
+import im.youtiao.android_client.model.Bulletin;
+import im.youtiao.android_client.model.Group;
+import im.youtiao.android_client.ui.activity.fragment.BulletinsFragment;
+import im.youtiao.android_client.ui.activity.fragment.GroupsFragment;
 import im.youtiao.android_client.ui.activity.fragment.ProfileFragment;
 import it.neokree.materialtabs.MaterialTab;
 import it.neokree.materialtabs.MaterialTabHost;
 import it.neokree.materialtabs.MaterialTabListener;
 
 import im.youtiao.android_client.R;
+import roboguice.activity.RoboActionBarActivity;
 import roboguice.activity.RoboFragmentActivity;
-import rx.Observable;
-import rx.schedulers.Schedulers;
 
-public class MainActivity extends RoboFragmentActivity implements MaterialTabListener, FeedsFragment.OnFeedsFragmentInteractionListener,
-        ChatsFragment.OnChatsFragmentInteractionListener, ProfileFragment.OnProfileFragmentInteractionListener, ChannelsFragment.OnChannelsFragmentInteractionListener {
+public class MainActivity extends RoboActionBarActivity implements MaterialTabListener, BulletinsFragment.OnBulletinsFragmentInteractionListener,
+        ProfileFragment.OnProfileFragmentInteractionListener, GroupsFragment.OnGroupsFragmentInteractionListener {
 
     private static final String TAG = MainActivity.class
             .getCanonicalName();
@@ -42,15 +39,21 @@ public class MainActivity extends RoboFragmentActivity implements MaterialTabLis
     ViewPagerAdapter adapter;
     Resources res;
 
+    //public static final EventBus mBus = new EventBus();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        EventBus.getDefault().register(this);
+
         res = this.getResources();
 
         tabHost = (MaterialTabHost) this.findViewById(R.id.tabHost);
         pager = (ViewPager) this.findViewById(R.id.pager);
+        tabHost.setIconColor(getResources().getColor(R.color.tab_icon_unselected_color));
+        tabHost.setAccentColor(getResources().getColor(R.color.tab_icon_unselected_color));
 
         // init view pager
         adapter = new ViewPagerAdapter(getSupportFragmentManager());
@@ -59,6 +62,7 @@ public class MainActivity extends RoboFragmentActivity implements MaterialTabLis
             @Override
             public void onPageSelected(int position) {
                 // when user do a swipe the selected tab change
+                Log.e(TAG, "Page Selected: " + position);
                 tabHost.setSelectedNavigationItem(position);
             }
         });
@@ -70,6 +74,8 @@ public class MainActivity extends RoboFragmentActivity implements MaterialTabLis
                             .setIcon(getIcon(i))
                             .setTabListener(this));
         }
+        tabHost.setSelectedNavigationItem(0);
+        tabHost.getCurrentTab().setIconColor(getResources().getColor(R.color.tab_icon_selected_color));
     }
 
 
@@ -77,6 +83,7 @@ public class MainActivity extends RoboFragmentActivity implements MaterialTabLis
     public void OnDestory() {
         Log.e(TAG, "MainActivity OnDestory, close cursor");
         super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 
     @Override
@@ -104,32 +111,29 @@ public class MainActivity extends RoboFragmentActivity implements MaterialTabLis
     @Override
     public void onTabSelected(MaterialTab materialTab) {
         pager.setCurrentItem(materialTab.getPosition());
+        materialTab.setIconColor(getResources().getColor(R.color.tab_icon_selected_color));
     }
 
     @Override
     public void onTabReselected(MaterialTab materialTab) {
-
+        materialTab.setIconColor(getResources().getColor(R.color.tab_icon_selected_color));
     }
 
     @Override
     public void onTabUnselected(MaterialTab materialTab) {
-
+        materialTab.setIconColor(getResources().getColor(R.color.tab_icon_unselected_color));
     }
 
     @Override
-    public void onFeedsFragmentInteraction(Feed feed) {
+    public void onBulletinClick(Bulletin bulletin) {
         Bundle data = new Bundle();
-        data.putSerializable(FeedDetailActivity.PARAM_FEED, feed);
-        Intent intent = new Intent(this, FeedDetailActivity.class);
+        data.putSerializable(BulletinDetailActivity.PARAM_BULLETIN, bulletin);
+        Intent intent = new Intent(this, BulletinDetailActivity.class);
         intent.putExtras(data);
         startActivity(intent);
     }
 
-    @Override
-    public void onChatsFragmentInteraction(String id) {
-        Intent intent = new Intent(this, RegisterActivity.class);
-        startActivity(intent);
-    }
+
 
     @Override
     public void onProfileFragmentInteraction(String id) {
@@ -137,22 +141,32 @@ public class MainActivity extends RoboFragmentActivity implements MaterialTabLis
     }
 
     @Override
-    public void onNewChannelButtonClick() {
-        Intent intent = new Intent(this, NewChannelActivity.class);
+    public void onNewGroupButtonClick() {
+        Intent intent = new Intent(this, NewGroupActivity.class);
         startActivityForResult(intent, 1);
     }
 
     @Override
-    public void onJoinChannelButtonClick() {
-        Intent intent = new Intent(this, JoinChannelActivity.class);
+    public void onJoinGroupButtonClick() {
+        Intent intent = new Intent(this, JoinGroupActivity.class);
         startActivityForResult(intent, 1);
     }
 
     @Override
-    public void onChannelsItemClick(Channel channel) {
+    public void onGroupItemClick(Group group) {
         Bundle data = new Bundle();
-        data.putSerializable(ChannelDetailActivity.PARAM_CHANNEL, channel);
-        Intent intent = new Intent(this, ChannelDetailActivity.class);
+        data.putSerializable(GroupDetailActivity.PARAM_GROUP, group);
+        Intent intent = new Intent(this, GroupDetailActivity.class);
+        intent.putExtras(data);
+        startActivity(intent);
+    }
+
+    public void onEventMainThread(BulletinCommentClickEvent event) {
+        Log.i(TAG, "on BulletinCommentClickEvent");
+        Bulletin bulletin = event.bulletin;
+        Bundle data = new Bundle();
+        data.putSerializable(BulletinDetailActivity.PARAM_BULLETIN, bulletin);
+        Intent intent = new Intent(this, BulletinDetailActivity.class);
         intent.putExtras(data);
         startActivity(intent);
     }
@@ -166,12 +180,10 @@ public class MainActivity extends RoboFragmentActivity implements MaterialTabLis
         public Fragment getItem(int num) {
             switch (num) {
                 case 0:
-                    return new FeedsFragment();
+                    return new BulletinsFragment();
                 case 1:
-                    return new ChatsFragment();
+                    return new GroupsFragment();
                 case 2:
-                    return new ChannelsFragment();
-                case 3:
                     return new ProfileFragment();
                 default:
                     return null;
@@ -180,19 +192,17 @@ public class MainActivity extends RoboFragmentActivity implements MaterialTabLis
 
         @Override
         public int getCount() {
-            return 4;
+            return 3;
         }
 
         @Override
         public CharSequence getPageTitle(int position) {
             switch (position) {
                 case 0:
-                    return "Feed";
+                    return "Bulletins";
                 case 1:
-                    return "Chat";
+                    return "Groups";
                 case 2:
-                    return "Channel";
-                case 3:
                     return "Profile";
                 default:
                     return null;
@@ -206,13 +216,11 @@ public class MainActivity extends RoboFragmentActivity implements MaterialTabLis
     private Drawable getIcon(int position) {
         switch (position) {
             case 0:
-                return res.getDrawable(R.mipmap.ic_person_black_24dp);
+                return res.getDrawable(R.mipmap.tab_home_filled);
             case 1:
-                return res.getDrawable(R.mipmap.ic_group_black_24dp);
+                return res.getDrawable(R.mipmap.tab_group_filled);
             case 2:
-                return res.getDrawable(R.mipmap.ic_tab_channel);
-            case 3:
-                return res.getDrawable(R.mipmap.ic_person_black_24dp);
+                return res.getDrawable(R.mipmap.tab_settings_filled);
         }
         return null;
     }

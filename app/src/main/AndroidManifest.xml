@@ -41,18 +41,14 @@
             android:label="@string/title_activity_register"
             android:windowSoftInputMode="adjustResize|stateVisible" />
         <activity
-            android:name=".ui.activity.FeedDetailActivity"
+            android:name=".ui.activity.BulletinDetailActivity"
             android:label="@string/title_activity_feed_detail" />
         <activity
-            android:name=".ui.activity.ChannelDetailActivity"
+            android:name=".ui.activity.GroupDetailActivity"
             android:label="@string/title_activity_channel_detail" />
         <activity
-            android:name=".ui.activity.NewChannelActivity"
+            android:name=".ui.activity.NewGroupActivity"
             android:label="@string/title_activity_new_channel" />
-
-        <provider
-            android:name=".greendao.LibraryProvider"
-            android:authorities="im.youtiao.android_client.greendao.provider" />
 
         <meta-data
             android:name="roboguice.modules"
@@ -70,42 +66,34 @@
                 android:name="android.accounts.AccountAuthenticator"
                 android:resource="@xml/authenticator" />
         </service>
-        <service
-            android:name=".service.ChannelSyncService"
-            android:exported="true" >
-            <intent-filter>
-                <action android:name="android.content.SyncAdapter" />
-            </intent-filter>
-
-            <meta-data
-                android:name="android.content.SyncAdapter"
-                android:resource="@xml/channel_sync_adapter" />
-        </service>
 
         <activity
-            android:name=".ui.activity.JoinChannelActivity"
+            android:name=".ui.activity.JoinGroupActivity"
             android:label="@string/title_activity_join_channel" >
         </activity>
         <activity
-            android:name=".ui.activity.ChannelProfileActivity"
+            android:name=".ui.activity.GroupProfileActivity"
             android:label="@string/title_activity_channel_profile" >
         </activity>
         <activity
-            android:name=".ui.activity.ChannelMemberActivity"
+            android:name=".ui.activity.GroupMemberActivity"
             android:label="@string/title_activity_channel_member" >
         </activity>
         <activity
-            android:name=".ui.activity.ChannelCodeActivity"
+            android:name=".ui.activity.GroupCodeActivity"
             android:label="@string/title_activity_channel_code" >
         </activity>
         <activity
-            android:name=".ui.activity.ChannelMemberProfileActivity"
+            android:name=".ui.activity.GroupMemberProfileActivity"
             android:label="@string/title_activity_channel_member_profile" >
         </activity>
         <activity
-            android:name=".ui.activity.NewFeedActivity"
+            android:name=".ui.activity.NewBulletinActivity"
             android:label="@string/title_activity_new_feed" >
         </activity>
-    </application>
 
+        <provider
+            android:name="im.youtiao.android_client.dao.LibraryProvider"
+            android:authorities="im.youtiao.android_client.dao.provider"/>
+    </application>
 </manifest>
