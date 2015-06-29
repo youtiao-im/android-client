@@ -16,6 +16,8 @@ public class User implements java.io.Serializable {
     @JsonProperty("avatar_id")
     public String avatarId;
 
+    public String avatar;
+
     @JsonProperty("created_at")
     public String createdAt;
 

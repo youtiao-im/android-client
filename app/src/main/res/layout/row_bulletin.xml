@@ -36,6 +36,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="New Text"
+            android:longClickable="true"
             android:id="@+id/tv_group_name"
             android:layout_toRightOf="@+id/tv_user_name"
             android:layout_margin="5dp"
@@ -157,7 +158,7 @@
                 android:adjustViewBounds="false"
                 android:longClickable="true"
                 android:background="#00000000"
-                android:contentDescription="@string/feed_comment"
+                android:contentDescription="@string/bulletin_comment"
                 android:focusable="false" />
 
             <TextView style="@style/bulletin_stamp_font_style"
@@ -165,7 +166,7 @@
                 android:layout_height="wrap_content"
                 android:text="4"
                 android:id="@+id/tv_bulletin_comment_count"
-                android:contentDescription="@string/feed_comment"
+                android:contentDescription="@string/bulletin_comment"
                 android:layout_marginLeft="5dp"
                 android:textColor="@color/stamp_font_color"
                 android:textIsSelectable="false" />

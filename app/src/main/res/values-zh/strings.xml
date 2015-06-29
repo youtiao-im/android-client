@@ -3,13 +3,13 @@
     <string name="new_feed">创建消息</string>
 
     <string name="title_activity_register">注册</string>
-    <string name="title_activity_feed_detail">消息详情</string>
-    <string name="title_activity_channel_detail">团队</string>
-    <string name="title_activity_new_channel">新建团队</string>
-    <string name="title_activity_join_channel">加入团队</string>
-    <string name="title_activity_channel_profile">团队信息</string>
-    <string name="title_activity_channel_member">团队成员</string>
-    <string name="title_activity_channel_code">团队二维码</string>
-    <string name="title_activity_channel_member_profile">成员信息</string>
-    <string name="title_activity_new_feed">新消息</string>
+    <string name="title_activity_bulletin_detail">消息详情</string>
+    <string name="title_activity_group_detail">团队</string>
+    <string name="title_activity_new_group">新建团队</string>
+    <string name="title_activity_join_group">加入团队</string>
+    <string name="title_activity_group_profile">团队信息</string>
+    <string name="title_activity_group_member">团队成员</string>
+    <string name="title_activity_group_code">团队二维码</string>
+    <string name="title_activity_group_member_profile">成员信息</string>
+    <string name="title_activity_new_bulletin">新消息</string>
 </resources>

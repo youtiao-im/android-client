@@ -15,7 +15,6 @@
             android:src="@mipmap/tab_group"
             android:layout_margin="10dp" />
         <EditText style="@style/user_text"
-            android:hint="Group name"
             android:singleLine="true"
             android:id="@+id/edtTxt_group_name"
             android:layout_toRightOf="@+id/iv_group_name"
@@ -39,7 +38,6 @@
             android:src="@mipmap/tab_group"
             android:layout_margin="10dp" />
         <EditText style="@style/user_text"
-            android:hint="Group code (optional)"
             android:singleLine="true"
             android:id="@+id/edtTxt_group_code"
             android:layout_toRightOf="@+id/iv_group_code"
@@ -53,12 +51,4 @@
     </RelativeLayout>
 
     <View style="@style/bg_line"/>
-
-    <Button
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:onClick="addNew"
-        android:text="Add" />
-
 </LinearLayout>

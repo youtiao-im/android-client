@@ -15,8 +15,6 @@ import android.widget.TextView;
 
 import com.google.inject.Inject;
 
-import net.londatiga.android.ActionItem;
-import net.londatiga.android.QuickAction;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -83,11 +81,6 @@ public class BulletinDetailActivity extends RoboActionBarActivity {
     private SyncManager syncManager;
 
     Bulletin bulletin;
-
-    private static final int ID_CHECK = 1;
-    private static final int ID_CROSS = 2;
-    private static final int ID_QUESTION = 3;
-    private QuickAction quickAction;
 
     private LinkedList<Comment> comments = new LinkedList<Comment>();
     CommentArrayAdapter mAdapter;

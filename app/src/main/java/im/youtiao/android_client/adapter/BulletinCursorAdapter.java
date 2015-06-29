@@ -115,6 +115,11 @@ public class BulletinCursorAdapter extends CursorAdapter {
             Log.i(TAG, "commentsImgBtn clicked");
             EventBus.getDefault().post(new BulletinCommentClickEvent(bulletin));
         });
+
+        viewHolder.channelNameTv.setOnClickListener(v -> {
+            Log.i(TAG, "channelName clicked");
+            EventBus.getDefault().post(new BulletinCommentClickEvent(bulletin));
+        });
     }
 
     static class ViewHolder {

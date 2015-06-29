@@ -16,7 +16,7 @@ public class DaoSessionProvider implements Provider<DaoSession> {
     @Override public DaoSession get() {
         final DaoMaster daoMaster;
         SQLiteDatabase db;
-        DaoMaster.DevOpenHelper helper = new DaoMaster.DevOpenHelper(mContext, "youtiao-db-2", null);
+        DaoMaster.DevOpenHelper helper = new DaoMaster.DevOpenHelper(mContext, "youtiao-db-3", null);
         db = helper.getWritableDatabase();
         daoMaster = new DaoMaster(db);
         return daoMaster.newSession();

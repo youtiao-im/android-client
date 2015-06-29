@@ -1,5 +1,6 @@
 package im.youtiao.android_client.ui.activity;
 
+import android.content.Intent;
 import android.support.v7.app.ActionBar;
 import android.os.Bundle;
 import android.view.Menu;
@@ -11,15 +12,21 @@ import com.google.inject.Inject;
 
 import im.youtiao.android_client.R;
 import im.youtiao.android_client.dao.DaoSession;
+import im.youtiao.android_client.dao.GroupDao;
+import im.youtiao.android_client.dao.GroupHelper;
 import im.youtiao.android_client.rest.RemoteApi;
+import im.youtiao.android_client.util.Logger;
+import im.youtiao.android_client.wrap.GroupWrap;
 import roboguice.activity.RoboActionBarActivity;
 import roboguice.inject.InjectView;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 public class JoinGroupActivity extends RoboActionBarActivity {
 
     private static final String TAG = JoinGroupActivity.class.getCanonicalName();
 
-    @InjectView(R.id.joined_channel_name) private EditText mTitle;
+    @InjectView(R.id.edtTxt_group_code) private EditText groupCodeEdtTxt;
     @Inject private RemoteApi remoteApi;
     @Inject
     private DaoSession daoSession;
@@ -28,9 +35,6 @@ public class JoinGroupActivity extends RoboActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_join_group);
-
-        mTitle = (EditText) findViewById(R.id.joined_channel_name);
-
         ActionBar actionBar = getSupportActionBar();
         actionBar.setHomeButtonEnabled(true);
         actionBar.setDisplayHomeAsUpEnabled(true);
@@ -54,24 +58,21 @@ public class JoinGroupActivity extends RoboActionBarActivity {
     }
 
     public void joinNew(View v) {
-        String name = mTitle.getText().toString().trim();
-        //TODO:
-        if (name != null && name.length() != 0) {
-//            remoteApi.createChannel(name).subscribeOn(Schedulers.io())
-//                    .observeOn(AndroidSchedulers.mainThread())
-//                    .subscribe(resp -> {
-//                        ChannelDao channelDao = daoSession.getChannelDao();
-//                        Channel channel = new Channel();
-//                        channel.setName(name);
-//                        channel.setRole("member");
-//                        channel.setUpdatedAt(resp.updatedAt);
-//                        channel.setCreatedAt(resp.createdAt);
-//                        channel.setServerId(resp.id);
-//                        channel.setUsersCount(resp.membershipsCount);
-//                        channelDao.insertOrReplace(channel);
-//                        getContentResolver().notifyChange(ChannelHelper.CONTENT_URI, null);
-//                        finish();
-//                    }, Logger::logThrowable);
+        String code = groupCodeEdtTxt.getText().toString().trim();
+        if (code != null && code.length() != 0) {
+            remoteApi.joinGroup(code).subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe( resp -> {
+                        GroupDao groupDao = daoSession.getGroupDao();
+                        groupDao.insertOrReplace(GroupWrap.validate(resp));
+                        getContentResolver().notifyChange(GroupHelper.CONTENT_URI, null);
+                        Bundle data = new Bundle();
+                        data.putSerializable(GroupDetailActivity.PARAM_GROUP, resp);
+                        Intent intent = new Intent(this, GroupDetailActivity.class);
+                        intent.putExtras(data);
+                        startActivity(intent);
+                        finish();
+                    }, Logger::logThrowable);
         }
     }
 }

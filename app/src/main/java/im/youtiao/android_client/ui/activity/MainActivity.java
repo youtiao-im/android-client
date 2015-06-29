@@ -15,6 +15,7 @@ import android.view.MenuItem;
 
 import de.greenrobot.event.EventBus;
 import im.youtiao.android_client.event.BulletinCommentClickEvent;
+import im.youtiao.android_client.event.BulletinGroupNameClickEvent;
 import im.youtiao.android_client.event.BulletinStampEvent;
 import im.youtiao.android_client.model.Bulletin;
 import im.youtiao.android_client.model.Group;
@@ -167,6 +168,16 @@ public class MainActivity extends RoboActionBarActivity implements MaterialTabLi
         Bundle data = new Bundle();
         data.putSerializable(BulletinDetailActivity.PARAM_BULLETIN, bulletin);
         Intent intent = new Intent(this, BulletinDetailActivity.class);
+        intent.putExtras(data);
+        startActivity(intent);
+    }
+
+    public void onEventMainThread(BulletinGroupNameClickEvent event) {
+        Log.i(TAG, "on BulletinGroupNameClickEvent");
+        Bulletin bulletin = event.bulletin;
+        Bundle data = new Bundle();
+        data.putSerializable(GroupDetailActivity.PARAM_GROUP, bulletin.group);
+        Intent intent = new Intent(this, GroupDetailActivity.class);
         intent.putExtras(data);
         startActivity(intent);
     }

@@ -7,6 +7,11 @@ import java.lang.reflect.Member;
 import java.util.Date;
 
 public class Group implements java.io.Serializable {
+    public enum Role {
+        OWNER,
+        MEMBER
+    }
+
     public String type;
 
     public String id;
@@ -24,5 +29,6 @@ public class Group implements java.io.Serializable {
     @JsonProperty("updated_at")
     public String updatedAt;
 
+    @JsonProperty("current_membership")
     public Membership membership;
 }

@@ -42,13 +42,13 @@
             android:windowSoftInputMode="adjustResize|stateVisible" />
         <activity
             android:name=".ui.activity.BulletinDetailActivity"
-            android:label="@string/title_activity_feed_detail" />
+            android:label="@string/title_activity_bulletin_detail" />
         <activity
             android:name=".ui.activity.GroupDetailActivity"
-            android:label="@string/title_activity_channel_detail" />
+            android:label="@string/title_activity_group_detail" />
         <activity
             android:name=".ui.activity.NewGroupActivity"
-            android:label="@string/title_activity_new_channel" />
+            android:label="@string/title_activity_new_group" />
 
         <meta-data
             android:name="roboguice.modules"
@@ -69,31 +69,41 @@
 
         <activity
             android:name=".ui.activity.JoinGroupActivity"
-            android:label="@string/title_activity_join_channel" >
+            android:label="@string/title_activity_join_group" >
         </activity>
         <activity
             android:name=".ui.activity.GroupProfileActivity"
-            android:label="@string/title_activity_channel_profile" >
+            android:label="@string/title_activity_group_profile" >
         </activity>
         <activity
             android:name=".ui.activity.GroupMemberActivity"
-            android:label="@string/title_activity_channel_member" >
+            android:label="@string/title_activity_group_member" >
         </activity>
         <activity
             android:name=".ui.activity.GroupCodeActivity"
-            android:label="@string/title_activity_channel_code" >
+            android:label="@string/title_activity_group_code" >
         </activity>
         <activity
             android:name=".ui.activity.GroupMemberProfileActivity"
-            android:label="@string/title_activity_channel_member_profile" >
+            android:label="@string/title_activity_group_member_profile" >
         </activity>
         <activity
             android:name=".ui.activity.NewBulletinActivity"
-            android:label="@string/title_activity_new_feed" >
+            android:label="@string/title_activity_new_bulletin" >
         </activity>
 
         <provider
-            android:name="im.youtiao.android_client.dao.LibraryProvider"
-            android:authorities="im.youtiao.android_client.dao.provider"/>
+            android:name=".dao.LibraryProvider"
+            android:authorities="im.youtiao.android_client.dao.provider" />
+
+        <activity
+            android:name=".ui.activity.GroupEditActivity"
+            android:label="@string/title_activity_group_edit" >
+        </activity>
+        <activity
+            android:name=".ui.activity.JoinedGroupProfileActivity"
+            android:label="@string/title_activity_joined_group_profile" >
+        </activity>
     </application>
+
 </manifest>

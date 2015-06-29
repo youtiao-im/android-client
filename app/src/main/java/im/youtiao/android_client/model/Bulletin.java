@@ -40,5 +40,6 @@ public class Bulletin implements java.io.Serializable {
     @JsonProperty("created_by")
     public User createdBy;
 
+    @JsonProperty("current_stamp")
     public Stamp stamp;
 }

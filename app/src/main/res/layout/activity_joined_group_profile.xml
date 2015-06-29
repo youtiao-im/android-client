@@ -29,14 +29,6 @@
             android:layout_below="@+id/tv_group_name"
             android:textSize="20dp" />
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Edit"
-            android:id="@+id/btn_group_info_edit"
-            android:layout_alignParentRight="true"
-            android:layout_centerInParent="true"
-            android:background="#ff4a88db" />
     </RelativeLayout>
 
     <LinearLayout
@@ -84,19 +76,10 @@
 
 
         <RelativeLayout style="@style/column_layout"
-            android:id="@+id/layout_remove_subscribers">
+            android:id="@+id/layout_unsubscribe_group">
             <TextView style="@style/user_text"
-                android:text="Remove all subscribers"
-                android:id="@+id/tv_remove_all_subscribers"
-                android:textColor="@android:color/holo_red_dark" />
-        </RelativeLayout>
-        <View  style="@style/bg_line"/>
-
-        <RelativeLayout style="@style/column_layout"
-            android:id="@+id/layout_delete_group">
-            <TextView style="@style/user_text"
-                android:text="Delete group"
-                android:id="@+id/tv_delete_group"
+                android:text="Unsubscribe from this group"
+                android:id="@+id/tv_unsubscribe_group"
                 android:textColor="@android:color/holo_red_dark" />
         </RelativeLayout>
         <View  style="@style/bg_line"/>

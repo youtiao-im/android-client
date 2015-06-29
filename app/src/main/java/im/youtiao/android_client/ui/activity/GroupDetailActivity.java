@@ -23,6 +23,7 @@ import im.youtiao.android_client.R;
 import im.youtiao.android_client.adapter.BulletinArrayAdapter;
 import im.youtiao.android_client.dao.BulletinHelper;
 import im.youtiao.android_client.dao.DaoSession;
+import im.youtiao.android_client.dao.GroupHelper;
 import im.youtiao.android_client.data.DaoHelper;
 import im.youtiao.android_client.data.SyncManager;
 import im.youtiao.android_client.event.BulletinStampEvent;
@@ -31,6 +32,7 @@ import im.youtiao.android_client.model.Group;
 import im.youtiao.android_client.rest.RemoteApi;
 import im.youtiao.android_client.util.Logger;
 import im.youtiao.android_client.wrap.BulletinWrap;
+import im.youtiao.android_client.wrap.GroupWrap;
 import roboguice.activity.RoboActionBarActivity;
 import roboguice.inject.InjectView;
 import rx.android.schedulers.AndroidSchedulers;
@@ -140,9 +142,14 @@ public class GroupDetailActivity extends RoboActionBarActivity {
             case R.id.action_group_profile:
                 Bundle data = new Bundle();
                 data.putSerializable(GroupProfileActivity.PARAM_GROUP, group);
-                Intent intent = new Intent(GroupDetailActivity.this, GroupProfileActivity.class);
+                Intent intent = null;
+                if (group.membership.role.equalsIgnoreCase(Group.Role.OWNER.toString())) {
+                    intent = new Intent(GroupDetailActivity.this, GroupProfileActivity.class);
+                } else {
+                    intent = new Intent(GroupDetailActivity.this, JoinedGroupProfileActivity.class);
+                }
                 intent.putExtras(data);
-                startActivity(intent);
+                startActivityForResult(intent, 0);
                 return true;
             case R.id.action_new_bulletin:
                 Bundle data2 = new Bundle();
@@ -153,6 +160,15 @@ public class GroupDetailActivity extends RoboActionBarActivity {
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode,
+                                    Intent intent) {
+        Log.i(TAG, "onActivityResult: requestCode=" + requestCode + ", resultCode=" + resultCode);
+        if (requestCode == 0 && resultCode == 0 && intent != null) {
+            this.finish();
         }
     }
 

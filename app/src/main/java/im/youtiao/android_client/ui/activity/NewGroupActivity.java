@@ -1,5 +1,6 @@
 package im.youtiao.android_client.ui.activity;
 
+import android.content.Intent;
 import android.support.v7.app.ActionBar;
 import android.os.Bundle;
 import android.view.Menu;
@@ -9,6 +10,7 @@ import android.widget.EditText;
 
 import com.google.inject.Inject;
 
+import fr.castorflex.android.smoothprogressbar.SmoothProgressBar;
 import im.youtiao.android_client.R;
 import im.youtiao.android_client.dao.DaoSession;
 import im.youtiao.android_client.dao.GroupDao;
@@ -25,9 +27,8 @@ public class NewGroupActivity extends RoboActionBarActivity {
     private static final String TAG = NewGroupActivity.class
             .getCanonicalName();
 
-    @InjectView(R.id.add_todo_edittext)
+    @InjectView(R.id.edtTxt_group_name)
     private EditText mTitle;
-
     @Inject private RemoteApi remoteApi;
 
     @Inject private DaoSession daoSession;
@@ -62,12 +63,17 @@ public class NewGroupActivity extends RoboActionBarActivity {
     public void addNew(View v) {
         String name = mTitle.getText().toString().trim();
         if (name != null && name.length() != 0) {
-            remoteApi.createGroup(name).subscribeOn(Schedulers.io())
+            remoteApi.createGroup(name, null).subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe( resp -> {
                         GroupDao groupDao = daoSession.getGroupDao();
                         groupDao.insertOrReplace(GroupWrap.validate(resp));
                         getContentResolver().notifyChange(GroupHelper.CONTENT_URI, null);
+                        Bundle data = new Bundle();
+                        data.putSerializable(GroupDetailActivity.PARAM_GROUP, resp);
+                        Intent intent = new Intent(this, GroupDetailActivity.class);
+                        intent.putExtras(data);
+                        startActivity(intent);
                         finish();
                     }, Logger::logThrowable);
         }

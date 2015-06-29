@@ -39,9 +39,6 @@ import roboguice.inject.InjectView;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
-import net.londatiga.android.ActionItem;
-import net.londatiga.android.QuickAction;
-
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
