@@ -9,3 +9,5 @@
 /DaoGenerator/build
 /tmp
 /.idea
+trineaandroidcommon/build/intermediates/classes/release/cn/trinea/android/common/util/ViewUtils.class
+*.class

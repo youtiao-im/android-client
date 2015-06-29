@@ -1,5 +1,4 @@
 include ':DaoGenerator'
-include ':NewQuickAction3D'
 //include ':java-sdk'
 include ':app'
 include ':trineaandroidcommon'

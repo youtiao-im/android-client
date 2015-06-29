@@ -76,7 +76,6 @@ android {
 }
 
 dependencies {
-    compile project(':NewQuickAction3D')
     compile project(':DaoGenerator')
     provided 'org.roboguice:roboblender:3.0.1'
     compile 'com.android.support:appcompat-v7:22.1.1'
@@ -94,6 +93,7 @@ dependencies {
     compile 'com.android.support:support-v4:22.1.1'
     compile 'in.srain.cube:ultra-ptr:1.0.10'
     compile 'com.github.medyo:fancybuttons:1.4@aar'
+    compile 'com.hannesdorfmann.smoothprogressbar:library:1.0.0'
     compile project(':trineaandroidcommon')
 }
 
