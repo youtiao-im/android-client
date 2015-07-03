@@ -30,9 +30,6 @@ public class RemoteApiFactory {
 
     private static RemoteApi instance;
 
-    @Inject
-    static Context  mContext;
-
     public static RemoteApi getApi() {
         //Log.e(TAG, "get Api");
         if (instance == null) {

@@ -13,7 +13,11 @@ import org.json.JSONException;
 import java.util.ArrayList;
 
 import cn.jpush.android.api.JPushInterface;
+import im.youtiao.android_client.dao.DaoSession;
+import im.youtiao.android_client.dao.LibraryProvider;
 import im.youtiao.android_client.model.User;
+import im.youtiao.android_client.providers.DaoSessionFactory;
+import im.youtiao.android_client.providers.DaoSessionProvider;
 import im.youtiao.android_client.ui.activity.LoginActivity;
 import im.youtiao.android_client.ui.activity.MainActivity;
 

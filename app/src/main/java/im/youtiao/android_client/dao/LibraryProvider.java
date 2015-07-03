@@ -7,7 +7,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 import android.text.TextUtils;
-import com.google.inject.Inject;
 import de.greenrobot.dao.DaoLog;
 import roboguice.content.RoboContentProvider;
 
@@ -34,8 +33,8 @@ public class LibraryProvider extends RoboContentProvider {
     * This must be set from outside, it's recommended to do this inside your Application object.
     * Subject to change (static isn't nice).
     */
-    @Inject
-    private DaoSession daoSession;
+    public static DaoSession daoSession;
+
 
     @Override
     public boolean onCreate() {

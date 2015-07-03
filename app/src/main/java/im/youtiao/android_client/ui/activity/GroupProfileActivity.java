@@ -16,6 +16,7 @@ import android.widget.TextView;
 import com.google.inject.Inject;
 
 import im.youtiao.android_client.R;
+import im.youtiao.android_client.dao.DaoHelper;
 import im.youtiao.android_client.dao.DaoMaster;
 import im.youtiao.android_client.dao.DaoSession;
 import im.youtiao.android_client.dao.GroupHelper;
@@ -143,7 +144,7 @@ public class GroupProfileActivity extends RoboActionBarActivity {
                 if (group != null) {
                     groupNameTv.setText(group.name);
                     groupCodeTv.setText(group.code);
-                    DaoMaster.DaoHelper.insertOrUpdate(daoSession, GroupWrap.validate(group));
+                    DaoHelper.insertOrUpdate(daoSession, GroupWrap.validate(group));
                     getContentResolver().notifyChange(GroupHelper.CONTENT_URI, null);
                 }
             }

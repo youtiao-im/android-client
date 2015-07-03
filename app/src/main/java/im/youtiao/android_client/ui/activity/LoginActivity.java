@@ -68,9 +68,6 @@ public class LoginActivity extends RoboActionBarActivity {
     @Inject
     private LoginApi loginApi;
 
-    @Inject
-    private DaoSession daoSession;
-
     public static final String KEY_ERROR_MESSAGE = "ERR_MSG";
 
     /**

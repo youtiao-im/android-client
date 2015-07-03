@@ -17,6 +17,8 @@ import im.youtiao.android_client.AccountDescriptor;
 import im.youtiao.android_client.R;
 import im.youtiao.android_client.YTApplication;
 import im.youtiao.android_client.dao.DaoSession;
+import im.youtiao.android_client.dao.LibraryProvider;
+import im.youtiao.android_client.providers.DaoSessionFactory;
 import im.youtiao.android_client.providers.LoginApiFactory;
 import im.youtiao.android_client.providers.RemoteApiFactory;
 import im.youtiao.android_client.rest.RemoteApi;
@@ -32,8 +34,6 @@ public class BootstrapActivity extends RoboActivity {
     public static final int NEW_ACCOUNT = 0;
     public static final int EXISTING_ACCOUNT = 1;
     private AccountManager mAccountManager;
-    @Inject
-    DaoSession daoSession;
 
     @InjectView(R.id.btn_login)
     Button loginBtn;
@@ -66,6 +66,8 @@ public class BootstrapActivity extends RoboActivity {
         AccountDescriptor currentAccount = getApp().getCurrentAccount();
         if (currentAccount != null && currentAccount.getToken() != null) {
             RemoteApiFactory.setApiToken(currentAccount.getTokenType(), currentAccount.getToken());
+            DaoSessionFactory.setDaoSession(this);
+            LibraryProvider.daoSession = DaoSessionFactory.getDaoSession();
             startActivity(new Intent(BootstrapActivity.this, MainActivity.class));
             finish();
         }
@@ -96,6 +98,8 @@ public class BootstrapActivity extends RoboActivity {
         Log.i(TAG, "onActivityResult: requestCode=" + requestCode + ", resultCode=" + resultCode);
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == 1) {
+            DaoSessionFactory.setDaoSession(this);
+            LibraryProvider.daoSession = DaoSessionFactory.getDaoSession();
             Intent i = new Intent(this, MainActivity.class);
             startActivity(i);
             finish();

@@ -21,6 +21,7 @@ import im.youtiao.android_client.R;
 import im.youtiao.android_client.adapter.BulletinCursorAdapter;
 import im.youtiao.android_client.dao.BulletinDao;
 import im.youtiao.android_client.dao.BulletinHelper;
+import im.youtiao.android_client.dao.DaoHelper;
 import im.youtiao.android_client.dao.DaoMaster;
 import im.youtiao.android_client.dao.DaoSession;
 import im.youtiao.android_client.event.BulletinStampEvent;
@@ -262,7 +263,7 @@ public class BulletinsFragment extends RoboFragment implements LoaderManager.Loa
                     BulletinDao bulletinDao = daoSession.getBulletinDao();
                     bulletinDao.deleteAll();
                     for (Bulletin item : resp) {
-                        DaoMaster.DaoHelper.insertOrUpdate(daoSession, BulletinWrap.validate(item));
+                        DaoHelper.insertOrUpdate(daoSession, BulletinWrap.validate(item));
                     }
                     if (resp.size() >= LIMIT) {
                         mMoreDataAvailable = true;
@@ -277,14 +278,14 @@ public class BulletinsFragment extends RoboFragment implements LoaderManager.Loa
 
     private void loadMoreData() {
         Log.i(TAG, "load More");
-        im.youtiao.android_client.dao.Bulletin oldestBulletin = DaoMaster.DaoHelper.getOldestBulletin(daoSession);
+        im.youtiao.android_client.dao.Bulletin oldestBulletin = DaoHelper.getOldestBulletin(daoSession);
         String lastBulletinId = oldestBulletin == null ? null : oldestBulletin.getServerId();
         remoteApi.listBulletins(lastBulletinId, LIMIT)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(resp -> {
                     for (Bulletin item : resp) {
-                        DaoMaster.DaoHelper.insertOrUpdate(daoSession, BulletinWrap.validate(item));
+                        DaoHelper.insertOrUpdate(daoSession, BulletinWrap.validate(item));
                     }
                     if (resp.size() >= LIMIT) {
                         mMoreDataAvailable = true;
@@ -306,7 +307,7 @@ public class BulletinsFragment extends RoboFragment implements LoaderManager.Loa
                 .observeOn(Schedulers.io())
                 .subscribeOn(Schedulers.io())
                 .subscribe(resp -> {
-                    DaoMaster.DaoHelper.insertOrUpdate(daoSession, BulletinWrap.validate(resp));
+                    DaoHelper.insertOrUpdate(daoSession, BulletinWrap.validate(resp));
                     getActivity().getContentResolver().notifyChange(BulletinHelper.CONTENT_URI, null);
                 }, Logger::logThrowable);
     }

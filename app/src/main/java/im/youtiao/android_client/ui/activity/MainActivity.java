@@ -48,8 +48,6 @@ public class MainActivity extends RoboActionBarActivity implements MaterialTabLi
     @Inject
     DaoSession daoSession;
 
-    //public static final EventBus mBus = new EventBus();
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

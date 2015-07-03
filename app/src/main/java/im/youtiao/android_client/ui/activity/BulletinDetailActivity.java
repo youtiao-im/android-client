@@ -21,6 +21,7 @@ import de.greenrobot.event.EventBus;
 import im.youtiao.android_client.R;
 import im.youtiao.android_client.adapter.CommentArrayAdapter;
 import im.youtiao.android_client.dao.BulletinHelper;
+import im.youtiao.android_client.dao.DaoHelper;
 import im.youtiao.android_client.dao.DaoMaster;
 import im.youtiao.android_client.dao.DaoSession;
 import im.youtiao.android_client.data.SyncManager;
@@ -208,7 +209,7 @@ public class BulletinDetailActivity extends RoboActionBarActivity {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(resp -> {
                     initView(resp);
-                    DaoMaster.DaoHelper.insertOrUpdate(daoSession, BulletinWrap.validate(resp));
+                    DaoHelper.insertOrUpdate(daoSession, BulletinWrap.validate(resp));
                     getContentResolver().notifyChange(BulletinHelper.CONTENT_URI, null);
                 }, Logger::logThrowable);
     }
