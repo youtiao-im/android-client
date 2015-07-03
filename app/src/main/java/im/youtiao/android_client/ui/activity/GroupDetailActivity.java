@@ -1,30 +1,27 @@
 package im.youtiao.android_client.ui.activity;
 
 
-import android.app.usage.UsageEvents;
 import android.content.Intent;
-import android.support.v7.app.ActionBar;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
+import android.widget.ListView;
 
 import com.google.inject.Inject;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
+import java.util.LinkedList;
 
-import cn.trinea.android.common.view.DropDownListView;
 import de.greenrobot.event.EventBus;
 import im.youtiao.android_client.R;
 import im.youtiao.android_client.adapter.BulletinArrayAdapter;
+import im.youtiao.android_client.dao.BulletinDao;
 import im.youtiao.android_client.dao.BulletinHelper;
 import im.youtiao.android_client.dao.DaoSession;
-import im.youtiao.android_client.dao.GroupHelper;
-import im.youtiao.android_client.data.DaoHelper;
 import im.youtiao.android_client.data.SyncManager;
 import im.youtiao.android_client.event.BulletinStampEvent;
 import im.youtiao.android_client.model.Bulletin;
@@ -32,7 +29,10 @@ import im.youtiao.android_client.model.Group;
 import im.youtiao.android_client.rest.RemoteApi;
 import im.youtiao.android_client.util.Logger;
 import im.youtiao.android_client.wrap.BulletinWrap;
-import im.youtiao.android_client.wrap.GroupWrap;
+import in.srain.cube.views.ptr.PtrClassicFrameLayout;
+import in.srain.cube.views.ptr.PtrDefaultHandler;
+import in.srain.cube.views.ptr.PtrFrameLayout;
+import in.srain.cube.views.ptr.PtrHandler;
 import roboguice.activity.RoboActionBarActivity;
 import roboguice.inject.InjectView;
 import rx.android.schedulers.AndroidSchedulers;
@@ -44,32 +44,41 @@ public class GroupDetailActivity extends RoboActionBarActivity {
 
     private Group group;
 
-    private static int LIMIT = 3;
+    private static int LIMIT = 5;
+
+    private PtrClassicFrameLayout mPtrFrame;
 
     @InjectView(R.id.lv_bulletin_list)
-    DropDownListView bulletinLv;
-
+    ListView bulletinLv;
 
     private BulletinArrayAdapter mAdapter;
-
     @Inject
     private DaoSession daoSession;
-
     @Inject
     private RemoteApi remoteApi;
-
     @Inject
     private SyncManager syncManager;
+    private LinkedList<Bulletin> bulletins = new LinkedList<Bulletin>();
 
-    private ArrayList<Bulletin> bulletins = new ArrayList<Bulletin>();
+    int mLastSavedFirstVisibleItem = -1;
+    boolean mMoreDataAvailable = true;
+    boolean isInit = true;
+
+    public boolean hasMoreDate() {
+        return mMoreDataAvailable;
+    }
+
+    public boolean isInit() {
+        return this.isInit;
+    }
 
     @Override
     public void onStart() {
         Log.i(TAG, "onStart");
         super.onStart();
         EventBus.getDefault().register(this);
-        loadMoreData();
     }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,18 +93,29 @@ public class GroupDetailActivity extends RoboActionBarActivity {
         group = (Group) intent.getSerializableExtra(PARAM_GROUP);
         setTitle(group.name);
 
-        bulletinLv.setShowFooterWhenNoMore(true);
-        bulletinLv.setOnDropDownListener(new DropDownListView.OnDropDownListener() {
+        mAdapter = new BulletinArrayAdapter(this, R.layout.row_bulletin, bulletins);
+        bulletinLv.setDividerHeight(20);
+        bulletinLv.setAdapter(mAdapter);
+        bulletinLv.setOnScrollListener(new AbsListView.OnScrollListener() {
             @Override
-            public void onDropDown() {
-                refreshData();
-            }
-        });
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
 
-        bulletinLv.setOnBottomListener(new View.OnClickListener() {
+            }
+
             @Override
-            public void onClick(View v) {
-                loadMoreData();
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+
+                if (visibleItemCount > 0
+                        && (firstVisibleItem + visibleItemCount == totalItemCount)) {
+                    // only process first event
+                    if (firstVisibleItem != mLastSavedFirstVisibleItem) {
+                        Log.i(TAG, "onScroll: firstVisibleItem=" + firstVisibleItem + ", visibleItemCount=" + visibleItemCount + ", totalItemCount=" + totalItemCount
+                                + ", mLastSavedFirstVisibleItem=" + mLastSavedFirstVisibleItem);
+                        Log.i(TAG, "onLastItemVisible");
+                        mLastSavedFirstVisibleItem = firstVisibleItem;
+                        loadMoreData();
+                    }
+                }
             }
         });
 
@@ -103,7 +123,7 @@ public class GroupDetailActivity extends RoboActionBarActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Log.i(TAG, "OnItemClick");
-                Bulletin bulletin = (Bulletin) mAdapter.getItem(position - 1);
+                Bulletin bulletin = (Bulletin) mAdapter.getItem(position);
                 Bundle data = new Bundle();
                 data.putSerializable(BulletinDetailActivity.PARAM_BULLETIN, bulletin);
                 Intent intent = new Intent(GroupDetailActivity.this, BulletinDetailActivity.class);
@@ -112,9 +132,33 @@ public class GroupDetailActivity extends RoboActionBarActivity {
             }
         });
 
-        mAdapter = new BulletinArrayAdapter(this, R.layout.row_bulletin, bulletins);
-        bulletinLv.setDividerHeight(20);
-        bulletinLv.setAdapter(mAdapter);
+        mPtrFrame = (PtrClassicFrameLayout) findViewById(R.id.rotate_header_list_view_frame);
+        mPtrFrame.setLastUpdateTimeRelateObject(this);
+        mPtrFrame.setPtrHandler(new PtrHandler() {
+            @Override
+            public void onRefreshBegin(PtrFrameLayout frame) {
+                refreshData();
+            }
+
+            @Override
+            public boolean checkCanDoRefresh(PtrFrameLayout frame, View content, View header) {
+                return PtrDefaultHandler.checkContentCanBePulledDown(frame, content, header);
+            }
+        });
+        // the following are default settings
+        mPtrFrame.setResistance(1.7f);
+        mPtrFrame.setRatioOfHeaderHeightToRefresh(1.2f);
+        mPtrFrame.setDurationToClose(200);
+        mPtrFrame.setDurationToCloseHeader(1000);
+        mPtrFrame.setPullToRefresh(false);
+        mPtrFrame.setKeepHeaderWhenRefresh(true);
+        mPtrFrame.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                //mPtrFrame.autoRefresh();
+            }
+        }, 100);
+
     }
 
     @Override
@@ -156,7 +200,7 @@ public class GroupDetailActivity extends RoboActionBarActivity {
                 data2.putSerializable(NewBulletinActivity.PARAM_GROUP, group);
                 Intent intent2 = new Intent(GroupDetailActivity.this, NewBulletinActivity.class);
                 intent2.putExtras(data2);
-                startActivity(intent2);
+                startActivityForResult(intent2, 1);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -169,6 +213,15 @@ public class GroupDetailActivity extends RoboActionBarActivity {
         Log.i(TAG, "onActivityResult: requestCode=" + requestCode + ", resultCode=" + resultCode);
         if (requestCode == 0 && resultCode == 0 && intent != null) {
             this.finish();
+        } else if (requestCode == 1 && resultCode == 1 && intent != null) {
+            Bulletin bulletin = (Bulletin)intent.getSerializableExtra(NewBulletinActivity.PARAM_NEW_BULLETIN);
+            bulletins.addFirst(bulletin);
+            mAdapter.notifyDataSetChanged();
+
+            //TODO: adjust sort
+            BulletinDao bulletinDao = daoSession.getBulletinDao();
+            bulletinDao.insert(BulletinWrap.validate(bulletin));
+            getContentResolver().notifyChange(BulletinHelper.CONTENT_URI, null);
         }
     }
 
@@ -184,18 +237,17 @@ public class GroupDetailActivity extends RoboActionBarActivity {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(resp -> {
                     bulletins.clear();
-                    for (Bulletin item : resp) {
-                        bulletins.add(item);
-                    }
+                    bulletins.addAll(resp);
                     mAdapter.notifyDataSetChanged();
-                    if (resp.size() >= LIMIT) {
-                        bulletinLv.setHasMore(true);
+                    if (resp.size() < LIMIT) {
+                        mMoreDataAvailable = false;
                     } else {
-                        bulletinLv.setHasMore(false);
+                        mMoreDataAvailable = true;
                     }
-                    SimpleDateFormat dateFormat = new SimpleDateFormat("MM-dd HH:mm:ss");
-                    bulletinLv.onDropDownComplete("updated at " + dateFormat.format(new Date()));
-                    bulletinLv.onBottomComplete();
+                    mLastSavedFirstVisibleItem = -1;
+                    isInit = false;
+                    mPtrFrame.refreshComplete();
+                    mAdapter.notifyDataSetChanged();
                 }, Logger::logThrowable);
     }
 
@@ -210,15 +262,14 @@ public class GroupDetailActivity extends RoboActionBarActivity {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(resp -> {
-                    for (Bulletin item : resp) {
-                        bulletins.add(item);
-                    }
-                    mAdapter.notifyDataSetChanged();
-
+                    bulletins.addAll(resp);
                     if (resp.size() < LIMIT) {
-                        bulletinLv.setHasMore(false);
+                        mMoreDataAvailable = false;
+                    } else {
+                        mMoreDataAvailable = true;
                     }
-                    bulletinLv.onBottomComplete();
+                    isInit = false;
+                    mAdapter.notifyDataSetChanged();
                 }, Logger::logThrowable);
     }
 

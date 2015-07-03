@@ -2,7 +2,6 @@ package im.youtiao.android_client.ui.activity;
 
 import android.content.Intent;
 import android.content.res.Resources;
-import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -13,25 +12,29 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.google.inject.Inject;
+
 import de.greenrobot.event.EventBus;
+import im.youtiao.android_client.dao.BulletinDao;
+import im.youtiao.android_client.dao.BulletinHelper;
+import im.youtiao.android_client.dao.DaoSession;
 import im.youtiao.android_client.event.BulletinCommentClickEvent;
 import im.youtiao.android_client.event.BulletinGroupNameClickEvent;
-import im.youtiao.android_client.event.BulletinStampEvent;
 import im.youtiao.android_client.model.Bulletin;
 import im.youtiao.android_client.model.Group;
 import im.youtiao.android_client.ui.activity.fragment.BulletinsFragment;
 import im.youtiao.android_client.ui.activity.fragment.GroupsFragment;
-import im.youtiao.android_client.ui.activity.fragment.ProfileFragment;
+import im.youtiao.android_client.ui.activity.fragment.SettingsFragment;
+import im.youtiao.android_client.wrap.BulletinWrap;
 import it.neokree.materialtabs.MaterialTab;
 import it.neokree.materialtabs.MaterialTabHost;
 import it.neokree.materialtabs.MaterialTabListener;
 
 import im.youtiao.android_client.R;
 import roboguice.activity.RoboActionBarActivity;
-import roboguice.activity.RoboFragmentActivity;
 
 public class MainActivity extends RoboActionBarActivity implements MaterialTabListener, BulletinsFragment.OnBulletinsFragmentInteractionListener,
-        ProfileFragment.OnProfileFragmentInteractionListener, GroupsFragment.OnGroupsFragmentInteractionListener {
+        SettingsFragment.OnProfileFragmentInteractionListener, GroupsFragment.OnGroupsFragmentInteractionListener {
 
     private static final String TAG = MainActivity.class
             .getCanonicalName();
@@ -39,6 +42,11 @@ public class MainActivity extends RoboActionBarActivity implements MaterialTabLi
     ViewPager pager;
     ViewPagerAdapter adapter;
     Resources res;
+
+    MenuItem newBulletinMenu;
+
+    @Inject
+    DaoSession daoSession;
 
     //public static final EventBus mBus = new EventBus();
 
@@ -65,6 +73,11 @@ public class MainActivity extends RoboActionBarActivity implements MaterialTabLi
                 // when user do a swipe the selected tab change
                 Log.e(TAG, "Page Selected: " + position);
                 tabHost.setSelectedNavigationItem(position);
+                if (position == 0) {
+                    newBulletinMenu.setVisible(true);
+                } else {
+                    newBulletinMenu.setVisible(false);
+                }
             }
         });
 
@@ -90,23 +103,37 @@ public class MainActivity extends RoboActionBarActivity implements MaterialTabLi
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_test, menu);
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        newBulletinMenu = menu.findItem(R.id.action_new_bulletin);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                // app icon in action bar clicked; goto parent activity.
+                this.finish();
+                return true;
+            case R.id.action_new_bulletin:
+                Intent intent = new Intent(MainActivity.this, NewBulletinActivity.class);
+                startActivityForResult(intent, 1);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
+    }
 
-        return super.onOptionsItemSelected(item);
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode,
+                                    Intent intent) {
+        Log.i(TAG, "onActivityResult: requestCode=" + requestCode + ", resultCode=" + resultCode);
+        if (requestCode == 1 && resultCode == 1 && intent != null) {
+            Bulletin bulletin = (Bulletin)intent.getSerializableExtra(NewBulletinActivity.PARAM_NEW_BULLETIN);
+            BulletinDao bulletinDao = daoSession.getBulletinDao();
+            bulletinDao.insert(BulletinWrap.validate(bulletin));
+            getContentResolver().notifyChange(BulletinHelper.CONTENT_URI, null);
+        }
     }
 
     @Override
@@ -137,8 +164,9 @@ public class MainActivity extends RoboActionBarActivity implements MaterialTabLi
 
 
     @Override
-    public void onProfileFragmentInteraction(String id) {
-
+    public void onSignOut() {
+        Intent intent = new Intent(this, BootstrapActivity.class);
+        startActivity(intent);
     }
 
     @Override
@@ -156,8 +184,8 @@ public class MainActivity extends RoboActionBarActivity implements MaterialTabLi
     @Override
     public void onGroupItemClick(Group group) {
         Bundle data = new Bundle();
-        data.putSerializable(GroupDetailActivity.PARAM_GROUP, group);
-        Intent intent = new Intent(this, GroupDetailActivity.class);
+        data.putSerializable(GroupProfileActivity.PARAM_GROUP, group);
+        Intent intent = new Intent(this, GroupProfileActivity.class);
         intent.putExtras(data);
         startActivity(intent);
     }
@@ -176,8 +204,8 @@ public class MainActivity extends RoboActionBarActivity implements MaterialTabLi
         Log.i(TAG, "on BulletinGroupNameClickEvent");
         Bulletin bulletin = event.bulletin;
         Bundle data = new Bundle();
-        data.putSerializable(GroupDetailActivity.PARAM_GROUP, bulletin.group);
-        Intent intent = new Intent(this, GroupDetailActivity.class);
+        data.putSerializable(GroupProfileActivity.PARAM_GROUP, bulletin.group);
+        Intent intent = new Intent(this, GroupProfileActivity.class);
         intent.putExtras(data);
         startActivity(intent);
     }
@@ -195,7 +223,7 @@ public class MainActivity extends RoboActionBarActivity implements MaterialTabLi
                 case 1:
                     return new GroupsFragment();
                 case 2:
-                    return new ProfileFragment();
+                    return new SettingsFragment();
                 default:
                     return null;
             }

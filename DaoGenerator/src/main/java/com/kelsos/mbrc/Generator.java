@@ -31,6 +31,7 @@ public final class Generator {
     bulletin.setTableName("BULLETINS");
     bulletin.addIdProperty();
     bulletin.addStringProperty("serverId").notNull().unique();
+    bulletin.addDoubleProperty("createdAt").notNull();
     bulletin.addStringProperty("json");
 
     final String outDir = "app/src/main/java";

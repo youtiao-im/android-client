@@ -11,6 +11,7 @@ public final class BulletinHelper {
 
     public static final String ID = BulletinDao.Properties.Id.columnName;
     public static final String SERVERID = BulletinDao.Properties.ServerId.columnName;
+    public static final String CREATEDAT = BulletinDao.Properties.CreatedAt.columnName;
     public static final String JSON = BulletinDao.Properties.Json.columnName;
 
     public static final String TABLENAME = BulletinDao.TABLENAME;
@@ -33,6 +34,7 @@ public final class BulletinHelper {
     private static final String[] PROJECTION = {
         ID,
         SERVERID,
+        CREATEDAT,
         JSON
     };
 
@@ -44,6 +46,7 @@ public final class BulletinHelper {
         final Bulletin entity = new Bulletin();
         entity.setId(data.getLong(data.getColumnIndex(ID)));
         entity.setServerId(data.getString(data.getColumnIndex(SERVERID)));
+        entity.setCreatedAt(data.getDouble(data.getColumnIndex(CREATEDAT)));
         entity.setJson(data.getString(data.getColumnIndex(JSON)));
         return entity;
     }

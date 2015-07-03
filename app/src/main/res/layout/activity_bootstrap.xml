@@ -1,7 +1,28 @@
-<?xml version="1.0" encoding="utf-8"?><!--
-  Copyright (c) 2012 Manning
-  See the file license.txt for copying permission.
--->
-<merge xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent" />
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="10dp">
+
+    <Button
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Log In"
+        android:id="@+id/btn_login"
+        android:layout_alignParentBottom="false"
+        android:layout_alignParentLeft="false"
+        android:background="@android:color/holo_green_dark"
+        android:layout_centerInParent="true" />
+
+    <Button
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Sign Up"
+        android:id="@+id/btn_sign_up"
+        android:layout_alignParentBottom="false"
+        android:layout_alignParentRight="false"
+        android:background="@android:color/white"
+        android:layout_below="@+id/btn_login"
+        android:layout_marginTop="20dp" />
+</RelativeLayout>
+

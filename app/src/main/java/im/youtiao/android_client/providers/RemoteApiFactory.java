@@ -34,7 +34,7 @@ public class RemoteApiFactory {
     static Context  mContext;
 
     public static RemoteApi getApi() {
-        Log.e(TAG, "get Api");
+        //Log.e(TAG, "get Api");
         if (instance == null) {
             Log.e(TAG, " RemoteApi is null");
         }
@@ -42,7 +42,7 @@ public class RemoteApiFactory {
     }
 
     public static void setApiToken(String tokenType, String token) {
-        Log.e(TAG, "setApiToken:" + tokenType + " " + token);
+        //Log.e(TAG, "setApiToken:" + tokenType + " " + token);
         RequestInterceptor interceptor = (request) -> {
             request.addHeader("Accept", "application/vnd.youtiao.im+json; version=1");
             request.addHeader("Authorization", tokenType + " " + token);

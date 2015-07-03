@@ -12,6 +12,7 @@ public class Bulletin {
     private Long id;
     /** Not-null value. */
     private String serverId;
+    private double createdAt;
     private String json;
 
     // KEEP FIELDS - put your custom fields here
@@ -24,9 +25,10 @@ public class Bulletin {
         this.id = id;
     }
 
-    public Bulletin(Long id, String serverId, String json) {
+    public Bulletin(Long id, String serverId, double createdAt, String json) {
         this.id = id;
         this.serverId = serverId;
+        this.createdAt = createdAt;
         this.json = json;
     }
 
@@ -46,6 +48,14 @@ public class Bulletin {
     /** Not-null value; ensure this value is available before it is saved to the database. */
     public void setServerId(String serverId) {
         this.serverId = serverId;
+    }
+
+    public double getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(double createdAt) {
+        this.createdAt = createdAt;
     }
 
     public String getJson() {

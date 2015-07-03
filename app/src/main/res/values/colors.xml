@@ -16,4 +16,9 @@
     <color name="icon_selected_color">#ff2fcb3d</color>
 
     <color name="stamp_font_color">#ffacacac</color>
+
+    <color name="btn_background_color">#ff4a88db</color>
+    <color name="listview_background_color">#ffffffff</color>
+
+    <color name="text_focus_color">#ff4a88db</color>
 </resources>

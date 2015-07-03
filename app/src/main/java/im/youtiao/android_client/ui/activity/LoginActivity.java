@@ -1,54 +1,45 @@
 package im.youtiao.android_client.ui.activity;
 
-import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
-import android.app.LoaderManager.LoaderCallbacks;
-import android.content.ContentResolver;
-import android.content.CursorLoader;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.Loader;
-import android.database.Cursor;
-import android.net.Uri;
 
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
-import android.provider.ContactsContract;
+import android.support.v7.app.ActionBar;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.inputmethod.EditorInfo;
-import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import com.google.inject.Inject;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import im.youtiao.android_client.AccountDescriptor;
 import im.youtiao.android_client.R;
 import im.youtiao.android_client.YTApplication;
-import im.youtiao.android_client.content_providers.ChannelContentProvider;
 import im.youtiao.android_client.dao.DaoSession;
 import im.youtiao.android_client.providers.RemoteApiFactory;
 import im.youtiao.android_client.rest.LoginApi;
 import im.youtiao.android_client.rest.RemoteApi;
 import im.youtiao.android_client.rest.responses.TokenResponse;
 import im.youtiao.android_client.util.Logger;
-import roboguice.activity.RoboAccountAuthenticatorActivity;
+import roboguice.activity.RoboActionBarActivity;
 import roboguice.inject.InjectView;
+import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
-public class LoginActivity extends RoboAccountAuthenticatorActivity implements LoaderCallbacks<Cursor> {
+public class LoginActivity extends RoboActionBarActivity {
 
     private static final String[] DUMMY_CREDENTIALS = new String[]{
             "foo@example.com:hello", "bar@example.com:world"
@@ -61,19 +52,18 @@ public class LoginActivity extends RoboAccountAuthenticatorActivity implements L
     public static final String AUTHTOKEN_TYPE = "bearer";
 
     public static final String PARAM_USER = "user";
+    public static final String PARAM_ACCOUNT = "account";
     public static final String PARAM_CONFIRMCREDENTIALS = "confirmCredentials";
 
     private View mProgressView;
     private View mLoginFormView;
 
     private String mPassword;
+    @InjectView(R.id.password)
     private EditText mPasswordEdit;
     private String mUsername;
-    @InjectView(R.id.email) private AutoCompleteTextView mUsernameEdit;
-    private Button mSignInButton;
-    private final Handler mHandler = new Handler();
-    private String mAuthTokenType;
-    private Boolean mConfirmCredentials = false;
+    @InjectView(R.id.email)
+    private EditText mUsernameEdit;
 
     @Inject
     private LoginApi loginApi;
@@ -81,43 +71,34 @@ public class LoginActivity extends RoboAccountAuthenticatorActivity implements L
     @Inject
     private DaoSession daoSession;
 
-    private AccountManager mAccountManager;
-
     public static final String KEY_ERROR_MESSAGE = "ERR_MSG";
 
     /**
      * Was the original caller asking for an entirely new account?
      */
     protected boolean mRequestNewAccount = false;
-    private String mUser;
+    private AccountDescriptor mAccount;
+
+
+    YTApplication getApp() {
+        return (YTApplication) getApplication();
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
-        mAccountManager = AccountManager.get(this);
-        //checkMaximumNumberOfAccounts();
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setHomeButtonEnabled(true);
+        actionBar.setDisplayHomeAsUpEnabled(true);
 
         final Intent intent = getIntent();
-
-        mUser = intent.getStringExtra(PARAM_USER);
-        mAuthTokenType = intent.getStringExtra(PARAM_AUTHTOKEN_TYPE);
-        if (mAuthTokenType == null) {
-            mAuthTokenType = AUTHTOKEN_TYPE;
+        mAccount = (AccountDescriptor) intent.getSerializableExtra(PARAM_ACCOUNT);
+        if (mAccount != null) {
+            mUsernameEdit.setText(mAccount.getName());
+            mPasswordEdit.setText(mAccount.getPassword());
         }
-        mRequestNewAccount = mUser == null;
-        mConfirmCredentials = intent.getBooleanExtra(
-                PARAM_CONFIRMCREDENTIALS, false);
-        Log.i(TAG, "    request new: " + mRequestNewAccount);
-
-
-        // Set up the login form.
-
-        if (mUser != null) {
-            mUsernameEdit.setText(mUser);
-        }
-        populateAutoComplete();
 
         mPasswordEdit = (EditText) findViewById(R.id.password);
         mPasswordEdit.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -139,23 +120,20 @@ public class LoginActivity extends RoboAccountAuthenticatorActivity implements L
             }
         });
 
-        Button mEamilSignUpButton = (Button) findViewById(R.id.email_sign_up_button);
-        mEamilSignUpButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent myIntent = new Intent(LoginActivity.this, RegisterActivity.class);
-                LoginActivity.this.startActivity(myIntent);
-            }
-        });
-
-        mLoginFormView = findViewById(R.id.login_form);
+        mLoginFormView = findViewById(R.id.email_login_form);
         mProgressView = findViewById(R.id.login_progress);
     }
 
-    private void populateAutoComplete() {
-        getLoaderManager().initLoader(0, null, this);
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                this.finish();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
-
 
     /**
      * Attempts to sign in or register the account specified by the login form.
@@ -172,50 +150,43 @@ public class LoginActivity extends RoboAccountAuthenticatorActivity implements L
         mPassword = mPasswordEdit.getText().toString();
 
         boolean cancel = false;
-        View focusView = null;
-
         // Check for a valid password, if the user entered one.
-        if (!TextUtils.isEmpty(mPassword) && !isPasswordValid(mPassword)) {
-            mPasswordEdit.setError(getString(R.string.error_invalid_password));
-            focusView = mPasswordEdit;
+        String errorString = "";
+        if (TextUtils.isEmpty(mPassword) || !isPasswordValid(mPassword)) {
+            errorString = getString(R.string.error_invalid_password);
             cancel = true;
         }
 
         // Check for a valid email address.
         if (TextUtils.isEmpty(mUsername)) {
-            mUsernameEdit.setError(getString(R.string.error_field_required));
-            focusView = mUsernameEdit;
+            errorString = getString(R.string.error_user_name_required);
             cancel = true;
         } else if (!isEmailValid(mUsername)) {
-            mUsernameEdit.setError(getString(R.string.error_invalid_email));
-            focusView = mUsernameEdit;
+            errorString = getString(R.string.error_invalid_email);
             cancel = true;
         }
 
         if (cancel) {
-            focusView.requestFocus();
+            AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
+            builder.setMessage(errorString)
+                    .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    }).create().show();
         } else {
             showProgress(true);
-//            loginApi.getToken("password", mUsername, mPassword).subscribeOn(Schedulers.io())
-//                    .observeOn(AndroidSchedulers.mainThread())
-//                    .subscribe(this::onAuthenticationSuccess, this::onAuthenticationFailed);
             new AsyncTask<String, Void, Intent>() {
 
                 @Override
                 protected Intent doInBackground(String... params) {
-
                     Log.d("udinic", TAG + "> Started authenticating");
-
-                    String authtoken = null;
                     Bundle data = new Bundle();
                     try {
                         TokenResponse tokenResponse = loginApi.getToken("password", mUsername, mPassword);
-                        data.putString(AccountManager.KEY_ACCOUNT_NAME, mUsername);
-                        data.putString(AccountManager.KEY_ACCOUNT_TYPE, LoginActivity.PARAM_ACCOUNT_TYPE);
                         data.putString(AccountManager.KEY_AUTHTOKEN, tokenResponse.accessToken);
                         data.putString(PARAM_AUTHTOKEN_TYPE, tokenResponse.tokenType);
-                        //data.putString(PARAM_USER_PASS, userPass);
-
                     } catch (Exception e) {
                         data.putString(KEY_ERROR_MESSAGE, e.getMessage());
                     }
@@ -228,9 +199,17 @@ public class LoginActivity extends RoboAccountAuthenticatorActivity implements L
                 @Override
                 protected void onPostExecute(Intent intent) {
                     if (intent.hasExtra(KEY_ERROR_MESSAGE)) {
+                        showProgress(false);
                         Log.e(TAG, "onAuthenticationResult: failed to authenticate");
-                        mPasswordEdit.setError(getString(R.string.error_incorrect_password));
-                        mPasswordEdit.requestFocus();
+                        String errorString = getString(R.string.error_incorrect_password);
+                        AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
+                        builder.setMessage(errorString)
+                                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.dismiss();
+                                    }
+                                }).create().show();
                     } else {
                         finishLogin(intent);
                     }
@@ -240,8 +219,7 @@ public class LoginActivity extends RoboAccountAuthenticatorActivity implements L
     }
 
     private boolean isEmailValid(String email) {
-        //return email.contains("@");
-        return true;
+        return email.contains("@");
     }
 
     private boolean isPasswordValid(String password) {
@@ -251,36 +229,19 @@ public class LoginActivity extends RoboAccountAuthenticatorActivity implements L
     private void finishLogin(Intent intent) {
         String authToken = intent.getStringExtra(AccountManager.KEY_AUTHTOKEN);
         String tokenType = intent.getStringExtra(PARAM_AUTHTOKEN_TYPE);
-        final Account account = new Account(mUsername, PARAM_ACCOUNT_TYPE);
 
-        mAccountManager.setAuthToken(account, mAuthTokenType, authToken);
-        if (mRequestNewAccount) {
-            mAccountManager.addAccountExplicitly(account, mPassword, null);
-            ContentResolver.setSyncAutomatically(account, ChannelContentProvider.AUTHORITY, true);
-        } else {
-            mAccountManager.setPassword(account, mPassword);
-        }
-
-        if (mAuthTokenType != null
-                && mAuthTokenType.equals(tokenType)) {
-            intent.putExtra(AccountManager.KEY_AUTHTOKEN, authToken);
-            RemoteApiFactory.setApiToken(mAuthTokenType, authToken);
-            RemoteApi remoteApi = RemoteApiFactory.getApi();
-            remoteApi.getAuthenticatedUser().subscribeOn(Schedulers.io()).observeOn(Schedulers.io())
-                    .subscribe(res -> {
-//                        UserDao userDao = daoSession.getUserDao();
-//                        User user = new User();
-//                        user.setEmail(res.email);
-//                        user.setServerId(res.id);
-//                        user.setCreatedAt(res.createdAt);
-//                        user.setUpdatedAt(res.updatedAt);
-//                        userDao.insertOrReplace(user);
-                        ((YTApplication) getApplication()).setCurrentUser(res);
-                    }, Logger::logThrowable);
-        }
-        setAccountAuthenticatorResult(intent.getExtras());
-        setResult(RESULT_OK, intent);
-        finish();
+        RemoteApiFactory.setApiToken(tokenType, authToken);
+        RemoteApi remoteApi = RemoteApiFactory.getApi();
+        remoteApi.getAuthenticatedUser()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(res -> {
+                    showProgress(false);
+                    getApp().onPostSignIn(res, mPassword, tokenType, authToken);
+                    Intent newIntent = getIntent();
+                    LoginActivity.this.setResult(BootstrapActivity.EXISTING_ACCOUNT, intent);
+                    LoginActivity.this.finish();
+                }, Logger::logThrowable);
     }
 
     /**
@@ -294,14 +255,14 @@ public class LoginActivity extends RoboAccountAuthenticatorActivity implements L
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
             int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
 
-            mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
-            mLoginFormView.animate().setDuration(shortAnimTime).alpha(
-                    show ? 0 : 1).setListener(new AnimatorListenerAdapter() {
-                @Override
-                public void onAnimationEnd(Animator animation) {
-                    mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
-                }
-            });
+//            mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
+//            mLoginFormView.animate().setDuration(shortAnimTime).alpha(
+//                    show ? 0 : 1).setListener(new AnimatorListenerAdapter() {
+//                @Override
+//                public void onAnimationEnd(Animator animation) {
+//                    mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
+//                }
+//            });
 
             mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
             mProgressView.animate().setDuration(shortAnimTime).alpha(
@@ -315,62 +276,8 @@ public class LoginActivity extends RoboAccountAuthenticatorActivity implements L
             // The ViewPropertyAnimator APIs are not available, so simply show
             // and hide the relevant UI components.
             mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-            mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
+            //mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
         }
-    }
-
-    @Override
-    public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
-        return new CursorLoader(this,
-                // Retrieve data rows for the device user's 'profile' contact.
-                Uri.withAppendedPath(ContactsContract.Profile.CONTENT_URI,
-                        ContactsContract.Contacts.Data.CONTENT_DIRECTORY), ProfileQuery.PROJECTION,
-
-                // Select only email addresses.
-                ContactsContract.Contacts.Data.MIMETYPE +
-                        " = ?", new String[]{ContactsContract.CommonDataKinds.Email
-                .CONTENT_ITEM_TYPE},
-
-                // Show primary email addresses first. Note that there won't be
-                // a primary email address if the user hasn't specified one.
-                ContactsContract.Contacts.Data.IS_PRIMARY + " DESC");
-    }
-
-    @Override
-    public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor) {
-        List<String> emails = new ArrayList<String>();
-        cursor.moveToFirst();
-        while (!cursor.isAfterLast()) {
-            emails.add(cursor.getString(ProfileQuery.ADDRESS));
-            cursor.moveToNext();
-        }
-
-        addEmailsToAutoComplete(emails);
-    }
-
-    @Override
-    public void onLoaderReset(Loader<Cursor> cursorLoader) {
-
-    }
-
-    private interface ProfileQuery {
-        String[] PROJECTION = {
-                ContactsContract.CommonDataKinds.Email.ADDRESS,
-                ContactsContract.CommonDataKinds.Email.IS_PRIMARY,
-        };
-
-        int ADDRESS = 0;
-        int IS_PRIMARY = 1;
-    }
-
-
-    private void addEmailsToAutoComplete(List<String> emailAddressCollection) {
-        //Create adapter to tell the AutoCompleteTextView what to show in its dropdown list.
-        ArrayAdapter<String> adapter =
-                new ArrayAdapter<String>(LoginActivity.this,
-                        android.R.layout.simple_dropdown_item_1line, emailAddressCollection);
-
-        mUsernameEdit.setAdapter(adapter);
     }
 }
 

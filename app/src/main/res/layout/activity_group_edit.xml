@@ -16,7 +16,7 @@
             android:layout_margin="10dp" />
         <EditText style="@style/user_text"
             android:singleLine="true"
-            android:id="@+id/edtTxt_group_name"
+            android:id="@+id/edtTxt_send_to_group_name"
             android:layout_toRightOf="@+id/iv_group_name"
             android:layout_height="wrap_content"
             android:layout_width="match_parent"

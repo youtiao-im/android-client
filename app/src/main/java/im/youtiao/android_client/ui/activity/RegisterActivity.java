@@ -3,10 +3,13 @@ package im.youtiao.android_client.ui.activity;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -33,6 +36,9 @@ public class RegisterActivity extends RoboActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setHomeButtonEnabled(true);
+        actionBar.setDisplayHomeAsUpEnabled(true);
 
         mEmailView = (AutoCompleteTextView) findViewById(R.id.register_email);
         mPasswordView = (EditText) findViewById(R.id.register_password);
@@ -46,16 +52,7 @@ public class RegisterActivity extends RoboActionBarActivity {
             }
         });
 
-        Button signInWithAccountButton = (Button) findViewById(R.id.sign_in_with_account_button);
-        signInWithAccountButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent myIntent = new Intent(RegisterActivity.this, LoginActivity.class);
-                RegisterActivity.this.startActivity(myIntent);
-            }
-        });
-
-        mRegisterFormView = findViewById(R.id.register_form);
+        mRegisterFormView = findViewById(R.id.email_register_form);
         mProgressView = findViewById(R.id.register_progress);
     }
 
@@ -75,39 +72,37 @@ public class RegisterActivity extends RoboActionBarActivity {
         String confirmPassword = mConfirmPasswordView.getText().toString();
 
         boolean cancel = false;
-        View focusView = null;
-
+        String errorString = "";
         // Check for a valid password, if the user entered one.
         if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
-            mPasswordView.setError(getString(R.string.error_invalid_password));
-            focusView = mPasswordView;
+            errorString = getString(R.string.error_invalid_password);
             cancel = true;
         }
 
         if (!password.equals(confirmPassword)) {
-            mConfirmPasswordView.setError(getString(R.string.error_invalid_confirm_password));
-            focusView = mConfirmPasswordView;
+            errorString = getString(R.string.error_invalid_confirm_password);
             cancel = true;
         }
 
         // Check for a valid email address.
         if (TextUtils.isEmpty(email)) {
-            mEmailView.setError(getString(R.string.error_field_required));
-            focusView = mEmailView;
+            errorString = getString(R.string.error_user_name_required);
             cancel = true;
         } else if (!isEmailValid(email)) {
-            mEmailView.setError(getString(R.string.error_invalid_email));
-            focusView = mEmailView;
+            errorString = getString(R.string.error_invalid_email);
             cancel = true;
         }
 
         if (cancel) {
-            // There was an error; don't attempt register and focus the first
-            // form field with an error.
-            focusView.requestFocus();
+            AlertDialog.Builder builder = new AlertDialog.Builder(RegisterActivity.this);
+            builder.setMessage(errorString)
+                    .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    }).create().show();
         } else {
-            // Show a progress spinner, and kick off a background task to
-            // perform the user login attempt.
             showProgress(true);
             mRegisterTask = new UserRegisterTask(email, password);
             mRegisterTask.execute((Void) null);
@@ -170,17 +165,13 @@ public class RegisterActivity extends RoboActionBarActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                this.finish();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
-
-        return super.onOptionsItemSelected(item);
     }
 
     public class UserRegisterTask extends AsyncTask<Void, Void, Boolean> {
@@ -201,7 +192,7 @@ public class RegisterActivity extends RoboActionBarActivity {
             } catch (InterruptedException e) {
                 return false;
             }
-            return true;
+            return false;
         }
 
         @Override

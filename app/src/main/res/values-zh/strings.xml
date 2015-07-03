@@ -12,4 +12,5 @@
     <string name="title_activity_group_code">团队二维码</string>
     <string name="title_activity_group_member_profile">成员信息</string>
     <string name="title_activity_new_bulletin">新消息</string>
+    <string name="hint_type_bulletin_content">输入新的通知</string>
 </resources>

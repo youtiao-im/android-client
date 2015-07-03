@@ -9,22 +9,20 @@ import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.google.inject.Inject;
 
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 
 import de.greenrobot.event.EventBus;
 import im.youtiao.android_client.R;
 import im.youtiao.android_client.adapter.CommentArrayAdapter;
 import im.youtiao.android_client.dao.BulletinHelper;
+import im.youtiao.android_client.dao.DaoMaster;
 import im.youtiao.android_client.dao.DaoSession;
-import im.youtiao.android_client.data.DaoHelper;
 import im.youtiao.android_client.data.SyncManager;
 import im.youtiao.android_client.event.BulletinStampEvent;
 import im.youtiao.android_client.model.Bulletin;
@@ -53,8 +51,6 @@ public class BulletinDetailActivity extends RoboActionBarActivity {
     @InjectView(R.id.edtTxt_comment_content)
     EditText commentContentEdtText;
 
-    @InjectView(R.id.iv_creator_avatar)
-    ImageView bulletinCreatorAvatarIv;
     @InjectView(R.id.tv_user_name)
     TextView bulletinCreatorNameTv;
     @InjectView(R.id.tv_created_at)
@@ -105,8 +101,6 @@ public class BulletinDetailActivity extends RoboActionBarActivity {
         bulletinCreatedAtTv.setText("3 mins ago");
         bulletinGroupNameTv.setText("#" + bulletin.group.name);
         bulletinCommentCountTv.setText("" + bulletin.comments_count);
-
-        bulletinCreatorAvatarIv.setImageResource(R.mipmap.user_avatar);
         bulletinCreatorNameTv.setText(bulletin.createdBy.name);
         bulletinTextTv.setText(bulletin.text);
         bulletinCreatedAtTv.setText("3 mins ago");
@@ -214,7 +208,7 @@ public class BulletinDetailActivity extends RoboActionBarActivity {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(resp -> {
                     initView(resp);
-                    DaoHelper.insertOrUpdate(daoSession, BulletinWrap.validate(resp));
+                    DaoMaster.DaoHelper.insertOrUpdate(daoSession, BulletinWrap.validate(resp));
                     getContentResolver().notifyChange(BulletinHelper.CONTENT_URI, null);
                 }, Logger::logThrowable);
     }

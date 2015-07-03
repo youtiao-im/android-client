@@ -38,13 +38,13 @@ public class GroupCursorAdapter extends CursorAdapter {
 
     @Override
     public void changeCursor(Cursor cursor) {
-        Log.i(TAG, "changeCursor");
+        //Log.i(TAG, "changeCursor");
         super.changeCursor(cursor);
     }
 
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
-        Log.i(TAG, "newView:" + this.getCount());
+        //Log.i(TAG, "newView:" + this.getCount());
         final View view = mInflater.inflate(R.layout.row_group, parent,
                 false);
         ViewHolder holder = new ViewHolder();
@@ -57,7 +57,7 @@ public class GroupCursorAdapter extends CursorAdapter {
 
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
-        Log.i(TAG, "bindView:" + this.getCount());
+        //Log.i(TAG, "bindView:" + this.getCount());
         final ViewHolder holder = (ViewHolder) view.getTag();
 
         boolean needSeparator = false;

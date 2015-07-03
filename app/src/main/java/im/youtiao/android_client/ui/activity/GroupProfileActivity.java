@@ -9,7 +9,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -17,12 +16,13 @@ import android.widget.TextView;
 import com.google.inject.Inject;
 
 import im.youtiao.android_client.R;
+import im.youtiao.android_client.dao.DaoMaster;
 import im.youtiao.android_client.dao.DaoSession;
 import im.youtiao.android_client.dao.GroupHelper;
-import im.youtiao.android_client.data.DaoHelper;
 import im.youtiao.android_client.model.Group;
 import im.youtiao.android_client.rest.RemoteApi;
 import im.youtiao.android_client.wrap.GroupWrap;
+import mehdi.sakout.fancybuttons.FancyButton;
 import roboguice.activity.RoboActionBarActivity;
 import roboguice.inject.InjectView;
 
@@ -42,7 +42,7 @@ public class GroupProfileActivity extends RoboActionBarActivity {
     @InjectView(R.id.iv_group_memeber_forward) ImageView groupMemberForwardImageView;
     @InjectView(R.id.layout_group_members) RelativeLayout groupMemsLayout;
     @InjectView(R.id.layout_delete_group) RelativeLayout deleteGroupLayout;
-    @InjectView(R.id.btn_group_info_edit) Button groupInfoEditBtn;
+    @InjectView(R.id.btn_group_info_edit) FancyButton groupInfoEditBtn;
 
     @Inject
     DaoSession daoSession;
@@ -143,7 +143,7 @@ public class GroupProfileActivity extends RoboActionBarActivity {
                 if (group != null) {
                     groupNameTv.setText(group.name);
                     groupCodeTv.setText(group.code);
-                    DaoHelper.insertOrUpdate(daoSession, GroupWrap.validate(group));
+                    DaoMaster.DaoHelper.insertOrUpdate(daoSession, GroupWrap.validate(group));
                     getContentResolver().notifyChange(GroupHelper.CONTENT_URI, null);
                 }
             }

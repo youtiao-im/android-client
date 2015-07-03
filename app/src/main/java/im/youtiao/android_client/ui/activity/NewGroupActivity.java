@@ -10,7 +10,6 @@ import android.widget.EditText;
 
 import com.google.inject.Inject;
 
-import fr.castorflex.android.smoothprogressbar.SmoothProgressBar;
 import im.youtiao.android_client.R;
 import im.youtiao.android_client.dao.DaoSession;
 import im.youtiao.android_client.dao.GroupDao;
@@ -27,7 +26,7 @@ public class NewGroupActivity extends RoboActionBarActivity {
     private static final String TAG = NewGroupActivity.class
             .getCanonicalName();
 
-    @InjectView(R.id.edtTxt_group_name)
+    @InjectView(R.id.edtTxt_send_to_group_name)
     private EditText mTitle;
     @Inject private RemoteApi remoteApi;
 

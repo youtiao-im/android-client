@@ -12,12 +12,9 @@ import android.widget.EditText;
 import com.google.inject.Inject;
 
 import im.youtiao.android_client.R;
-import im.youtiao.android_client.dao.GroupDao;
-import im.youtiao.android_client.dao.GroupHelper;
 import im.youtiao.android_client.model.Group;
 import im.youtiao.android_client.rest.RemoteApi;
 import im.youtiao.android_client.util.Logger;
-import im.youtiao.android_client.wrap.GroupWrap;
 import roboguice.activity.RoboActionBarActivity;
 import roboguice.inject.InjectView;
 import rx.android.schedulers.AndroidSchedulers;
@@ -27,7 +24,7 @@ public class GroupEditActivity extends RoboActionBarActivity {
 
     public static final String PARAM_GROUP = "current_group";
 
-    @InjectView(R.id.edtTxt_group_name)
+    @InjectView(R.id.edtTxt_send_to_group_name)
     EditText groupNameEdtTxt;
 
     @InjectView(R.id.edtTxt_group_code)

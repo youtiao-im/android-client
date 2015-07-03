@@ -49,7 +49,7 @@ public interface RemoteApi {
     Observable<Group> updateGroup(@Query("id") String groupId, @Query("name") String name, @Query("code") String code);
 
     @GET(PREFIX + "/memberships.list")
-    Observable<List<Membership>> listGroupMemberships(@Query("id") String groupId, @Query("before_id") String beforeId, @Query("limit") Integer limit);
+    Observable<List<Membership>> listGroupMemberships(@Query("group_id") String groupId, @Query("before_id") String beforeId, @Query("limit") Integer limit);
 
     @GET(PREFIX + "/bulletins.list")
     Observable<List<Bulletin>> listBulletins(@Query("before_id") String beforeId, @Query("limit") Integer limit);

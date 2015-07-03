@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="bulletin_receiver">Receiver:</string>
+    <string name="bulletin_receiver">To:</string>
     <string name="add_bulletin">ADD</string>
 </resources>

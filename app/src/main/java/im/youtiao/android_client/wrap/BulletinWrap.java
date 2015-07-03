@@ -24,6 +24,8 @@ public class BulletinWrap {
         Bulletin ret = new Bulletin();
         ret.setServerId(arg.id);
         try {
+            Double createdAt = Double.parseDouble(arg.createdAt);
+            ret.setCreatedAt(createdAt);
             ret.setJson(objectMapper.writeValueAsString(arg));
         } catch (IOException e) {
             e.printStackTrace();

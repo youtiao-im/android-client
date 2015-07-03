@@ -4,27 +4,25 @@ package im.youtiao.android_client.adapter;
 import android.app.Activity;
 import android.content.Context;
 import android.database.Cursor;
-import android.graphics.Color;
-import android.graphics.PorterDuff;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CursorAdapter;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.TextView;
-
-import com.google.inject.Inject;
 
 import de.greenrobot.event.EventBus;
 import im.youtiao.android_client.R;
 import im.youtiao.android_client.dao.BulletinHelper;
-import im.youtiao.android_client.dao.DaoSession;
 import im.youtiao.android_client.event.BulletinCommentClickEvent;
+import im.youtiao.android_client.event.BulletinGroupNameClickEvent;
 import im.youtiao.android_client.event.BulletinStampEvent;
 import im.youtiao.android_client.model.Bulletin;
 import im.youtiao.android_client.model.Stamp;
+import im.youtiao.android_client.ui.activity.fragment.BulletinsFragment;
+import im.youtiao.android_client.ui.widget.LoadMoreView;
 import im.youtiao.android_client.wrap.BulletinWrap;
 
 public class BulletinCursorAdapter extends CursorAdapter {
@@ -32,54 +30,99 @@ public class BulletinCursorAdapter extends CursorAdapter {
             .getCanonicalName();
     private LayoutInflater mInflater;
     private Activity mActivity;
-    private DaoSession daoSession;
+    private Fragment mFragment;
 
-    @Inject
-    public BulletinCursorAdapter(Activity activity, DaoSession daoSession) {
+    public BulletinCursorAdapter(Activity activity, Fragment fragment) {
         super(activity, null, false);
         mActivity = activity;
+        mFragment = fragment;
         mInflater = LayoutInflater.from(activity);
-        this.daoSession = daoSession;
     }
 
     @Override
     public void changeCursor(Cursor cursor) {
-        Log.i(TAG, "changeCursor");
         super.changeCursor(cursor);
     }
 
     @Override
-    public View newView(Context context, Cursor cursor, ViewGroup parent) {
-        Log.i(TAG, "newView");
-        final View view = mInflater.inflate(R.layout.row_bulletin, parent,
-                false);
+    public int getCount() {
+        return super.getCount() + 1;
+    }
+
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+        View resultView;
+        if (position == getCount() - 1 ) {
+            resultView  = getLoadMoreView();
+        } else {
+            if (convertView != null) {
+                ViewHolder viewHolder = (ViewHolder) convertView.getTag();
+                if (viewHolder == null) {
+                    convertView = null;
+                }
+            }
+            resultView = super.getView(position, convertView, parent);
+        }
+        return resultView;
+    }
+
+    View getLoadMoreView() {
+        LayoutInflater mInflater = LayoutInflater.from(mActivity);
+        View convertView = mInflater.inflate(R.layout.widget_load_more, null);
+        LoadMoreView loadMoreView = (LoadMoreView) convertView.findViewById(R.id.loadMoreView);
+
+        LoadMoreView.Mode mode;
+
+        if (getCount() == 1 ) {
+            if (((BulletinsFragment)mFragment).isInit()) {
+                mode = LoadMoreView.Mode.LOADING;
+            } else {
+                mode = LoadMoreView.Mode.NONE_FOUND;
+            }
+        } else {
+            mode = ((BulletinsFragment)mFragment).hasMoreDate() ? LoadMoreView.Mode.LOADING : LoadMoreView.Mode.NO_MORE;
+        }
+        loadMoreView.configure(mode);
+        return loadMoreView;
+    }
+
+    View inflateBulletinItem() {
         ViewHolder viewHolder = new ViewHolder();
-        viewHolder.creatorAvatarIv = (ImageView) view.findViewById(R.id.iv_creator_avatar);
-        viewHolder.creatorNameTv = (TextView) view.findViewById(R.id.tv_user_name);
-        viewHolder.createdAtTv = (TextView) view.findViewById(R.id.tv_created_at);
-        viewHolder.feedContentTv = (TextView) view.findViewById(R.id.tv_bulletin_text);
-        viewHolder.channelNameTv = (TextView) view.findViewById(R.id.tv_group_name);
-        viewHolder.commentsCountTv = (TextView) view.findViewById(R.id.tv_bulletin_comment_count);
-        viewHolder.checkImgBtn = (ImageButton) view.findViewById(R.id.imgBtn_bulletin_check);
-        viewHolder.crossImgBtn = (ImageButton) view.findViewById(R.id.imgBtn_bulletin_cross);
-        viewHolder.commentImgBtn = (ImageButton) view.findViewById(R.id.imgBtn_bulletin_comment);
-        viewHolder.checksCountTv = (TextView) view.findViewById(R.id.tv_bulletin_checks_count);
-        viewHolder.crossesCountTv = (TextView) view.findViewById(R.id.tv_bulletin_crosses_count);
-        view.setTag(viewHolder);
-        return view;
+        View convertView = mInflater.inflate(R.layout.row_bulletin, null);
+        viewHolder.creatorNameTv = (TextView) convertView.findViewById(R.id.tv_user_name);
+        viewHolder.createdAtTv = (TextView) convertView.findViewById(R.id.tv_created_at);
+        viewHolder.feedContentTv = (TextView) convertView.findViewById(R.id.tv_bulletin_text);
+        viewHolder.groupNameTv = (TextView) convertView.findViewById(R.id.tv_group_name);
+        viewHolder.commentsCountTv = (TextView) convertView.findViewById(R.id.tv_bulletin_comment_count);
+        viewHolder.checkImgBtn = (ImageButton) convertView.findViewById(R.id.imgBtn_bulletin_check);
+        viewHolder.crossImgBtn = (ImageButton) convertView.findViewById(R.id.imgBtn_bulletin_cross);
+        viewHolder.commentImgBtn = (ImageButton) convertView.findViewById(R.id.imgBtn_bulletin_comment);
+        viewHolder.checksCountTv = (TextView) convertView.findViewById(R.id.tv_bulletin_checks_count);
+        viewHolder.crossesCountTv = (TextView) convertView.findViewById(R.id.tv_bulletin_crosses_count);
+        convertView.setTag(viewHolder);
+        return convertView;
+    }
+
+    @Override
+    public View newView(Context context, Cursor cursor, ViewGroup parent) {
+        //Log.i(TAG, "newView");
+        return inflateBulletinItem();
     }
 
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
-        Log.i(TAG, "bindView:" + this.getCount());
-        final ViewHolder viewHolder = (ViewHolder) view.getTag();
+        //Log.i(TAG, "bindView:" + this.getCount());
+        ViewHolder viewHolder = (ViewHolder) view.getTag();
+        if (viewHolder == null) {
+            view = inflateBulletinItem();
+            viewHolder = (ViewHolder) view.getTag();
+        }
 
         final Bulletin bulletin = BulletinWrap.wrap(BulletinHelper.fromCursor(cursor));
-        viewHolder.creatorAvatarIv.setImageResource(R.mipmap.user_avatar);
-        viewHolder.creatorNameTv.setText(bulletin.createdBy.name);
+        viewHolder.creatorNameTv.setText("#" + bulletin.createdBy.name);
         viewHolder.feedContentTv.setText(bulletin.text);
-        viewHolder.createdAtTv.setText("3 mins ago");
-        viewHolder.channelNameTv.setText("#" + bulletin.group.name);
+        viewHolder.createdAtTv.setText("5/6/15");
+        viewHolder.groupNameTv.setText(bulletin.group.name);
         viewHolder.commentsCountTv.setText("" + bulletin.comments_count);
         viewHolder.checksCountTv.setText("" + bulletin.checksCount);
         viewHolder.crossesCountTv.setText("" + bulletin.crossesCount);
@@ -100,33 +143,29 @@ public class BulletinCursorAdapter extends CursorAdapter {
         }
 
         viewHolder.checkImgBtn.setOnClickListener(v -> {
-            Log.i(TAG, "checkImgBtn clicked");
             EventBus.getDefault().post(new BulletinStampEvent(bulletin, Stamp.Mark.CHECK.toString().toLowerCase()));
 
         });
 
         viewHolder.crossImgBtn.setOnClickListener(v -> {
-            Log.i(TAG, "crossImgBtn clicked");
             EventBus.getDefault().post(new BulletinStampEvent(bulletin, Stamp.Mark.CROSS.toString().toLowerCase()));
 
         });
 
         viewHolder.commentImgBtn.setOnClickListener( v -> {
-            Log.i(TAG, "commentsImgBtn clicked");
             EventBus.getDefault().post(new BulletinCommentClickEvent(bulletin));
         });
 
-        viewHolder.channelNameTv.setOnClickListener(v -> {
-            Log.i(TAG, "channelName clicked");
-            EventBus.getDefault().post(new BulletinCommentClickEvent(bulletin));
+        viewHolder.groupNameTv.setOnClickListener(v -> {
+            Log.i(TAG, "groupNameTv click");
+            EventBus.getDefault().post(new BulletinGroupNameClickEvent(bulletin));
         });
     }
 
     static class ViewHolder {
-        public ImageView creatorAvatarIv;
         public TextView creatorNameTv;
         public TextView feedContentTv;
-        public TextView channelNameTv;
+        public TextView groupNameTv;
         public TextView createdAtTv;
         public ImageButton checkImgBtn;
         public TextView checksCountTv;
@@ -135,6 +174,4 @@ public class BulletinCursorAdapter extends CursorAdapter {
         public ImageButton crossImgBtn;
         public TextView crossesCountTv;
     }
-
-
 }

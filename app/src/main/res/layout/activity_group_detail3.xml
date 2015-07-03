@@ -2,8 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:listViewAttr="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#ff4a88db">
+    android:layout_height="match_parent">
 
     <cn.trinea.android.common.view.DropDownListView
         android:id="@+id/lv_bulletin_list"
@@ -12,7 +11,5 @@
         android:drawSelectorOnTop="false"
         listViewAttr:isAutoLoadOnBottom="true"
         listViewAttr:isDropDownStyle="true"
-        listViewAttr:isOnBottomStyle="true"
-        android:background="#fff6f9fb" />
+        listViewAttr:isOnBottomStyle="true" />
 </RelativeLayout>
-

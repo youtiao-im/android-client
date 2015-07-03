@@ -7,6 +7,6 @@
 
     <string name="error_invalid_email">Invalid Email</string>
     <string name="error_invalid_password">Invalid Password</string>
-    <string name="error_field_required">Field Required</string>
-    <string name="error_incorrect_password">Incorrect Password</string>
+    <string name="error_user_name_required">Username Required</string>
+    <string name="error_incorrect_password">Incorrect Username or Password</string>
 </resources>

@@ -25,7 +25,8 @@ public class BulletinDao extends AbstractDao<Bulletin, Long> {
     public static class Properties {
         public final static Property Id = new Property(0, Long.class, "id", true, "_id");
         public final static Property ServerId = new Property(1, String.class, "serverId", false, "SERVER_ID");
-        public final static Property Json = new Property(2, String.class, "json", false, "JSON");
+        public final static Property CreatedAt = new Property(2, double.class, "createdAt", false, "CREATED_AT");
+        public final static Property Json = new Property(3, String.class, "json", false, "JSON");
     };
 
 
@@ -43,7 +44,8 @@ public class BulletinDao extends AbstractDao<Bulletin, Long> {
         db.execSQL("CREATE TABLE " + constraint + "'BULLETINS' (" + //
                 "'_id' INTEGER PRIMARY KEY ," + // 0: id
                 "'SERVER_ID' TEXT NOT NULL UNIQUE ," + // 1: serverId
-                "'JSON' TEXT);"); // 2: json
+                "'CREATED_AT' REAL NOT NULL ," + // 2: createdAt
+                "'JSON' TEXT);"); // 3: json
     }
 
     /** Drops the underlying database table. */
@@ -62,10 +64,11 @@ public class BulletinDao extends AbstractDao<Bulletin, Long> {
             stmt.bindLong(1, id);
         }
         stmt.bindString(2, entity.getServerId());
+        stmt.bindDouble(3, entity.getCreatedAt());
  
         String json = entity.getJson();
         if (json != null) {
-            stmt.bindString(3, json);
+            stmt.bindString(4, json);
         }
     }
 
@@ -81,7 +84,8 @@ public class BulletinDao extends AbstractDao<Bulletin, Long> {
         Bulletin entity = new Bulletin( //
             cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // id
             cursor.getString(offset + 1), // serverId
-            cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2) // json
+            cursor.getDouble(offset + 2), // createdAt
+            cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3) // json
         );
         return entity;
     }
@@ -91,7 +95,8 @@ public class BulletinDao extends AbstractDao<Bulletin, Long> {
     public void readEntity(Cursor cursor, Bulletin entity, int offset) {
         entity.setId(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
         entity.setServerId(cursor.getString(offset + 1));
-        entity.setJson(cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2));
+        entity.setCreatedAt(cursor.getDouble(offset + 2));
+        entity.setJson(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
      }
     
     /** @inheritdoc */

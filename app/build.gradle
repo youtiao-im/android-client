@@ -63,7 +63,7 @@ android {
         main {
             java {
                 srcDir 'src/main'
-                //srcDir 'src-gen'
+                jniLibs.srcDirs = ['libs']
             }
         }
     }
@@ -76,9 +76,11 @@ android {
 }
 
 dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
     compile project(':DaoGenerator')
+    //compile project(':trineaandroidcommon')
     provided 'org.roboguice:roboblender:3.0.1'
-    compile 'com.android.support:appcompat-v7:22.1.1'
+    compile 'com.android.support:appcompat-v7:22.2.0'
     compile 'it.neokree:MaterialTabs:0.11'
     compile 'org.codehaus.jackson:jackson-mapper-asl:1.9.13'
     compile 'org.freemarker:freemarker:2.3.20'
@@ -90,11 +92,10 @@ dependencies {
     compile 'com.squareup.okhttp:okhttp-urlconnection:2.0.0'
     compile 'com.squareup.okhttp:okhttp:2.0.0'
     compile 'io.reactivex:rxandroid:0.24.0'
-    compile 'com.android.support:support-v4:22.1.1'
+    compile 'com.android.support:support-v4:22.2.0'
     compile 'in.srain.cube:ultra-ptr:1.0.10'
     compile 'com.github.medyo:fancybuttons:1.4@aar'
     compile 'com.hannesdorfmann.smoothprogressbar:library:1.0.0'
-    compile project(':trineaandroidcommon')
 }
 
 project.tasks.withType(JavaCompile) {

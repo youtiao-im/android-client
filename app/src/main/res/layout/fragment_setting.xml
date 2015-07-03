@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+    <LinearLayout
+        style="@style/wrap_layout"
+        android:background="#ffffffff"
+        android:layout_alignParentBottom="true"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_below="@+id/layout_group_info">
+
+
+        <RelativeLayout style="@style/column_layout"
+            android:id="@+id/layout_account">
+            <TextView style="@style/user_text"
+                android:text="Account"
+                android:id="@+id/tv_account"
+                android:layout_alignParentLeft="true"/>
+        </RelativeLayout>
+
+        <View  style="@style/bg_line"/>
+
+        <RelativeLayout style="@style/column_layout"
+            android:id="@+id/layout_about">
+            <TextView style="@style/user_text"
+                android:text="About"
+                android:id="@+id/tv_about"
+                android:layout_alignParentLeft="true" />
+        </RelativeLayout>
+        <View  style="@style/bg_line"/>
+
+        <RelativeLayout style="@style/column_layout"
+            android:id="@+id/layout_help">
+            <TextView style="@style/user_text"
+                android:text="Help"
+                android:id="@+id/tv_help"
+                android:layout_alignParentLeft="true" />
+        </RelativeLayout>
+        <View  style="@style/bg_line"/>
+
+        <RelativeLayout style="@style/column_layout"
+            android:id="@+id/layout_feedback">
+            <TextView style="@style/user_text"
+                android:text="Feedback"
+                android:id="@+id/tv_feedback"
+                android:layout_alignParentLeft="true" />
+        </RelativeLayout>
+        <View  style="@style/bg_line"/>
+
+        <Button
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Sign Out"
+            android:id="@+id/btn_sign_out" />
+    </LinearLayout>
+
+</RelativeLayout>

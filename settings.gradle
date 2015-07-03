@@ -1,4 +1,4 @@
 include ':DaoGenerator'
 //include ':java-sdk'
 include ':app'
-include ':trineaandroidcommon'
+//include ':trineaandroidcommon'

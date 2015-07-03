@@ -27,7 +27,7 @@
     <style name="bg_line">
         <item name="android:layout_width">fill_parent</item>
         <item name="android:layout_height">1px</item>
-        <item name="android:background">#a518140d</item>
+        <item name="android:background">#ffcbcac9</item>
     </style>
 
     <style name="drop_down_list_header_progress_bar_style">
