@@ -22,12 +22,11 @@ import im.youtiao.android_client.adapter.BulletinCursorAdapter;
 import im.youtiao.android_client.dao.BulletinDao;
 import im.youtiao.android_client.dao.BulletinHelper;
 import im.youtiao.android_client.dao.DaoHelper;
-import im.youtiao.android_client.dao.DaoMaster;
 import im.youtiao.android_client.dao.DaoSession;
 import im.youtiao.android_client.event.BulletinStampEvent;
 import im.youtiao.android_client.model.Bulletin;
 import im.youtiao.android_client.rest.RemoteApi;
-import im.youtiao.android_client.util.Logger;
+import im.youtiao.android_client.util.NetworkExceptionHandler;
 import im.youtiao.android_client.wrap.BulletinWrap;
 import in.srain.cube.views.ptr.PtrClassicFrameLayout;
 import in.srain.cube.views.ptr.PtrDefaultHandler;
@@ -273,7 +272,7 @@ public class BulletinsFragment extends RoboFragment implements LoaderManager.Loa
                     isInit = false;
                     mPtrFrame.refreshComplete();
                     getActivity().getContentResolver().notifyChange(BulletinHelper.CONTENT_URI, null);
-                }, Logger::logThrowable);
+                }, error -> NetworkExceptionHandler.handleThrowable(error, getActivity()));
     }
 
     private void loadMoreData() {
@@ -294,7 +293,7 @@ public class BulletinsFragment extends RoboFragment implements LoaderManager.Loa
                     }
                     isInit = false;
                     getActivity().getContentResolver().notifyChange(BulletinHelper.CONTENT_URI, null);
-                }, Logger::logThrowable);
+                }, error -> NetworkExceptionHandler.handleThrowable(error, getActivity()));
     }
 
 
@@ -309,6 +308,6 @@ public class BulletinsFragment extends RoboFragment implements LoaderManager.Loa
                 .subscribe(resp -> {
                     DaoHelper.insertOrUpdate(daoSession, BulletinWrap.validate(resp));
                     getActivity().getContentResolver().notifyChange(BulletinHelper.CONTENT_URI, null);
-                }, Logger::logThrowable);
+                }, error -> NetworkExceptionHandler.handleThrowable(error, getActivity()));
     }
 }

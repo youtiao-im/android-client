@@ -2,6 +2,10 @@ package im.youtiao.android_client.rest;
 
 import android.util.Log;
 
+import org.apache.commons.io.IOUtils;
+
+import java.io.IOException;
+
 import retrofit.ErrorHandler;
 import retrofit.RetrofitError;
 import retrofit.client.Response;

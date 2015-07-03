@@ -15,7 +15,7 @@ import im.youtiao.android_client.dao.DaoSession;
 import im.youtiao.android_client.dao.GroupDao;
 import im.youtiao.android_client.dao.GroupHelper;
 import im.youtiao.android_client.rest.RemoteApi;
-import im.youtiao.android_client.util.Logger;
+import im.youtiao.android_client.util.NetworkExceptionHandler;
 import im.youtiao.android_client.wrap.GroupWrap;
 import roboguice.activity.RoboActionBarActivity;
 import roboguice.inject.InjectView;
@@ -74,7 +74,7 @@ public class NewGroupActivity extends RoboActionBarActivity {
                         intent.putExtras(data);
                         startActivity(intent);
                         finish();
-                    }, Logger::logThrowable);
+                    }, error -> NetworkExceptionHandler.handleThrowable(error, this));
         }
     }
 }

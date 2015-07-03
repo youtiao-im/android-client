@@ -17,7 +17,7 @@ import im.youtiao.android_client.R;
 import im.youtiao.android_client.dao.DaoSession;
 import im.youtiao.android_client.model.Group;
 import im.youtiao.android_client.rest.RemoteApi;
-import im.youtiao.android_client.util.Logger;
+import im.youtiao.android_client.util.NetworkExceptionHandler;
 import roboguice.activity.RoboActionBarActivity;
 import roboguice.inject.InjectView;
 import rx.android.schedulers.AndroidSchedulers;
@@ -127,7 +127,7 @@ public class NewBulletinActivity extends RoboActionBarActivity {
                         intent.putExtras(data);
                         NewBulletinActivity.this.setResult(1, intent);
                         NewBulletinActivity.this.finish();
-                    }, Logger::logThrowable);
+                    }, error -> NetworkExceptionHandler.handleThrowable(error, this));
         }
         return true;
     }

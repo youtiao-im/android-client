@@ -14,7 +14,7 @@ import com.google.inject.Inject;
 import im.youtiao.android_client.R;
 import im.youtiao.android_client.model.Group;
 import im.youtiao.android_client.rest.RemoteApi;
-import im.youtiao.android_client.util.Logger;
+import im.youtiao.android_client.util.NetworkExceptionHandler;
 import roboguice.activity.RoboActionBarActivity;
 import roboguice.inject.InjectView;
 import rx.android.schedulers.AndroidSchedulers;
@@ -119,7 +119,7 @@ public class GroupEditActivity extends RoboActionBarActivity {
                         intent.putExtras(data);
                         GroupEditActivity.this.setResult(0, intent);
                         GroupEditActivity.this.finish();
-                    }, Logger::logThrowable);
+                    }, error -> NetworkExceptionHandler.handleThrowable(error, this));
         }
         return true;
     }

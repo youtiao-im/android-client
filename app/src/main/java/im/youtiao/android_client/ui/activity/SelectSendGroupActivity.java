@@ -1,9 +1,7 @@
 package im.youtiao.android_client.ui.activity;
 
 import android.content.Intent;
-import android.database.Cursor;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -12,7 +10,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.ListView;
 
 import com.google.inject.Inject;
@@ -22,15 +19,11 @@ import java.util.List;
 
 import im.youtiao.android_client.R;
 import im.youtiao.android_client.adapter.GroupArrayAdapter;
-import im.youtiao.android_client.dao.BulletinHelper;
 import im.youtiao.android_client.dao.DaoSession;
 import im.youtiao.android_client.dao.GroupDao;
-import im.youtiao.android_client.dao.GroupHelper;
-import im.youtiao.android_client.model.Bulletin;
 import im.youtiao.android_client.model.Group;
 import im.youtiao.android_client.rest.RemoteApi;
-import im.youtiao.android_client.util.Logger;
-import im.youtiao.android_client.wrap.BulletinWrap;
+import im.youtiao.android_client.util.NetworkExceptionHandler;
 import im.youtiao.android_client.wrap.GroupWrap;
 import roboguice.activity.RoboActionBarActivity;
 import roboguice.inject.InjectView;
@@ -160,7 +153,7 @@ public class SelectSendGroupActivity extends RoboActionBarActivity {
                             }
                             mAdapter.notifyDataSetChanged();
                         }
-                    }, Logger::logThrowable);
+                    }, error -> NetworkExceptionHandler.handleThrowable(error, this));
         }
     }
 

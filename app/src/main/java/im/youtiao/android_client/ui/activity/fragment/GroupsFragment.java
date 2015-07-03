@@ -11,7 +11,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ListView;
 
 import com.google.inject.Inject;
@@ -23,7 +22,7 @@ import im.youtiao.android_client.dao.GroupDao;
 import im.youtiao.android_client.dao.GroupHelper;
 import im.youtiao.android_client.model.Group;
 import im.youtiao.android_client.rest.RemoteApi;
-import im.youtiao.android_client.util.Logger;
+import im.youtiao.android_client.util.NetworkExceptionHandler;
 import im.youtiao.android_client.wrap.GroupWrap;
 import in.srain.cube.views.ptr.PtrClassicFrameLayout;
 import in.srain.cube.views.ptr.PtrDefaultHandler;
@@ -167,7 +166,7 @@ public class GroupsFragment extends RoboFragment implements LoaderManager.Loader
                     Log.i(TAG, "groupDao size=" + groupDao.count());
                     mPtrFrame.refreshComplete();
                     getActivity().getContentResolver().notifyChange(GroupHelper.CONTENT_URI, null);
-                }, Logger::logThrowable);
+                }, error -> NetworkExceptionHandler.handleThrowable(error, getActivity()));
     }
 
     @Override

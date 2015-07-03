@@ -22,7 +22,6 @@ import im.youtiao.android_client.R;
 import im.youtiao.android_client.adapter.CommentArrayAdapter;
 import im.youtiao.android_client.dao.BulletinHelper;
 import im.youtiao.android_client.dao.DaoHelper;
-import im.youtiao.android_client.dao.DaoMaster;
 import im.youtiao.android_client.dao.DaoSession;
 import im.youtiao.android_client.data.SyncManager;
 import im.youtiao.android_client.event.BulletinStampEvent;
@@ -30,7 +29,7 @@ import im.youtiao.android_client.model.Bulletin;
 import im.youtiao.android_client.model.Comment;
 import im.youtiao.android_client.model.Stamp;
 import im.youtiao.android_client.rest.RemoteApi;
-import im.youtiao.android_client.util.Logger;
+import im.youtiao.android_client.util.NetworkExceptionHandler;
 import im.youtiao.android_client.wrap.BulletinWrap;
 import roboguice.activity.RoboActionBarActivity;
 import roboguice.inject.InjectView;
@@ -164,7 +163,7 @@ public class BulletinDetailActivity extends RoboActionBarActivity {
                         comments.addFirst(res);
                         bulletinCommentCountTv.setText("" + comments.size());
                         mAdapter.notifyDataSetChanged();
-                    }, Logger::logThrowable);
+                    }, error -> NetworkExceptionHandler.handleThrowable(error, this));
 
         });
     }
@@ -197,7 +196,7 @@ public class BulletinDetailActivity extends RoboActionBarActivity {
                         comments.add(item);
                     }
                     mAdapter.notifyDataSetChanged();
-                }, Logger::logThrowable);
+                }, error -> NetworkExceptionHandler.handleThrowable(error, this));
 
     }
 
@@ -211,6 +210,6 @@ public class BulletinDetailActivity extends RoboActionBarActivity {
                     initView(resp);
                     DaoHelper.insertOrUpdate(daoSession, BulletinWrap.validate(resp));
                     getContentResolver().notifyChange(BulletinHelper.CONTENT_URI, null);
-                }, Logger::logThrowable);
+                }, error -> NetworkExceptionHandler.handleThrowable(error, this));
     }
 }

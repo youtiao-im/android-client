@@ -15,14 +15,11 @@ import com.google.inject.Inject;
 import java.util.ArrayList;
 
 import im.youtiao.android_client.R;
-import im.youtiao.android_client.adapter.CommentArrayAdapter;
 import im.youtiao.android_client.adapter.MemberArrayAdapter;
-import im.youtiao.android_client.model.Bulletin;
-import im.youtiao.android_client.model.Comment;
 import im.youtiao.android_client.model.Group;
 import im.youtiao.android_client.model.Membership;
 import im.youtiao.android_client.rest.RemoteApi;
-import im.youtiao.android_client.util.Logger;
+import im.youtiao.android_client.util.NetworkExceptionHandler;
 import roboguice.activity.RoboActionBarActivity;
 import roboguice.inject.InjectView;
 import rx.android.schedulers.AndroidSchedulers;
@@ -108,6 +105,6 @@ public class GroupMemberActivity extends RoboActionBarActivity {
                         memberships.add(item);
                     }
                     mAdapter.notifyDataSetChanged();
-                }, Logger::logThrowable);
+                }, error -> NetworkExceptionHandler.handleThrowable(error, this));
     }
 }

@@ -27,7 +27,7 @@ import im.youtiao.android_client.event.BulletinStampEvent;
 import im.youtiao.android_client.model.Bulletin;
 import im.youtiao.android_client.model.Group;
 import im.youtiao.android_client.rest.RemoteApi;
-import im.youtiao.android_client.util.Logger;
+import im.youtiao.android_client.util.NetworkExceptionHandler;
 import im.youtiao.android_client.wrap.BulletinWrap;
 import in.srain.cube.views.ptr.PtrClassicFrameLayout;
 import in.srain.cube.views.ptr.PtrDefaultHandler;
@@ -248,7 +248,7 @@ public class GroupDetailActivity extends RoboActionBarActivity {
                     isInit = false;
                     mPtrFrame.refreshComplete();
                     mAdapter.notifyDataSetChanged();
-                }, Logger::logThrowable);
+                }, error -> NetworkExceptionHandler.handleThrowable(error, this));
     }
 
     public void loadMoreData() {
@@ -270,7 +270,7 @@ public class GroupDetailActivity extends RoboActionBarActivity {
                     }
                     isInit = false;
                     mAdapter.notifyDataSetChanged();
-                }, Logger::logThrowable);
+                }, error -> NetworkExceptionHandler.handleThrowable(error, this));
     }
 
     public void onEventMainThread(BulletinStampEvent event) {
@@ -286,7 +286,7 @@ public class GroupDetailActivity extends RoboActionBarActivity {
                         bulletins.remove(index);
                         bulletins.add(index, resp);
                         mAdapter.notifyDataSetChanged();
-                    }, Logger::logThrowable);
+                    }, error -> NetworkExceptionHandler.handleThrowable(error, this));
         }
     }
 

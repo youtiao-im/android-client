@@ -84,6 +84,7 @@ public class GroupProfileActivity extends RoboActionBarActivity {
                 builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        Log.e(TAG, "Yes Click");
                         dialog.dismiss();
                         Intent intent = getIntent();
                         GroupProfileActivity.this.setResult(0, intent);
@@ -93,6 +94,7 @@ public class GroupProfileActivity extends RoboActionBarActivity {
                 builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        Log.e(TAG, "Cancel Click");
                         dialog.dismiss();
                     }
                 });

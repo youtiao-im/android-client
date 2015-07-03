@@ -1,32 +1,22 @@
 package im.youtiao.android_client.ui.activity;
 
-import android.accounts.Account;
 import android.accounts.AccountManager;
-import android.accounts.AccountManagerFuture;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
-import com.google.inject.Inject;
-
 
 import cn.jpush.android.api.JPushInterface;
 import im.youtiao.android_client.AccountDescriptor;
 import im.youtiao.android_client.R;
 import im.youtiao.android_client.YTApplication;
-import im.youtiao.android_client.dao.DaoSession;
 import im.youtiao.android_client.dao.LibraryProvider;
 import im.youtiao.android_client.providers.DaoSessionFactory;
-import im.youtiao.android_client.providers.LoginApiFactory;
 import im.youtiao.android_client.providers.RemoteApiFactory;
-import im.youtiao.android_client.rest.RemoteApi;
-import im.youtiao.android_client.rest.responses.TokenResponse;
-import im.youtiao.android_client.util.Logger;
 import roboguice.activity.RoboActivity;
 import roboguice.inject.InjectView;
-import rx.schedulers.Schedulers;
 
 public class BootstrapActivity extends RoboActivity {
     private static final String TAG = BootstrapActivity.class

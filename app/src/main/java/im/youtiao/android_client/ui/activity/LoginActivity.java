@@ -28,12 +28,11 @@ import com.google.inject.Inject;
 import im.youtiao.android_client.AccountDescriptor;
 import im.youtiao.android_client.R;
 import im.youtiao.android_client.YTApplication;
-import im.youtiao.android_client.dao.DaoSession;
 import im.youtiao.android_client.providers.RemoteApiFactory;
 import im.youtiao.android_client.rest.LoginApi;
 import im.youtiao.android_client.rest.RemoteApi;
 import im.youtiao.android_client.rest.responses.TokenResponse;
-import im.youtiao.android_client.util.Logger;
+import im.youtiao.android_client.util.NetworkExceptionHandler;
 import roboguice.activity.RoboActionBarActivity;
 import roboguice.inject.InjectView;
 import rx.android.schedulers.AndroidSchedulers;
@@ -238,7 +237,7 @@ public class LoginActivity extends RoboActionBarActivity {
                     Intent newIntent = getIntent();
                     LoginActivity.this.setResult(BootstrapActivity.EXISTING_ACCOUNT, intent);
                     LoginActivity.this.finish();
-                }, Logger::logThrowable);
+                }, error -> NetworkExceptionHandler.handleThrowable(error, this));
     }
 
     /**

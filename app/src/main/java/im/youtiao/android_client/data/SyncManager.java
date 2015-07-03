@@ -35,12 +35,12 @@ public class SyncManager {
     }
 
     public void startFeedSyncForChannel(Channel channel, int page, int perPage) {
-        getChannelFeeds(channel.getServerId(), page, perPage).subscribe(resp -> processFeeds(resp, channel), Logger::logThrowable);
+        getChannelFeeds(channel.getServerId(), page, perPage).subscribe(resp -> processFeeds(resp, channel), NetworkExceptionHandler::handleThrowable);
     }
 
     public void startCommentSyncForFeed(Feed feed) {
         getComments(feed.getServerId(),STARTING_OFFSET, LIMIT)
-                .subscribe(resp -> processComments(resp, feed), Logger::logThrowable);
+                .subscribe(resp -> processComments(resp, feed), NetworkExceptionHandler::handleThrowable);
     }
 
     private Observable<List<CommentResponse>> getComments(String feedId, int offset, int limit) {
@@ -72,7 +72,7 @@ public class SyncManager {
 
     public void startChannelsSync() {
         Log.i(TAG, "startChannelsSync");
-        getChannels(STARTING_OFFSET, LIMIT).subscribe(this::processChannels, Logger::logThrowable);
+        getChannels(STARTING_OFFSET, LIMIT).subscribe(this::processChannels, NetworkExceptionHandler::handleThrowable);
     }
 
     private Observable<List<UserChannelMembershipResponse>> getChannels(int page, int perPage) {
@@ -109,7 +109,7 @@ public class SyncManager {
             subscriber.onCompleted();
         }).subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
-                .subscribe(this::startFeedsForChannels, Logger::logThrowable);
+                .subscribe(this::startFeedsForChannels, NetworkExceptionHandler::handleThrowable);
     }
 
     private void startFeedsForChannels(List<Channel> list) {
@@ -117,7 +117,7 @@ public class SyncManager {
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
                 .subscribe(i -> getChannelFeeds(i.getServerId(), STARTING_OFFSET, LIMIT)
-                                .subscribe(resp -> processFeeds(resp, i), Logger::logThrowable), Logger::logThrowable);
+                                .subscribe(resp -> processFeeds(resp, i), NetworkExceptionHandler::handleThrowable), NetworkExceptionHandler::handleThrowable);
     }
 
     private Observable<List<FeedResponse>> getChannelFeeds(String channelId, int offset,
