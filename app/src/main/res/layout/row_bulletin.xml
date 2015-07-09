@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:fancy="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:background="#ffffffff"
     android:descendantFocusability="blocksDescendants"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:padding="20dp">
 
     <RelativeLayout
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        android:paddingTop="10dp">
+        android:id="@+id/layout_group"
+        android:layout_alignParentTop="true">
 
         <TextView
             android:id="@+id/tv_group_name"
@@ -21,72 +21,69 @@
             android:layout_alignParentLeft="true"
             android:layout_centerInParent="true"
             android:text="Large Text"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textColor="@color/text_focus_color" />
+            android:textColor="@color/text_focus_color"
+            android:textIsSelectable="false"
+            android:textSize="20dp" />
 
         <TextView
-            android:id="@+id/tv_user_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="false"
-            android:layout_margin="5dp"
-            android:layout_weight="1"
-            android:phoneNumber="false"
-            android:text="Tommy"
-            android:layout_toRightOf="@+id/tv_group_name"
-            android:layout_centerInParent="true" />
-
-        <TextView
-            android:id="@+id/tv_created_at"
+            android:id="@+id/tv_created_info"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:layout_margin="5dp"
             android:layout_weight="1"
             android:text="56 mins ago"
-            android:layout_centerInParent="true" />
+            android:layout_centerInParent="true"
+            android:layout_alignParentLeft="false"
+            android:textSize="16dp"
+            android:layout_alignParentTop="false" />
+
     </RelativeLayout>
 
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
         android:orientation="vertical"
-        android:background="#ffffffff">
+        android:id="@+id/layout_content"
+        android:layout_below="@+id/layout_group"
+        android:layout_marginTop="5dp">
 
-        <LinearLayout
+        <TextView
+            android:id="@+id/tv_bulletin_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:orientation="vertical"
-            android:padding="5dp"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
-            android:layout_marginBottom="5dp">
+            android:phoneNumber="false"
+            android:singleLine="false"
+            android:text="I&apos;m not great with layouts, but I have noticed in the past that ListView rows often ignore LayoutParams. I have no idea where this happens or if it&apos;s possible to override"
+            android:textSize="18dp"
+            android:textColor="#f2070301"
+            android:textIsSelectable="false" />
 
-            <TextView
-                android:id="@+id/tv_bulletin_text"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:phoneNumber="false"
-                android:singleLine="false"
-                android:text="I&apos;m not great with layouts, but I have noticed in the past that ListView rows often ignore LayoutParams. I have no idea where this happens or if it&apos;s possible to override"
-                android:textAppearance="?android:attr/textAppearanceLarge" />
+    </LinearLayout>
 
-        </LinearLayout>
-        <View  style="@style/bg_line"/>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:orientation="horizontal">
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="#ffffffff"
+        android:layout_alignParentLeft="false"
+        android:id="@+id/layout_stamp"
+        android:layout_alignParentTop="false"
+        android:layout_centerVertical="true"
+        android:layout_alignParentBottom="false"
+        android:layout_below="@+id/layout_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp">
 
             <LinearLayout
+                android:id="@+id/layout_check"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:layout_alignParentLeft="true"
+                android:layout_centerInParent="true">
 
                 <ImageButton
                     android:id="@+id/imgBtn_bulletin_check"
@@ -110,11 +107,15 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/layout_cross"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:layout_alignParentRight="false"
+                android:layout_toRightOf="@+id/layout_check"
+                android:layout_marginLeft="50dp">
 
                 <ImageButton
                     android:id="@+id/imgBtn_bulletin_cross"
@@ -136,36 +137,5 @@
                     android:contentDescription="@string/bulletin_cross"
                     android:text="4" />
             </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:orientation="horizontal">
-
-                <ImageButton
-                    android:id="@+id/imgBtn_bulletin_comment"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:adjustViewBounds="false"
-                    android:background="#00000000"
-                    android:contentDescription="@string/bulletin_comment"
-                    android:focusable="false"
-                    android:longClickable="true"
-                    android:src="@mipmap/comment" />
-
-                <TextView
-                    android:id="@+id/tv_bulletin_comment_count"
-                    style="@style/bulletin_stamp_font_style"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    android:contentDescription="@string/bulletin_comment"
-                    android:text="4"
-                    android:textColor="@color/stamp_font_color"
-                    android:textIsSelectable="false" />
-            </LinearLayout>
-        </LinearLayout>
-    </LinearLayout>
-</LinearLayout>
+    </RelativeLayout>
+</RelativeLayout>

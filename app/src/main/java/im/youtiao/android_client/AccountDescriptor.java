@@ -8,6 +8,7 @@ import im.youtiao.android_client.model.User;
 
 public class AccountDescriptor implements java.io.Serializable {
     private static final String KEY_ID = "id";
+    private static final String KEY_EMAIL = "email";
     private static final String KEY_NAME = "name";
     private static final String KEY_PASSWORD = "password";
     private static final String KEY_TOKEN_TYPE = "token_type";
@@ -15,6 +16,7 @@ public class AccountDescriptor implements java.io.Serializable {
 
 
     private String mId;
+    private String mEmail;
     private String mName;
     private String mPassword;
     private String mTokenType;
@@ -22,6 +24,10 @@ public class AccountDescriptor implements java.io.Serializable {
 
     public String getId() {
         return mId;
+    }
+
+    public String getEmail() {
+        return mEmail;
     }
 
     public String getName() {
@@ -44,9 +50,14 @@ public class AccountDescriptor implements java.io.Serializable {
         this.mToken = token;
     }
 
+    public void setName(String name) {
+        this.mName = name;
+    }
+
     public AccountDescriptor(User user, String password, String tokenType, String token) {
         this.mId = user.id;
-        this.mName = user.email;
+        this.mEmail = user.email;
+        this.mName = user.name;
         this.mToken = token;
         this.mTokenType = tokenType;
         this.mPassword = password;
@@ -56,6 +67,9 @@ public class AccountDescriptor implements java.io.Serializable {
         try {
             JSONObject object = new JSONObject(jsonAsString);
             mId = object.getString(KEY_ID);
+            if (object.has(KEY_EMAIL)) {
+                mEmail = object.getString(KEY_EMAIL);
+            }
             if (object.has(KEY_NAME)) {
                 mName = object.getString(KEY_NAME);
             }
@@ -77,6 +91,7 @@ public class AccountDescriptor implements java.io.Serializable {
         JSONObject object = new JSONObject();
         try {
             object.put(KEY_ID, mId);
+            object.put(KEY_EMAIL, mEmail);
             object.put(KEY_NAME, mName);
             object.put(KEY_PASSWORD, mPassword);
             object.put(KEY_TOKEN, mToken);

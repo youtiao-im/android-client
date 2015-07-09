@@ -187,11 +187,7 @@ public class GroupDetailActivity extends RoboActionBarActivity {
                 Bundle data = new Bundle();
                 data.putSerializable(GroupProfileActivity.PARAM_GROUP, group);
                 Intent intent = null;
-                if (group.membership.role.equalsIgnoreCase(Group.Role.OWNER.toString())) {
-                    intent = new Intent(GroupDetailActivity.this, GroupProfileActivity.class);
-                } else {
-                    intent = new Intent(GroupDetailActivity.this, JoinedGroupProfileActivity.class);
-                }
+                intent = new Intent(GroupDetailActivity.this, GroupProfileActivity.class);
                 intent.putExtras(data);
                 startActivityForResult(intent, 0);
                 return true;

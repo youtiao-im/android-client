@@ -32,7 +32,7 @@ public class YTApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        JPushInterface.setDebugMode(true); 	// just for debug, close it when startup
+        JPushInterface.setDebugMode(true);    // just for debug, close it when startup
         JPushInterface.init(this);
 
         mPreferences = PreferenceManager.getDefaultSharedPreferences(this);
@@ -71,6 +71,19 @@ public class YTApplication extends Application {
         if (mCurrentAccountIndex == null && mAccounts.size() > 0) {
             mCurrentAccountIndex = 0;
         }
+    }
+
+    public void onUpdateCurrentAccount(User user) {
+        if (user != null) {
+            final SharedPreferences.Editor edit = mPreferences.edit();
+            String userIdAsString = user.id;
+            AccountDescriptor currentAccount = getCurrentAccount();
+            currentAccount.setName(user.name);
+            edit.putString(getAccountDescriptorKey(userIdAsString),
+                    currentAccount.toString());
+            edit.commit();
+        }
+        updateAccounts();
     }
 
     public void onPostSignIn(User user, String password, String tokenType, String token) {

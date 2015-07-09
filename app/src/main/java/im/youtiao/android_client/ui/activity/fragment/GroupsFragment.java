@@ -166,7 +166,10 @@ public class GroupsFragment extends RoboFragment implements LoaderManager.Loader
                     Log.i(TAG, "groupDao size=" + groupDao.count());
                     mPtrFrame.refreshComplete();
                     getActivity().getContentResolver().notifyChange(GroupHelper.CONTENT_URI, null);
-                }, error -> NetworkExceptionHandler.handleThrowable(error, getActivity()));
+                }, error -> {
+                    mPtrFrame.refreshComplete();
+                    NetworkExceptionHandler.handleThrowable(error, getActivity());
+                });
     }
 
     @Override

@@ -4,115 +4,90 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <RelativeLayout
-        android:id="@+id/layout_group_info"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingTop="50dp"
-        android:paddingBottom="50dp"
-        android:paddingLeft="20dp"
-        android:paddingRight="20dp">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="dddd"
-            android:id="@+id/tv_group_name"
-            android:layout_alignParentLeft="true"
-            android:textSize="40dp" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="\@c40fb0"
-            android:id="@+id/tv_group_code"
-            android:layout_below="@+id/tv_group_name"
-            android:textSize="20dp" />
-
-        <mehdi.sakout.fancybuttons.FancyButton
-            android:id="@+id/btn_group_info_edit"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingBottom="15dp"
-            android:paddingLeft="20dp"
-            android:paddingRight="20dp"
-            android:paddingTop="15dp"
-            fancy:fb_borderColor="#000000"
-            fancy:fb_borderWidth="0dp"
-            fancy:fb_defaultColor="#ff4a88db"
-            fancy:fb_focusColor="#9bd823"
-            fancy:fb_iconPosition="left"
-            fancy:fb_radius="5dp"
-            fancy:fb_text="Edit"
-            fancy:fb_textColor="#ffffffff"
-            android:layout_alignParentRight="true"
-            android:layout_centerInParent="true"
-            android:background="#ff4a88db" />
-    </RelativeLayout>
-
     <LinearLayout
-        style="@style/wrap_layout"
-        android:background="#ffffffff"
-        android:layout_alignParentBottom="true"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/layout_group_info">
+        style="@style/layout_section"
+        android:layout_alignParentTop="true"
+        android:id="@+id/layout_section1"
+        android:layout_marginTop="20dp">
 
+        <RelativeLayout style="@style/layout_row"
+            android:id="@+id/layout_group_name">
 
-        <RelativeLayout style="@style/column_layout">
-            <TextView style="@style/user_text"
-                android:text="Administrator"
-                android:id="@+id/textView7"/>
-            <TextView style="@style/user_text"
-                android:text="Xiaoming"
-                android:id="@+id/tv_group_admin"
-                android:layout_alignParentRight="true"/>
+            <TextView style="@style/layout_row_label"
+                android:text="@string/label_group_name"
+                android:id="@+id/tv_group_name_label"
+                android:layout_alignParentLeft="true" />
+
+            <TextView style="@style/layout_row_text"
+                android:id="@+id/tv_group_name"
+                android:layout_alignParentRight="true" />
         </RelativeLayout>
 
         <View  style="@style/bg_line"/>
 
-        <RelativeLayout style="@style/column_layout"
-            android:id="@+id/layout_group_members">
-            <TextView style="@style/user_text"
-                android:text="Channel Members"
-                android:id="@+id/textView9"/>
-            <TextView style="@style/user_text"
-                android:text="6 Person"
-                android:id="@+id/tv_group_members_count"
-                android:layout_alignParentRight="false"
-                android:layout_toLeftOf="@+id/iv_group_memeber_forward" />
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/iv_group_memeber_forward"
-                android:src="@mipmap/ic_feed_forward"
-                android:layout_alignParentRight="true"
-                android:longClickable="false" />
+        <RelativeLayout style="@style/layout_row"
+            android:id="@+id/layout_group_code">
+            <TextView style="@style/layout_row_label"
+                android:text="@string/label_group_code"
+                android:id="@+id/tv_name_label"
+                android:layout_alignParentLeft="true" />
+            <TextView style="@style/layout_row_text"
+                android:id="@+id/tv_group_code"
+                android:layout_alignParentLeft="false"
+                android:layout_alignParentRight="true" />
         </RelativeLayout>
-
-        <View  style="@style/bg_line"/>
-
-
-        <RelativeLayout style="@style/column_layout"
-            android:id="@+id/layout_remove_subscribers">
-            <TextView style="@style/user_text"
-                android:text="Remove all subscribers"
-                android:id="@+id/tv_remove_all_subscribers"
-                android:textColor="@android:color/holo_red_dark" />
-        </RelativeLayout>
-        <View  style="@style/bg_line"/>
-
-        <RelativeLayout style="@style/column_layout"
-            android:id="@+id/layout_delete_group">
-            <TextView style="@style/user_text"
-                android:text="Delete group"
-                android:id="@+id/tv_delete_group"
-                android:textColor="@android:color/holo_red_dark" />
-        </RelativeLayout>
-        <View  style="@style/bg_line"/>
     </LinearLayout>
 
+    <LinearLayout
+        style="@style/layout_section"
+        android:layout_alignParentTop="false"
+        android:id="@+id/layout_section2"
+        android:layout_marginTop="20dp"
+        android:layout_below="@+id/layout_section1">
+
+        <RelativeLayout style="@style/layout_row"
+            android:id="@+id/layout_group_members">
+
+            <TextView style="@style/layout_row_label"
+                android:text="@string/label_group_members"
+                android:id="@+id/tv_group_members_count_label"
+                android:layout_alignParentLeft="true" />
+
+            <TextView style="@style/layout_row_text"
+                android:id="@+id/tv_group_members_count"
+                android:layout_alignParentRight="true" />
+        </RelativeLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        style="@style/layout_section"
+        android:layout_alignParentTop="false"
+        android:id="@+id/layout_section3"
+        android:layout_marginTop="20dp"
+        android:layout_below="@+id/layout_section2">
+
+        <RelativeLayout style="@style/layout_row"
+            android:id="@+id/layout_delete_group">
+            <TextView style="@style/layout_row_text"
+                android:id="@+id/tv_delete_group"
+                android:text="@string/btn_delete_group"
+                android:layout_centerInParent="true"
+                android:textColor="@android:color/holo_red_light" />
+        </RelativeLayout>
+
+        <View  style="@style/bg_line"/>
+
+        <RelativeLayout style="@style/layout_row"
+            android:id="@+id/layout_unsubscribe_group">
+            <TextView style="@style/layout_row_text"
+                android:id="@+id/tv_unsubscribe_group"
+                android:text="@string/btn_unsubscribe_group"
+                android:layout_centerInParent="true"
+                android:textColor="@android:color/holo_red_light"/>
+        </RelativeLayout>
+
+
+
+    </LinearLayout>
 </RelativeLayout>

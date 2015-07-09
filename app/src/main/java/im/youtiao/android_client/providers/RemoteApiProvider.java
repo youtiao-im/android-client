@@ -21,7 +21,7 @@ public class RemoteApiProvider implements Provider<RemoteApi> {
 
     @Override
     public RemoteApi get() {
-        Log.e(TAG, "Inject get RemoteApi");
+        //Log.e(TAG, "Inject get RemoteApi");
         return RemoteApiFactory.getApi();
     }
 }

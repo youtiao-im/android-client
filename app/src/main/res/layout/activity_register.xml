@@ -11,7 +11,6 @@
     tools:context="im.youtiao.android_client.ui.activity.RegisterActivity"
     android:background="@android:color/white">
 
-    <!-- Login progress -->
 
     <LinearLayout
         android:id="@+id/email_register_form"
@@ -19,38 +18,91 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <AutoCompleteTextView
-            android:id="@+id/register_email"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/prompt_email"
-            android:inputType="textEmailAddress"
-            android:maxLines="1"
-            android:singleLine="true" />
+        <LinearLayout style="@style/layout_row"
+            android:id="@+id/layout_email">
 
-        <EditText
-            android:id="@+id/register_password"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/prompt_password"
-            android:maxLines="1"
-            android:inputType="textPassword"
-            android:singleLine="true" />
+            <TextView style="@style/font_row_label"
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:text="@string/label_account"
+                android:id="@+id/tv_email_label"
+                android:layout_alignParentLeft="true"
+                android:layout_weight="0.3" />
 
-        <EditText
-            android:id="@+id/register_confirm_password"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/prompt_confirm_password"
-            android:imeActionId="@+id/register"
-            android:imeActionLabel="@string/action_sign_up"
-            android:imeOptions="actionUnspecified"
-            android:inputType="textPassword"
-            android:maxLines="1"
-            android:singleLine="true" />
+            <EditText style="@style/font_row_text"
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:hint="@string/hint_email_address"
+                android:id="@+id/edtTxt_email"
+                android:background="@null"
+                android:maxLines="1"
+                android:singleLine="true"
+                android:layout_alignParentRight="false"
+                android:layout_toRightOf="@+id/tv_email_label"
+                android:layout_weight="0.7" />
+        </LinearLayout>
+
+        <View style="@style/bg_line"/>
+
+        <LinearLayout style="@style/layout_row"
+            android:id="@+id/layout_name">
+
+            <TextView style="@style/font_row_label"
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:text="@string/label_name"
+                android:id="@+id/tv_name_label"
+                android:layout_alignParentLeft="true"
+                android:layout_weight="0.3" />
+
+            <EditText style="@style/font_row_text"
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:hint="@string/hint_name"
+                android:id="@+id/edtTxt_name"
+                android:background="@null"
+                android:layout_alignParentRight="false"
+                android:layout_toRightOf="@+id/tv_name_label"
+                android:layout_weight="0.7" />
+        </LinearLayout>
+
+        <View style="@style/bg_line"/>
+
+        <LinearLayout style="@style/layout_row"
+            android:id="@+id/layout_password">
+
+            <TextView style="@style/font_row_label"
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:text="@string/label_password"
+                android:id="@+id/tv_password_label"
+                android:inputType="textEmailAddress"
+                android:maxLines="1"
+                android:singleLine="true"
+                android:layout_alignParentLeft="true"
+                android:layout_weight="0.3" />
+
+            <EditText style="@style/font_row_text"
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:hint="@string/hint_password"
+                android:id="@+id/edtTxt_password"
+                android:background="@null"
+                android:imeActionId="@+id/register"
+                android:imeActionLabel="@string/action_sign_up"
+                android:imeOptions="actionUnspecified"
+                android:inputType="textPassword"
+                android:maxLines="1"
+                android:singleLine="true"
+                android:layout_alignParentRight="false"
+                android:layout_toRightOf="@+id/tv_password_label"
+                android:layout_weight="0.7" />
+        </LinearLayout>
+
+        <View style="@style/bg_line"/>
 
         <Button
-            android:id="@+id/register_email_sign_up_button"
+            android:id="@+id/btn_sign_up"
             style="?android:textAppearanceSmall"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

@@ -34,5 +34,5 @@ public class Stamp implements java.io.Serializable {
     public String updatedAt;
 
     @JsonProperty("created_by")
-    public Membership createdBy;
+    public User createdBy;
 }

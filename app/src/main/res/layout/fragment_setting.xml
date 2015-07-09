@@ -1,57 +1,84 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="match_parent">
+
     <LinearLayout
-        style="@style/wrap_layout"
-        android:background="#ffffffff"
-        android:layout_alignParentBottom="true"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_below="@+id/layout_group_info">
+        style="@style/layout_section"
+        android:layout_alignParentTop="true"
+        android:id="@+id/layout_section1"
+        android:layout_marginTop="20dp">
 
+        <RelativeLayout style="@style/layout_row"
+            android:id="@+id/layout_email">
 
-        <RelativeLayout style="@style/column_layout"
-            android:id="@+id/layout_account">
-            <TextView style="@style/user_text"
-                android:text="Account"
-                android:id="@+id/tv_account"
-                android:layout_alignParentLeft="true"/>
-        </RelativeLayout>
-
-        <View  style="@style/bg_line"/>
-
-        <RelativeLayout style="@style/column_layout"
-            android:id="@+id/layout_about">
-            <TextView style="@style/user_text"
-                android:text="About"
-                android:id="@+id/tv_about"
+            <TextView style="@style/layout_row_label"
+                android:text="@string/label_email"
+                android:id="@+id/tv_email_label"
                 android:layout_alignParentLeft="true" />
+
+            <TextView style="@style/layout_row_text"
+                android:text="@string/label_name"
+                android:id="@+id/tv_email"
+                android:layout_alignParentRight="true" />
         </RelativeLayout>
+
         <View  style="@style/bg_line"/>
 
-        <RelativeLayout style="@style/column_layout"
-            android:id="@+id/layout_help">
-            <TextView style="@style/user_text"
-                android:text="Help"
-                android:id="@+id/tv_help"
+        <RelativeLayout style="@style/layout_row"
+            android:id="@+id/layout_name">
+            <TextView style="@style/layout_row_label"
+                android:text="Name"
+                android:id="@+id/tv_name_label"
                 android:layout_alignParentLeft="true" />
+            <TextView style="@style/layout_row_text"
+                android:text="luffy"
+                android:id="@+id/tv_name"
+                android:layout_alignParentLeft="false"
+                android:layout_alignParentRight="true" />
         </RelativeLayout>
         <View  style="@style/bg_line"/>
 
-        <RelativeLayout style="@style/column_layout"
-            android:id="@+id/layout_feedback">
-            <TextView style="@style/user_text"
-                android:text="Feedback"
-                android:id="@+id/tv_feedback"
+        <RelativeLayout style="@style/layout_row"
+            android:id="@+id/layout_change_password">
+            <TextView style="@style/layout_row_text"
+                android:id="@+id/tv_change_password"
+                android:text="@string/btn_change_password"
+                android:layout_centerInParent="true"
+                android:textColor="@android:color/holo_blue_dark" />
+        </RelativeLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        style="@style/layout_section"
+        android:layout_below="@+id/layout_section1"
+        android:id="@+id/layout_section2">
+        <RelativeLayout style="@style/layout_row"
+            android:id="@+id/layout_version">
+            <TextView style="@style/layout_row_label"
+                android:text="@string/label_version"
+                android:id="@+id/tv_version_label"
                 android:layout_alignParentLeft="true" />
+            <TextView style="@style/layout_row_text"
+                android:text="1.0"
+                android:id="@+id/tv_version"
+                android:layout_alignParentRight="true" />
         </RelativeLayout>
-        <View  style="@style/bg_line"/>
+    </LinearLayout>
 
-        <Button
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:text="Sign Out"
-            android:id="@+id/btn_sign_out" />
+    <LinearLayout
+        style="@style/layout_section"
+        android:id="@+id/layout_section3"
+        android:layout_below="@+id/layout_section2"
+        android:layout_marginTop="30dp">
+
+        <RelativeLayout style="@style/layout_row"
+            android:id="@+id/layout_sign_out">
+            <TextView style="@style/layout_row_text"
+                android:id="@+id/tv_sign_out"
+                android:text="@string/btn_sign_out"
+                android:layout_centerInParent="true"
+                android:textColor="@android:color/holo_red_light" />
+        </RelativeLayout>
     </LinearLayout>
 
 </RelativeLayout>

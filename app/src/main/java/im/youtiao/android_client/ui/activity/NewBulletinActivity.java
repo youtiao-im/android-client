@@ -78,7 +78,7 @@ public class NewBulletinActivity extends RoboActionBarActivity {
                                     Intent intent) {
         if (requestCode == 0 && resultCode == 0) {
             if (intent != null) {
-                Group sendToGroup = (Group) intent.getSerializableExtra(GroupEditActivity.PARAM_GROUP);
+                Group sendToGroup = (Group) intent.getSerializableExtra(SelectSendGroupActivity.PARAM_GROUP);
                 if (sendToGroup != null) {
                     bulletinReceiverTv.setText(sendToGroup.name);
                     group = sendToGroup;
@@ -125,7 +125,7 @@ public class NewBulletinActivity extends RoboActionBarActivity {
                         data.putSerializable(PARAM_NEW_BULLETIN, resp);
                         Intent intent = getIntent();
                         intent.putExtras(data);
-                        NewBulletinActivity.this.setResult(1, intent);
+                        NewBulletinActivity.this.setResult(0, intent);
                         NewBulletinActivity.this.finish();
                     }, error -> NetworkExceptionHandler.handleThrowable(error, this));
         }

@@ -12,15 +12,43 @@
         <item name="android:padding">3dp</item>
     </style>
 
-    <style name="column_layout">
+    <style name="layout_section">
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_margin">20dp</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:layout_marginTop">10dp</item>
+        <item name="android:layout_marginBottom">10dp</item>
+        <item name="android:paddingLeft">10dp</item>
+        <item name="android:paddingRight">10dp</item>
+        <item name="android:background">#ffffffff</item>
     </style>
 
-    <style name="user_text">
+    <style name="layout_row">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:paddingTop">10dp</item>
+        <item name="android:paddingBottom">10dp</item>
+    </style>
+
+    <style name="layout_row_label">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">20dp</item>
+        <item name="android:textColor">#ff02040a</item>
+    </style>
+
+    <style name="font_row_label">
+        <item name="android:textSize">20dp</item>
+        <item name="android:textColor">#ff02040a</item>
+    </style>
+
+    <style name="layout_row_text">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">20dp</item>
+    </style>
+
+    <style name="font_row_text">
         <item name="android:textSize">20dp</item>
     </style>
 

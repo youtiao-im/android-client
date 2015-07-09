@@ -14,6 +14,8 @@
 
     <color name="icon_unselected_color">#ffcbcac9</color>
     <color name="icon_selected_color">#ff2fcb3d</color>
+    <color name="icon_stamp_check_selected_color">#ff2fcb3d</color>
+    <color name="icon_stamp_cross_selected_color">#ffcb1346</color>
 
     <color name="stamp_font_color">#ffacacac</color>
 

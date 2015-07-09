@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.database.Cursor;
 import android.support.v4.app.Fragment;
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,6 +24,7 @@ import im.youtiao.android_client.model.Bulletin;
 import im.youtiao.android_client.model.Stamp;
 import im.youtiao.android_client.ui.activity.fragment.BulletinsFragment;
 import im.youtiao.android_client.ui.widget.LoadMoreView;
+import im.youtiao.android_client.util.TimeWrap;
 import im.youtiao.android_client.wrap.BulletinWrap;
 
 public class BulletinCursorAdapter extends CursorAdapter {
@@ -89,14 +91,11 @@ public class BulletinCursorAdapter extends CursorAdapter {
     View inflateBulletinItem() {
         ViewHolder viewHolder = new ViewHolder();
         View convertView = mInflater.inflate(R.layout.row_bulletin, null);
-        viewHolder.creatorNameTv = (TextView) convertView.findViewById(R.id.tv_user_name);
-        viewHolder.createdAtTv = (TextView) convertView.findViewById(R.id.tv_created_at);
+        viewHolder.createdInfoTv = (TextView) convertView.findViewById(R.id.tv_created_info);
         viewHolder.feedContentTv = (TextView) convertView.findViewById(R.id.tv_bulletin_text);
         viewHolder.groupNameTv = (TextView) convertView.findViewById(R.id.tv_group_name);
-        viewHolder.commentsCountTv = (TextView) convertView.findViewById(R.id.tv_bulletin_comment_count);
         viewHolder.checkImgBtn = (ImageButton) convertView.findViewById(R.id.imgBtn_bulletin_check);
         viewHolder.crossImgBtn = (ImageButton) convertView.findViewById(R.id.imgBtn_bulletin_cross);
-        viewHolder.commentImgBtn = (ImageButton) convertView.findViewById(R.id.imgBtn_bulletin_comment);
         viewHolder.checksCountTv = (TextView) convertView.findViewById(R.id.tv_bulletin_checks_count);
         viewHolder.crossesCountTv = (TextView) convertView.findViewById(R.id.tv_bulletin_crosses_count);
         convertView.setTag(viewHolder);
@@ -119,24 +118,24 @@ public class BulletinCursorAdapter extends CursorAdapter {
         }
 
         final Bulletin bulletin = BulletinWrap.wrap(BulletinHelper.fromCursor(cursor));
-        viewHolder.creatorNameTv.setText("#" + bulletin.createdBy.name);
-        viewHolder.feedContentTv.setText(bulletin.text);
-        viewHolder.createdAtTv.setText("5/6/15");
+
+        viewHolder.feedContentTv.setText(Html.fromHtml("<b>" + bulletin.createdBy.name + ": " + "</b>" + bulletin.text));
+        String createdAt = (TimeWrap.wrapTimeDisplyValue(Math.round(1000*Double.parseDouble(bulletin.createdAt)), mActivity));
+        String creatorName = bulletin.createdBy.name;
+        viewHolder.createdInfoTv.setText(createdAt);
         viewHolder.groupNameTv.setText(bulletin.group.name);
-        viewHolder.commentsCountTv.setText("" + bulletin.comments_count);
         viewHolder.checksCountTv.setText("" + bulletin.checksCount);
         viewHolder.crossesCountTv.setText("" + bulletin.crossesCount);
 
         viewHolder.checkImgBtn.setColorFilter(mActivity.getResources().getColor(R.color.icon_unselected_color));
         viewHolder.crossImgBtn.setColorFilter(mActivity.getResources().getColor(R.color.icon_unselected_color));
-        viewHolder.commentImgBtn.setColorFilter(mActivity.getResources().getColor(R.color.icon_unselected_color));
         if (bulletin.stamp != null && bulletin.stamp.symbol != null) {
             switch (Stamp.Mark.valueOf(bulletin.stamp.symbol.toUpperCase())) {
                 case CHECK:
-                    viewHolder.checkImgBtn.setColorFilter(mActivity.getResources().getColor(R.color.icon_selected_color));
+                    viewHolder.checkImgBtn.setColorFilter(mActivity.getResources().getColor(R.color.icon_stamp_check_selected_color));
                     break;
                 case CROSS:
-                    viewHolder.crossImgBtn.setColorFilter(mActivity.getResources().getColor(R.color.icon_selected_color));
+                    viewHolder.crossImgBtn.setColorFilter(mActivity.getResources().getColor(R.color.icon_stamp_cross_selected_color));
                     break;
                 default:
             }
@@ -152,10 +151,6 @@ public class BulletinCursorAdapter extends CursorAdapter {
 
         });
 
-        viewHolder.commentImgBtn.setOnClickListener( v -> {
-            EventBus.getDefault().post(new BulletinCommentClickEvent(bulletin));
-        });
-
         viewHolder.groupNameTv.setOnClickListener(v -> {
             Log.i(TAG, "groupNameTv click");
             EventBus.getDefault().post(new BulletinGroupNameClickEvent(bulletin));
@@ -163,14 +158,11 @@ public class BulletinCursorAdapter extends CursorAdapter {
     }
 
     static class ViewHolder {
-        public TextView creatorNameTv;
         public TextView feedContentTv;
         public TextView groupNameTv;
-        public TextView createdAtTv;
+        public TextView createdInfoTv;
         public ImageButton checkImgBtn;
         public TextView checksCountTv;
-        public ImageButton commentImgBtn;
-        public TextView commentsCountTv;
         public ImageButton crossImgBtn;
         public TextView crossesCountTv;
     }

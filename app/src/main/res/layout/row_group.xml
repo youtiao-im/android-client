@@ -28,13 +28,6 @@
             android:phoneNumber="false"
             android:textColor="#ff143c96" />
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/iv_forward"
-            android:layout_alignParentRight="true"
-            android:layout_centerInParent="true"
-            android:src="@mipmap/ic_feed_forward" />
     </RelativeLayout>
 
 </LinearLayout>

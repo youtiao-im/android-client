@@ -5,6 +5,7 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 
@@ -28,11 +29,13 @@ import com.google.inject.Inject;
 import im.youtiao.android_client.AccountDescriptor;
 import im.youtiao.android_client.R;
 import im.youtiao.android_client.YTApplication;
+import im.youtiao.android_client.model.Token;
 import im.youtiao.android_client.providers.RemoteApiFactory;
 import im.youtiao.android_client.rest.LoginApi;
 import im.youtiao.android_client.rest.RemoteApi;
 import im.youtiao.android_client.rest.responses.TokenResponse;
 import im.youtiao.android_client.util.NetworkExceptionHandler;
+import im.youtiao.android_client.util.Utility;
 import roboguice.activity.RoboActionBarActivity;
 import roboguice.inject.InjectView;
 import rx.android.schedulers.AndroidSchedulers;
@@ -58,11 +61,14 @@ public class LoginActivity extends RoboActionBarActivity {
     private View mLoginFormView;
 
     private String mPassword;
-    @InjectView(R.id.password)
-    private EditText mPasswordEdit;
+    @InjectView(R.id.edtTxt_password)
+    private EditText mPasswordEdtTxt;
     private String mUsername;
-    @InjectView(R.id.email)
-    private EditText mUsernameEdit;
+    @InjectView(R.id.edtTxt_email)
+    private EditText mUsernameEdtTxt;
+
+    @InjectView(R.id.tv_forgot_password)
+    TextView forgotPasswordTv;
 
     @Inject
     private LoginApi loginApi;
@@ -92,12 +98,12 @@ public class LoginActivity extends RoboActionBarActivity {
         final Intent intent = getIntent();
         mAccount = (AccountDescriptor) intent.getSerializableExtra(PARAM_ACCOUNT);
         if (mAccount != null) {
-            mUsernameEdit.setText(mAccount.getName());
-            mPasswordEdit.setText(mAccount.getPassword());
+            mUsernameEdtTxt.setText(mAccount.getEmail());
+            mPasswordEdtTxt.setText(mAccount.getPassword());
         }
 
-        mPasswordEdit = (EditText) findViewById(R.id.password);
-        mPasswordEdit.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+        mPasswordEdtTxt = (EditText) findViewById(R.id.edtTxt_password);
+        mPasswordEdtTxt.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
                 if (id == R.id.login || id == EditorInfo.IME_NULL) {
@@ -108,11 +114,18 @@ public class LoginActivity extends RoboActionBarActivity {
             }
         });
 
-        Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
+        Button mEmailSignInButton = (Button) findViewById(R.id.btn_sign_in);
         mEmailSignInButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
                 attemptLogin();
+            }
+        });
+
+        forgotPasswordTv.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(LoginActivity.this, ForgotPasswordActivity.class));
             }
         });
 
@@ -138,17 +151,17 @@ public class LoginActivity extends RoboActionBarActivity {
      */
     public void attemptLogin() {
         // Reset errors.
-        mUsernameEdit.setError(null);
-        mPasswordEdit.setError(null);
+        mUsernameEdtTxt.setError(null);
+        mPasswordEdtTxt.setError(null);
 
         // Store values at the time of the login attempt.
-        mUsername = mUsernameEdit.getText().toString();
-        mPassword = mPasswordEdit.getText().toString();
+        mUsername = mUsernameEdtTxt.getText().toString();
+        mPassword = mPasswordEdtTxt.getText().toString();
 
         boolean cancel = false;
         // Check for a valid password, if the user entered one.
         String errorString = "";
-        if (TextUtils.isEmpty(mPassword) || !isPasswordValid(mPassword)) {
+        if (TextUtils.isEmpty(mPassword) || !Utility.isPasswordValid(mPassword)) {
             errorString = getString(R.string.error_invalid_password);
             cancel = true;
         }
@@ -157,7 +170,7 @@ public class LoginActivity extends RoboActionBarActivity {
         if (TextUtils.isEmpty(mUsername)) {
             errorString = getString(R.string.error_user_name_required);
             cancel = true;
-        } else if (!isEmailValid(mUsername)) {
+        } else if (!Utility.isEmailValid(mUsername)) {
             errorString = getString(R.string.error_invalid_email);
             cancel = true;
         }
@@ -172,59 +185,25 @@ public class LoginActivity extends RoboActionBarActivity {
                         }
                     }).create().show();
         } else {
-            showProgress(true);
-            new AsyncTask<String, Void, Intent>() {
-
-                @Override
-                protected Intent doInBackground(String... params) {
-                    Log.d("udinic", TAG + "> Started authenticating");
-                    Bundle data = new Bundle();
-                    try {
-                        TokenResponse tokenResponse = loginApi.getToken("password", mUsername, mPassword);
-                        data.putString(AccountManager.KEY_AUTHTOKEN, tokenResponse.accessToken);
-                        data.putString(PARAM_AUTHTOKEN_TYPE, tokenResponse.tokenType);
-                    } catch (Exception e) {
-                        data.putString(KEY_ERROR_MESSAGE, e.getMessage());
-                    }
-
-                    final Intent res = new Intent();
-                    res.putExtras(data);
-                    return res;
-                }
-
-                @Override
-                protected void onPostExecute(Intent intent) {
-                    if (intent.hasExtra(KEY_ERROR_MESSAGE)) {
-                        showProgress(false);
-                        Log.e(TAG, "onAuthenticationResult: failed to authenticate");
-                        String errorString = getString(R.string.error_incorrect_password);
-                        AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
-                        builder.setMessage(errorString)
-                                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        dialog.dismiss();
-                                    }
-                                }).create().show();
-                    } else {
-                        finishLogin(intent);
-                    }
-                }
-            }.execute();
+            ProgressDialog progressDialog = new ProgressDialog(LoginActivity.this);
+            progressDialog.setMessage("Sign in...");
+            progressDialog.show();
+            loginApi.getTokenSync("password", mUsername, mPassword)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(token -> {
+                        progressDialog.dismiss();
+                        finishLogin(token);
+                    }, error -> {
+                        progressDialog.dismiss();
+                        NetworkExceptionHandler.handleThrowable(error, this);
+                    });
         }
     }
 
-    private boolean isEmailValid(String email) {
-        return email.contains("@");
-    }
-
-    private boolean isPasswordValid(String password) {
-        return password.length() >= 4;
-    }
-
-    private void finishLogin(Intent intent) {
-        String authToken = intent.getStringExtra(AccountManager.KEY_AUTHTOKEN);
-        String tokenType = intent.getStringExtra(PARAM_AUTHTOKEN_TYPE);
+    private void finishLogin(Token token) {
+        String authToken = token.accessToken;
+        String tokenType = token.tokenType;
 
         RemoteApiFactory.setApiToken(tokenType, authToken);
         RemoteApi remoteApi = RemoteApiFactory.getApi();
@@ -232,10 +211,9 @@ public class LoginActivity extends RoboActionBarActivity {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(res -> {
-                    showProgress(false);
                     getApp().onPostSignIn(res, mPassword, tokenType, authToken);
                     Intent newIntent = getIntent();
-                    LoginActivity.this.setResult(BootstrapActivity.EXISTING_ACCOUNT, intent);
+                    LoginActivity.this.setResult(1, newIntent);
                     LoginActivity.this.finish();
                 }, error -> NetworkExceptionHandler.handleThrowable(error, this));
     }
@@ -245,20 +223,8 @@ public class LoginActivity extends RoboActionBarActivity {
      */
     @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
     public void showProgress(final boolean show) {
-        // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
-        // for very easy animations. If available, use these APIs to fade-in
-        // the progress spinner.
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
             int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
-
-//            mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
-//            mLoginFormView.animate().setDuration(shortAnimTime).alpha(
-//                    show ? 0 : 1).setListener(new AnimatorListenerAdapter() {
-//                @Override
-//                public void onAnimationEnd(Animator animation) {
-//                    mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
-//                }
-//            });
 
             mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
             mProgressView.animate().setDuration(shortAnimTime).alpha(
@@ -269,10 +235,7 @@ public class LoginActivity extends RoboActionBarActivity {
                 }
             });
         } else {
-            // The ViewPropertyAnimator APIs are not available, so simply show
-            // and hide the relevant UI components.
             mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-            //mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
         }
     }
 }

@@ -86,24 +86,12 @@
             android:label="@string/title_activity_group_member" >
         </activity>
         <activity
-            android:name=".ui.activity.GroupCodeActivity"
-            android:label="@string/title_activity_group_code" >
-        </activity>
-        <activity
             android:name=".ui.activity.GroupMemberProfileActivity"
             android:label="@string/title_activity_group_member_profile" >
         </activity>
         <activity
             android:name=".ui.activity.NewBulletinActivity"
             android:label="@string/title_activity_new_bulletin" >
-        </activity>
-        <activity
-            android:name=".ui.activity.GroupEditActivity"
-            android:label="@string/title_activity_group_edit" >
-        </activity>
-        <activity
-            android:name=".ui.activity.JoinedGroupProfileActivity"
-            android:label="@string/title_activity_joined_group_profile" >
         </activity>
         <activity
             android:name=".ui.activity.SelectSendGroupActivity"
@@ -165,13 +153,13 @@
             android:enabled="true" >
             <intent-filter android:priority="1000" >
                 <action android:name="cn.jpush.android.intent.NOTIFICATION_RECEIVED_PROXY" />
+
                 <category android:name="im.youtiao.android_client" />
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.USER_PRESENT" />
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
             </intent-filter>
-
             <intent-filter>
                 <action android:name="android.intent.action.PACKAGE_ADDED" />
                 <action android:name="android.intent.action.PACKAGE_REMOVED" />
@@ -187,6 +175,19 @@
         <meta-data
             android:name="JPUSH_APPKEY"
             android:value="f0f3323a4fa7a41a7cbcd9b7" />
+
+        <activity
+            android:name=".ui.activity.ForgotPasswordActivity"
+            android:label="@string/title_activity_forgot_password" >
+        </activity>
+        <activity
+            android:name=".ui.activity.FieldEditActivity"
+            android:label="@string/title_activity_account" >
+        </activity>
+        <activity
+            android:name=".ui.activity.ChangePasswordActivity"
+            android:label="@string/title_activity_change_password" >
+        </activity>
     </application>
 
 </manifest>

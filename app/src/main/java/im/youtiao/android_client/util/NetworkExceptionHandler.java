@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.util.Log;
+import android.widget.Toast;
 
 import org.apache.commons.io.IOUtils;
 import org.codehaus.jackson.map.ObjectMapper;
@@ -12,6 +13,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.net.SocketTimeoutException;
 
 import im.youtiao.android_client.YTApplication;
 import im.youtiao.android_client.model.ServerError;
@@ -27,44 +29,55 @@ public class NetworkExceptionHandler {
     public static void handleThrowable(Throwable throwable) {
         ServerError serverError = new ServerError();
 
-        RetrofitError retrofitError = (RetrofitError)throwable;
-        Response r = retrofitError.getResponse();
-        serverError.status = r.getStatus();
-        String errorBody = "";
-        try {
-            errorBody = IOUtils.toString(r.getBody().in(), "UTF-8");
-            JSONObject object = new JSONObject(errorBody);
-            if (object.has("error")) {
-                serverError.errorMessage = object.getString("error");
+        RetrofitError retrofitError = (RetrofitError) throwable;
+
+        Throwable cause = retrofitError.getCause();
+        if (cause == null) {
+            Response r = retrofitError.getResponse();
+            serverError.status = r.getStatus();
+            String errorBody = "";
+            try {
+                errorBody = IOUtils.toString(r.getBody().in(), "UTF-8");
+                JSONObject object = new JSONObject(errorBody);
+                if (object.has("error")) {
+                    serverError.errorMessage = object.getString("error");
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (JSONException e) {
-            e.printStackTrace();
+            Log.e(TAG, r.getStatus() + ", " + r.getReason() + "," + errorBody);
+        } else {
+
         }
-        Log.e(TAG, r.getStatus() + ", " + r.getReason() + "," + errorBody);
     }
 
     public static void handleThrowable(Throwable throwable, Context context) {
         ServerError serverError = new ServerError();
 
-        RetrofitError retrofitError = (RetrofitError)throwable;
-        Response r = retrofitError.getResponse();
-        serverError.status = r.getStatus();
-        String errorBody = "";
-        try {
-            errorBody = IOUtils.toString(r.getBody().in(), "UTF-8");
-            JSONObject object = new JSONObject(errorBody);
-            if (object.has("error")) {
-                serverError.errorMessage = object.getString("error");
+        RetrofitError retrofitError = (RetrofitError) throwable;
+        Throwable cause = retrofitError.getCause();
+        if (cause == null) {
+            Response r = retrofitError.getResponse();
+            serverError.status = r.getStatus();
+            String errorBody = "";
+            try {
+                errorBody = IOUtils.toString(r.getBody().in(), "UTF-8");
+                JSONObject object = new JSONObject(errorBody);
+                if (object.has("error")) {
+                    serverError.errorMessage = object.getString("error");
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (JSONException e) {
-            e.printStackTrace();
+            Log.e(TAG, r.getStatus() + ", " + r.getReason() + "," + errorBody);
+            handleServerError(serverError, context);
+        } else {
+            handleNetWorkError(cause, context);
         }
-        Log.e(TAG, r.getStatus() + ", " + r.getReason() + "," + errorBody);
-        handleError(serverError, context);
     }
 
 
@@ -75,10 +88,10 @@ public class NetworkExceptionHandler {
     public static int UNPROCESSABLE_ENTITY = 422;
     public static int SERVER_ERROR = 500;
 
-    public static void handleError(ServerError serverError, Context context) {
+    public static void handleServerError(ServerError serverError, Context context) {
         int status = serverError.status;
         if (status == UNAUTHORIZED) {
-            YTApplication application = (YTApplication)context.getApplicationContext();
+            YTApplication application = (YTApplication) context.getApplicationContext();
             application.signOutAccount(application.getCurrentAccount().getId());
             Intent intent = new Intent(context, BootstrapActivity.class);
             context.startActivity(intent);
@@ -91,6 +104,36 @@ public class NetworkExceptionHandler {
                             dialog.dismiss();
                         }
                     }).create().show();
+        }
+    }
+
+    public static void handleNetWorkError(Throwable error, Context context) {
+        try {
+            if (error instanceof SocketTimeoutException) {
+                Log.e(TAG, "show alert on:" + context.getClass().toString());
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                builder.setMessage("Network Connect Error")
+                        .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        }).create();
+                builder.show();
+                //Toast.makeText(context, "NewWork Connect Error", Toast.LENGTH_LONG).show();
+                Log.e(TAG, error.getMessage());
+            } else {
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                builder.setMessage(error.getMessage())
+                        .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        }).create().show();
+            }
+        }catch(Exception e) {
+            e.printStackTrace();
         }
     }
 }

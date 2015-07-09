@@ -16,7 +16,7 @@ public class DaoSessionFactory {
     private static DaoSession instance;
 
     public static DaoSession getDaoSession(){
-        Log.e(TAG, "getDaoSession");
+        //Log.e(TAG, "getDaoSession");
         if (instance == null) {
             Log.e(TAG, " DaoSession is null");
         }
@@ -24,17 +24,17 @@ public class DaoSessionFactory {
     }
 
     public static void setDaoSession(Context context){
-        Log.e(TAG, "setDaoSession");
+        //Log.e(TAG, "setDaoSession");
         final DaoMaster daoMaster;
         SQLiteDatabase db;
         YTApplication application = (YTApplication)context.getApplicationContext();
         AccountDescriptor account = application.getCurrentAccount();
         String dbName = "youtiao-db-5";
         if (account != null) {
-            dbName = "youtiao-" + account.getId();
-            Log.e(TAG, "dbName = " + dbName);
+            dbName = "youtiao-" + account.getEmail();
+            //Log.e(TAG, "dbName = " + dbName);
         } else {
-            Log.e(TAG, "current account is null:" + context.getClass().toString());
+            //Log.e(TAG, "current account is null:" + context.getClass().toString());
             instance = null;
             return;
         }

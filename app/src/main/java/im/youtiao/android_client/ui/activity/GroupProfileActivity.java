@@ -10,6 +10,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -38,15 +39,20 @@ public class GroupProfileActivity extends RoboActionBarActivity {
 
     @InjectView(R.id.tv_group_name) TextView groupNameTv;
     @InjectView(R.id.tv_group_code) TextView groupCodeTv;
-    @InjectView(R.id.tv_group_admin) TextView groupAdminTv;
     @InjectView(R.id.tv_group_members_count) TextView groupMembersCountTv;
-    @InjectView(R.id.iv_group_memeber_forward) ImageView groupMemberForwardImageView;
+    @InjectView(R.id.layout_group_name) RelativeLayout groupNameLayout;
+    @InjectView(R.id.layout_group_code) RelativeLayout groupCodeLayout;
     @InjectView(R.id.layout_group_members) RelativeLayout groupMemsLayout;
     @InjectView(R.id.layout_delete_group) RelativeLayout deleteGroupLayout;
-    @InjectView(R.id.btn_group_info_edit) FancyButton groupInfoEditBtn;
+    @InjectView(R.id.layout_unsubscribe_group) RelativeLayout unsubscribeGroupLayout;
 
     @Inject
     DaoSession daoSession;
+
+    static final int INTENT_GROUP_NAME = 0;
+    static final int INTENT_GROUP_CODE = 1;
+
+    private boolean isOwner = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,14 +66,22 @@ public class GroupProfileActivity extends RoboActionBarActivity {
         Intent intent = getIntent();
         group = (Group) intent.getSerializableExtra(PARAM_GROUP);
 
+        if (group.membership.role.equalsIgnoreCase(Group.Role.OWNER.toString())) {
+            unsubscribeGroupLayout.setVisibility(View.GONE);
+            isOwner = true;
+        } else {
+            deleteGroupLayout.setVisibility(View.GONE);
+            isOwner = false;
+        }
+
         groupNameTv.setText(group.name);
         groupCodeTv.setText(group.code);
-        //groupAdminTv.setText();
         groupMembersCountTv.setText("" + group.membershipsCount);
 
         groupMemsLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.e(TAG, "Members Click");
                 Bundle data = new Bundle();
                 data.putSerializable(GroupMemberActivity.PARAM_GROUP, group);
                 Intent intent = new Intent(GroupProfileActivity.this, GroupMemberActivity.class);
@@ -75,6 +89,7 @@ public class GroupProfileActivity extends RoboActionBarActivity {
                 startActivity(intent);
             }
         });
+
 
         deleteGroupLayout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -103,18 +118,56 @@ public class GroupProfileActivity extends RoboActionBarActivity {
             }
         });
 
-        groupInfoEditBtn.setOnClickListener(new View.OnClickListener() {
+        unsubscribeGroupLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Bundle data = new Bundle();
-                data.putSerializable(GroupEditActivity.PARAM_GROUP, group);
-                Intent intent = new Intent(GroupProfileActivity.this, GroupEditActivity.class);
-                intent.putExtras(data);
-                startActivityForResult(intent, 0);
+                AlertDialog.Builder builder = new AlertDialog.Builder(GroupProfileActivity.this);
+                builder.setMessage(getString(R.string.unsubscribe_tip));
+                builder.setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        Intent intent = getIntent();
+                        GroupProfileActivity.this.setResult(1, intent);
+                        GroupProfileActivity.this.finish();
+                    }
+                });
+                builder.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                builder.create();
+                builder.show();
             }
         });
 
+        if (isOwner) {
+            groupNameLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Bundle data = new Bundle();
+                    data.putSerializable(FieldEditActivity.PARAM_GROUP, group);
+                    data.putInt(FieldEditActivity.PARAM_EDIT_TYPE, FieldEditActivity.TYPE_GROUP_NAME);
+                    Intent intent = new Intent(GroupProfileActivity.this, FieldEditActivity.class);
+                    intent.putExtras(data);
+                    startActivityForResult(intent, INTENT_GROUP_NAME);
+                }
+            });
 
+            groupCodeLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Bundle data = new Bundle();
+                    data.putSerializable(FieldEditActivity.PARAM_GROUP, group);
+                    data.putInt(FieldEditActivity.PARAM_EDIT_TYPE, FieldEditActivity.TYPE_GROUP_CODE);
+                    Intent intent = new Intent(GroupProfileActivity.this, FieldEditActivity.class);
+                    intent.putExtras(data);
+                    startActivityForResult(intent, INTENT_GROUP_CODE);
+                }
+            });
+        }
     }
 
     @Override
@@ -140,9 +193,9 @@ public class GroupProfileActivity extends RoboActionBarActivity {
     protected void onActivityResult(int requestCode, int resultCode,
                                     Intent intent) {
         Log.i(TAG, "onActivityResult: requestCode=" + requestCode + ", resultCode=" + resultCode);
-        if (requestCode == 0 && resultCode == 0) {
+        if (resultCode == 0) {
             if (intent != null) {
-                Group group = (Group) intent.getSerializableExtra(GroupEditActivity.PARAM_GROUP);
+                Group group = (Group) intent.getSerializableExtra(FieldEditActivity.PARAM_GROUP);
                 if (group != null) {
                     groupNameTv.setText(group.name);
                     groupCodeTv.setText(group.code);

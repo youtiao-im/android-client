@@ -1,9 +1,11 @@
 package im.youtiao.android_client.ui.activity;
 
+import android.accounts.AccountManager;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -11,26 +13,55 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.text.TextUtils;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AutoCompleteTextView;
+import android.view.Window;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
+
+import javax.inject.Inject;
 
 import im.youtiao.android_client.R;
+import im.youtiao.android_client.YTApplication;
+import im.youtiao.android_client.providers.RemoteApiFactory;
+import im.youtiao.android_client.rest.LoginApi;
+import im.youtiao.android_client.rest.RemoteApi;
+import im.youtiao.android_client.rest.RemoteApiErrorHandler;
+import im.youtiao.android_client.rest.responses.TokenResponse;
+import im.youtiao.android_client.util.NetworkExceptionHandler;
 import roboguice.activity.RoboActionBarActivity;
+import roboguice.inject.InjectView;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 public class RegisterActivity extends RoboActionBarActivity {
+    @InjectView(R.id.edtTxt_email)
+    private EditText mEmailEdtTxt;
+    @InjectView(R.id.edtTxt_name)
+    private EditText mNameEdtTxt;
+    @InjectView(R.id.edtTxt_password)
+    private EditText mPasswordEdtTxt;
 
-    private AutoCompleteTextView mEmailView;
-    private EditText mPasswordView;
-    private EditText mConfirmPasswordView;
-
+    @InjectView(R.id.email_register_form)
     private View mProgressView;
+    @InjectView(R.id.register_progress)
     private View mRegisterFormView;
 
+    @InjectView(R.id.btn_sign_up)
+    private Button signUpBtn;
+
+    @Inject
+    LoginApi loginApi;
+
     private UserRegisterTask mRegisterTask = null;
+
+    YTApplication getApp() {
+        return (YTApplication) getApplication();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,20 +71,24 @@ public class RegisterActivity extends RoboActionBarActivity {
         actionBar.setHomeButtonEnabled(true);
         actionBar.setDisplayHomeAsUpEnabled(true);
 
-        mEmailView = (AutoCompleteTextView) findViewById(R.id.register_email);
-        mPasswordView = (EditText) findViewById(R.id.register_password);
-        mConfirmPasswordView = (EditText) findViewById(R.id.register_confirm_password);
+        mPasswordEdtTxt.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
+                if (id == R.id.register || id == EditorInfo.IME_NULL) {
+                    register();
+                    return true;
+                }
+                return false;
+            }
+        });
 
-        Button mEmailSignUpButton = (Button) findViewById(R.id.register_email_sign_up_button);
-        mEmailSignUpButton.setOnClickListener(new View.OnClickListener() {
+        signUpBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 register();
             }
         });
 
-        mRegisterFormView = findViewById(R.id.email_register_form);
-        mProgressView = findViewById(R.id.register_progress);
     }
 
     public void register() {
@@ -61,26 +96,17 @@ public class RegisterActivity extends RoboActionBarActivity {
             return;
         }
 
-        // Reset errors.
-        mEmailView.setError(null);
-        mPasswordView.setError(null);
-        mConfirmPasswordView.setError(null);
 
         // Store values at the time of the login attempt.
-        String email = mEmailView.getText().toString();
-        String password = mPasswordView.getText().toString();
-        String confirmPassword = mConfirmPasswordView.getText().toString();
+        String email = mEmailEdtTxt.getText().toString();
+        String name = mNameEdtTxt.getText().toString();
+        String password = mPasswordEdtTxt.getText().toString();
 
         boolean cancel = false;
         String errorString = "";
         // Check for a valid password, if the user entered one.
         if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
             errorString = getString(R.string.error_invalid_password);
-            cancel = true;
-        }
-
-        if (!password.equals(confirmPassword)) {
-            errorString = getString(R.string.error_invalid_confirm_password);
             cancel = true;
         }
 
@@ -103,10 +129,37 @@ public class RegisterActivity extends RoboActionBarActivity {
                         }
                     }).create().show();
         } else {
-            showProgress(true);
-            mRegisterTask = new UserRegisterTask(email, password);
-            mRegisterTask.execute((Void) null);
+            remoteSignUp(email, name, password);
         }
+    }
+
+    void remoteSignUp(String email, String name, String password) {
+        ProgressDialog progressDialog = new ProgressDialog(RegisterActivity.this);
+        progressDialog.setMessage("Sign up ...");
+        progressDialog.show();
+        loginApi.signUpUser(email, name, password)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(resp -> {
+                    progressDialog.dismiss();
+                    loginApi.getTokenSync("password", email, password)
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe(token -> {
+                                String authToken = token.accessToken;
+                                String tokenType = token.tokenType;
+                                RemoteApiFactory.setApiToken(tokenType, authToken);
+                                getApp().onPostSignIn(resp, password, tokenType, authToken);
+                                Intent newIntent = getIntent();
+                                RegisterActivity.this.setResult(1, newIntent);
+                                RegisterActivity.this.finish();
+                            }, error -> {
+                                NetworkExceptionHandler.handleThrowable(error, this);
+                            });
+                }, error -> {
+                    progressDialog.dismiss();
+                    NetworkExceptionHandler.handleThrowable(error, this);
+                });
     }
 
     /**
@@ -120,14 +173,14 @@ public class RegisterActivity extends RoboActionBarActivity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
             int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
 
-            mRegisterFormView.setVisibility(show ? View.GONE : View.VISIBLE);
-            mRegisterFormView.animate().setDuration(shortAnimTime).alpha(
-                    show ? 0 : 1).setListener(new AnimatorListenerAdapter() {
-                @Override
-                public void onAnimationEnd(Animator animation) {
-                    mRegisterFormView.setVisibility(show ? View.GONE : View.VISIBLE);
-                }
-            });
+//            mRegisterFormView.setVisibility(show ? View.GONE : View.VISIBLE);
+//            mRegisterFormView.animate().setDuration(shortAnimTime).alpha(
+//                    show ? 0 : 1).setListener(new AnimatorListenerAdapter() {
+//                @Override
+//                public void onAnimationEnd(Animator animation) {
+//                    mRegisterFormView.setVisibility(show ? View.GONE : View.VISIBLE);
+//                }
+//            });
 
             mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
             mProgressView.animate().setDuration(shortAnimTime).alpha(
@@ -141,18 +194,16 @@ public class RegisterActivity extends RoboActionBarActivity {
             // The ViewPropertyAnimator APIs are not available, so simply show
             // and hide the relevant UI components.
             mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-            mRegisterFormView.setVisibility(show ? View.GONE : View.VISIBLE);
+            //mRegisterFormView.setVisibility(show ? View.GONE : View.VISIBLE);
         }
     }
 
 
     private boolean isEmailValid(String email) {
-        //TODO: Replace this with your own logic
         return email.contains("@");
     }
 
     private boolean isPasswordValid(String password) {
-        //TODO: Replace this with your own logic
         return password.length() > 4;
     }
 
@@ -205,8 +256,8 @@ public class RegisterActivity extends RoboActionBarActivity {
                 Intent myIntent = new Intent(RegisterActivity.this, MainActivity.class);
                 RegisterActivity.this.startActivity(myIntent);
             } else {
-                mPasswordView.setError(getString(R.string.error_incorrect_password));
-                mPasswordView.requestFocus();
+                mPasswordEdtTxt.setError(getString(R.string.error_incorrect_password));
+                mPasswordEdtTxt.requestFocus();
             }
         }
 

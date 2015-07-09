@@ -78,10 +78,10 @@ public class BulletinArrayAdapter extends ArrayAdapter<Bulletin> {
         viewHolder.createdAtTv = (TextView) convertView.findViewById(R.id.tv_created_at);
         viewHolder.feedContentTv = (TextView) convertView.findViewById(R.id.tv_bulletin_text);
         viewHolder.channelNameTv = (TextView) convertView.findViewById(R.id.tv_group_name);
-        viewHolder.commentsCountTv = (TextView) convertView.findViewById(R.id.tv_bulletin_comment_count);
+        //viewHolder.commentsCountTv = (TextView) convertView.findViewById(R.id.tv_bulletin_comment_count);
         viewHolder.checkImgBtn = (ImageButton) convertView.findViewById(R.id.imgBtn_bulletin_check);
         viewHolder.crossImgBtn = (ImageButton) convertView.findViewById(R.id.imgBtn_bulletin_cross);
-        viewHolder.commentImgBtn = (ImageButton) convertView.findViewById(R.id.imgBtn_bulletin_comment);
+        //viewHolder.commentImgBtn = (ImageButton) convertView.findViewById(R.id.imgBtn_bulletin_comment);
         viewHolder.checksCountTv = (TextView) convertView.findViewById(R.id.tv_bulletin_checks_count);
         viewHolder.crossesCountTv = (TextView) convertView.findViewById(R.id.tv_bulletin_crosses_count);
         convertView.setTag(viewHolder);
@@ -108,13 +108,13 @@ public class BulletinArrayAdapter extends ArrayAdapter<Bulletin> {
         viewHolder.feedContentTv.setText(bulletin.text);
         viewHolder.createdAtTv.setText("3 mins ago");
         viewHolder.channelNameTv.setText("#" + bulletin.group.name);
-        viewHolder.commentsCountTv.setText("" + bulletin.comments_count);
+        //viewHolder.commentsCountTv.setText("" + bulletin.comments_count);
         viewHolder.checksCountTv.setText("" + bulletin.checksCount);
         viewHolder.crossesCountTv.setText("" + bulletin.crossesCount);
 
         viewHolder.checkImgBtn.setColorFilter(mContext.getResources().getColor(R.color.icon_unselected_color));
         viewHolder.crossImgBtn.setColorFilter(mContext.getResources().getColor(R.color.icon_unselected_color));
-        viewHolder.commentImgBtn.setColorFilter(mContext.getResources().getColor(R.color.icon_unselected_color));
+        //viewHolder.commentImgBtn.setColorFilter(mContext.getResources().getColor(R.color.icon_unselected_color));
         if (bulletin.stamp != null && bulletin.stamp.symbol != null) {
             switch (Stamp.Mark.valueOf(bulletin.stamp.symbol.toUpperCase())) {
                 case CHECK:
@@ -139,10 +139,10 @@ public class BulletinArrayAdapter extends ArrayAdapter<Bulletin> {
 
         });
 
-        viewHolder.commentImgBtn.setOnClickListener( v -> {
-            Log.i(TAG, "commentsImgBtn clicked");
-            EventBus.getDefault().post(new BulletinCommentClickEvent(bulletin));
-        });
+//        viewHolder.commentImgBtn.setOnClickListener( v -> {
+//            Log.i(TAG, "commentsImgBtn clicked");
+//            EventBus.getDefault().post(new BulletinCommentClickEvent(bulletin));
+//        });
 
         return convertView;
     }
@@ -154,8 +154,8 @@ public class BulletinArrayAdapter extends ArrayAdapter<Bulletin> {
         public TextView createdAtTv;
         public ImageButton checkImgBtn;
         public TextView checksCountTv;
-        public ImageButton commentImgBtn;
-        public TextView commentsCountTv;
+//        public ImageButton commentImgBtn;
+//        public TextView commentsCountTv;
         public ImageButton crossImgBtn;
         public TextView crossesCountTv;
     }

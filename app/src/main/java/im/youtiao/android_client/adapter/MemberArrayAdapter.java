@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 import im.youtiao.android_client.R;
 import im.youtiao.android_client.model.Comment;
@@ -19,7 +20,7 @@ public class MemberArrayAdapter extends ArrayAdapter<Membership> {
 
     private int resourceId;
     private Context mContext;
-    public MemberArrayAdapter(Context context, int resource, ArrayList<Membership> objects) {
+    public MemberArrayAdapter(Context context, int resource, LinkedList<Membership> objects) {
         super(context, resource, objects);
         this.resourceId = resource;
         this.mContext = context;
@@ -32,10 +33,8 @@ public class MemberArrayAdapter extends ArrayAdapter<Membership> {
             viewHolder = new ViewHolder();
             LayoutInflater mInflater = LayoutInflater.from(mContext);
             convertView = mInflater.inflate(resourceId, null);
-            viewHolder.userAvatarIv = (ImageView)convertView.findViewById(R.id.iv_user_avatar);
             viewHolder.userNameTv = (TextView)convertView.findViewById(R.id.tv_user_name);
-            viewHolder.userAliasTv = (TextView)convertView.findViewById(R.id.tv_user_alias);
-            viewHolder.joinDateTv = (TextView)convertView.findViewById(R.id.tv_join_date);
+            viewHolder.memberRoleTv = (TextView)convertView.findViewById(R.id.tv_role);
             convertView.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder)convertView.getTag();
@@ -43,16 +42,13 @@ public class MemberArrayAdapter extends ArrayAdapter<Membership> {
 
         Membership membership = getItem(position);
         viewHolder.userNameTv.setText(membership.user.name);
-        viewHolder.userAliasTv.setVisibility(View.GONE);  //TODO: add alias
-        viewHolder.joinDateTv.setText("5/8/2015");
+        viewHolder.memberRoleTv.setText(membership.role.toString());
         return convertView;
     }
 
     static class ViewHolder {
-        public ImageView userAvatarIv;
         public TextView userNameTv;
-        public TextView userAliasTv;
-        public TextView joinDateTv;
+        public TextView memberRoleTv;
     }
 
 }

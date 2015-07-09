@@ -13,4 +13,13 @@
     <string name="title_activity_group_member_profile">成员信息</string>
     <string name="title_activity_new_bulletin">新消息</string>
     <string name="hint_type_bulletin_content">输入新的通知</string>
+    <string name="hint_email_address">Email address</string>
+    <string name="label_group_name">GroupName</string>
+    <string name="label_group_code">GroupCode</string>
+    <string name="label_group_members">Group Members</string>
+    <string name="btn_delete_group">Delete Group</string>
+    <string name="btn_unsubscribe_group">Unsubscribe from this Group</string>
+    <string name="label_email">Email</string>
+    <string name="label_name">luffy@straw-hat.org</string>
+    <string name="label_version">Version</string>
 </resources>

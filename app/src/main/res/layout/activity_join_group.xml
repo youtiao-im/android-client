@@ -4,15 +4,15 @@
     android:layout_height="fill_parent"
     android:orientation="vertical">
 
-    <RelativeLayout style="@style/column_layout">
+    <RelativeLayout style="@style/layout_row">
         <ImageView
-            style="@style/user_text"
+            style="@style/layout_row_text"
             android:id="@+id/iv_group_code"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@mipmap/tab_group"
             android:layout_margin="10dp" />
-        <EditText style="@style/user_text"
+        <EditText style="@style/layout_row_text"
             android:hint="Group code"
             android:singleLine="true"
             android:id="@+id/edtTxt_group_code"

@@ -1,5 +1,6 @@
 package im.youtiao.android_client.ui.activity;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.v7.app.ActionBar;
 import android.os.Bundle;
@@ -58,21 +59,23 @@ public class JoinGroupActivity extends RoboActionBarActivity {
     }
 
     public void joinNew(View v) {
+        ProgressDialog progressDialog = new ProgressDialog(JoinGroupActivity.this);
+        progressDialog.setMessage("Save ...");
+        progressDialog.show();
         String code = groupCodeEdtTxt.getText().toString().trim();
         if (code != null && code.length() != 0) {
             remoteApi.joinGroup(code).subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe( resp -> {
+                        progressDialog.dismiss();
                         GroupDao groupDao = daoSession.getGroupDao();
                         groupDao.insertOrReplace(GroupWrap.validate(resp));
                         getContentResolver().notifyChange(GroupHelper.CONTENT_URI, null);
-                        Bundle data = new Bundle();
-                        data.putSerializable(GroupDetailActivity.PARAM_GROUP, resp);
-                        Intent intent = new Intent(this, GroupDetailActivity.class);
-                        intent.putExtras(data);
-                        startActivity(intent);
                         finish();
-                    }, error -> NetworkExceptionHandler.handleThrowable(error, this));
+                    }, error -> {
+                        progressDialog.dismiss();
+                        NetworkExceptionHandler.handleThrowable(error, this);
+                    });
         }
     }
 }

@@ -8,22 +8,8 @@ import im.youtiao.android_client.model.Group;
 import im.youtiao.android_client.model.Membership;
 import im.youtiao.android_client.model.Stamp;
 import im.youtiao.android_client.model.User;
-import im.youtiao.android_client.rest.responses.ChannelResponse;
-import im.youtiao.android_client.rest.responses.ChannelUserMembershipResponse;
-import im.youtiao.android_client.rest.responses.CommentResponse;
-import im.youtiao.android_client.rest.responses.FeedResponse;
-import im.youtiao.android_client.rest.responses.MarkResponse;
-import im.youtiao.android_client.rest.responses.StarResponse;
-import im.youtiao.android_client.rest.responses.TokenResponse;
-import im.youtiao.android_client.rest.responses.UserChannelMembershipResponse;
-import im.youtiao.android_client.rest.responses.UserFeedMarkResponse;
-import im.youtiao.android_client.rest.responses.UserFeedStarResponse;
-import im.youtiao.android_client.rest.responses.UserResponse;
 import retrofit.http.GET;
-import retrofit.http.PATCH;
 import retrofit.http.POST;
-import retrofit.http.PUT;
-import retrofit.http.Path;
 import retrofit.http.Query;
 import rx.Observable;
 
@@ -35,6 +21,12 @@ public interface RemoteApi {
 
     @POST(PREFIX + "/user.update")
     Observable<User> updateUser(@Query("name") String name, @Query("avatar_id") String avatarId);
+
+    @POST(PREFIX + "/user.sign_up")
+    Observable<User> signUpUser(@Query("email") String email, @Query("name") String name, @Query("password") String password);
+
+    @POST(PREFIX + "/user.change_password")
+    Observable<User> changePassword(@Query("password") String password, @Query("new_password") String newPassword);
 
     @GET(PREFIX + "/groups.list")
     Observable<List<Group>> listGroups();
@@ -49,7 +41,7 @@ public interface RemoteApi {
     Observable<Group> updateGroup(@Query("id") String groupId, @Query("name") String name, @Query("code") String code);
 
     @GET(PREFIX + "/memberships.list")
-    Observable<List<Membership>> listGroupMemberships(@Query("group_id") String groupId, @Query("before_id") String beforeId, @Query("limit") Integer limit);
+    Observable<List<Membership>> listGroupMemberships(@Query("group_id") String groupId);
 
     @GET(PREFIX + "/bulletins.list")
     Observable<List<Bulletin>> listBulletins(@Query("before_id") String beforeId, @Query("limit") Integer limit);
@@ -63,7 +55,7 @@ public interface RemoteApi {
     @POST(PREFIX + "/bulletins.stamp")
     Observable<Bulletin> markBulletin(@Query("id") String bulletinId, @Query("symbol") String symbol);
 
-    @GET(PREFIX + "stamps.list")
+    @GET(PREFIX + "/stamps.list")
     Observable<List<Stamp>> listStamps(@Query("bulletin_id") String bulletinId, @Query("before_id") String beforeId, @Query("limit") Integer limit);
 
     @GET(PREFIX + "/comments.list")

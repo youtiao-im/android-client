@@ -2,51 +2,20 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@android:color/white">
 
-    <include layout="@layout/row_bulletin" />
-
+    <!--<include layout="@layout/row_bulletin" />-->
+    <View style="@style/bg_line" />
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <LinearLayout
-            android:id="@+id/layout_submit"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:background="#ffdee2e6"
-            android:orientation="horizontal"
-            android:padding="2dp">
-
-            <EditText
-                android:id="@+id/edtTxt_comment_content"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="20"
-                android:layout_margin="6dp"
-                android:background="@drawable/bg_edittext"
-                android:hint="Comment..."
-                android:singleLine="true"
-                android:textColorHint="#AAAAAA"
-                android:textSize="15dip" />
-
-            <Button
-                android:id="@+id/btn_comment_submit"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:layout_alignParentRight="true"
-                android:text="submit" />
-
-        </LinearLayout>
-
         <ListView
-            android:id="@+id/lv_comments"
+            android:id="@+id/lv_stamps"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:layout_above="@id/layout_submit"
-            android:background="#fff4f4f4" />
+            android:background="@android:color/white" />
     </RelativeLayout>
 
 

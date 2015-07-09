@@ -7,11 +7,13 @@ import android.content.Context;
 import android.util.Log;
 
 import com.google.inject.Inject;
+import com.squareup.okhttp.OkHttpClient;
 
 import org.codehaus.jackson.map.ObjectMapper;
 
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 import im.youtiao.android_client.YTApplication;
 import im.youtiao.android_client.rest.JacksonConverter;
@@ -21,6 +23,7 @@ import im.youtiao.android_client.rest.RemoteApiErrorHandler;
 import im.youtiao.android_client.ui.activity.LoginActivity;
 import retrofit.RequestInterceptor;
 import retrofit.RestAdapter;
+import retrofit.client.OkClient;
 
 public class RemoteApiFactory {
     private static final String TAG = RemoteApiFactory.class.getCanonicalName();
@@ -39,18 +42,21 @@ public class RemoteApiFactory {
     }
 
     public static void setApiToken(String tokenType, String token) {
-        //Log.e(TAG, "setApiToken:" + tokenType + " " + token);
         RequestInterceptor interceptor = (request) -> {
             request.addHeader("Accept", "application/vnd.youtiao.im+json; version=1");
             request.addHeader("Authorization", tokenType + " " + token);
-            //request.addHeader("Authorization", "bearer e2ebd31cbe7ce72fd2e3c9ac49746ef922b90bc30cf88fcc7abc7e453cf6f7a6");
         };
+        final OkHttpClient okHttpClient = new OkHttpClient();
+        okHttpClient.setReadTimeout(5, TimeUnit.SECONDS);
+        okHttpClient.setConnectTimeout(5, TimeUnit.SECONDS);
+        okHttpClient.setWriteTimeout(5, TimeUnit.SECONDS);
         Executor executor = Executors.newSingleThreadExecutor();
         RestAdapter restAdapter = builder.setEndpoint(endPoint)
                 .setExecutors(executor, executor)
                 .setRequestInterceptor(interceptor)
                 .setErrorHandler(new RemoteApiErrorHandler())
                 .setConverter(new JacksonConverter(new ObjectMapper()))
+                .setClient(new OkClient(okHttpClient))
                 .build();
         instance = restAdapter.create(RemoteApi.class);
     }

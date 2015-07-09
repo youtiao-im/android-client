@@ -15,8 +15,7 @@
     <string name="action_new">New</string>
     <string name="action_save">SAVE</string>
     <string name="action_send">SEND</string>
-
-
+    <string name="action_reset">RESET</string>
 
 
     <string name="bulletin_check">check</string>
@@ -38,6 +37,14 @@
     <string name="title_activity_group_code">Group Code</string>
     <string name="title_activity_group_member_profile">Member Profile</string>
     <string name="title_activity_new_bulletin">New Bulletin</string>
+    <string name="title_activity_select_send_group">Send to...</string>
+    <string name="title_activity_forgot_password">Forgot password</string>
+    <string name="title_activity_group_edit">Edit Group</string>
+    <string name="title_activity_joined_group_profile">Group Profile</string>
+    <string name="title_activity_edit_group_name">Edit Group Name</string>
+    <string name="title_activity_edit_group_code">Edit Group Code</string>
+    <string name="title_activity_edit_account_name">Edit Name</string>
+    <string name="title_activity_change_password">Change Password</string>
 
     <string name="drop_down_list_header_default_text">Click to refresh&#8230;</string>
     <string name="drop_down_list_header_pull_text">Drop Down to refresh&#8230;</string>
@@ -48,13 +55,61 @@
     <string name="drop_down_list_footer_no_more_text">No More</string>
 
     <string name="image_content">Image</string>
-    <string name="title_activity_group_edit">Edit Group</string>
-    <string name="title_activity_joined_group_profile">Group Profile</string>
+
 
     <string name="cancel">Cancel</string>
     <string name="yes">Yes</string>
     <string name="unsubscribe_tip">Are you sure you want to unsubscribe from this group</string>
     <string name="hint_type_bulletin_content">Type a message</string>
     <string name="hint_enter_group_name">Click and select group name</string>
-    <string name="title_activity_select_send_group">SelectSendGroupActivity</string>
+    <string name="hint_email_address">Email address</string>
+    <string name="hint_password">Password</string>
+    <string name="hint_old_password">Current Password</string>
+    <string name="hint_new_password">New Password</string>
+    <string name="hint_name">Full name</string>
+    <string name="hint_pick_account_name">Pick a name easy to remember</string>
+    <string name="hint_pick_group_name">Pick a name easy to remember</string>
+    <string name="hint_pick_group_code">Pick a code easy to remember</string>
+
+    <string name="several_days_ago">%d days ago</string>
+    <string name="in_several_days">in %d days</string>
+    <string name="several_hours_ago">%d hours ago</string>
+    <string name="in_several_hours">in %d hours</string>
+    <string name="several_minutes_ago">%d minutes ago</string>
+    <string name="in_several_minutes">in %d minutes</string>
+    <string name="several_seconds_ago">%d seconds ago</string>
+    <string name="in_several_seconds">in %d seconds</string>
+    <string name="a_few_second_ago">a few second ago</string>
+    <string name="in_a_few_second">in a few second</string>
+    <string name="in_one_hour">in 1 hour</string>
+    <string name="in_one_minute">in 1 minute</string>
+    <string name="one_hour_ago">1 hour ago</string>
+    <string name="one_minute_ago">1 minute ago</string>
+    <string name="yesterday">yesterday</string>
+    <string name="tomorrow">tomorrow</string>
+    <string name="title_activity_account">AccountActivity</string>
+
+    <string name="bulletin_create_info_format" formatted="false">Posted by %s · %s</string>
+
+
+    <string name="bulletin_receiver">To:</string>
+    <string name="add_bulletin">ADD</string>
+    <string name="label_group_name">GroupName</string>
+    <string name="label_group_code">GroupCode</string>
+    <string name="label_group_members">Group Members</string>
+    <string name="btn_delete_group">Delete Group</string>
+    <string name="btn_unsubscribe_group">Unsubscribe from this Group</string>
+    <string name="btn_unsubscribe_user">Unsubscribe this user</string>
+    <string name="label_email">Email</string>
+    <string name="label_account">Account</string>
+    <string name="label_password">Password</string>
+    <string name="label_current_password">Old Password</string>
+    <string name="label_new_password">New Password</string>
+    <string name="label_name">Name</string>
+    <string name="label_version">Version</string>
+    <string name="btn_sign_out">Sign Out</string>
+    <string name="btn_forgot_password">Forgot password?</string>
+    <string name="btn_change_password">Change password</string>
+
+
 </resources>

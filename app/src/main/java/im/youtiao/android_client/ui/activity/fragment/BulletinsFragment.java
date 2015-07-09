@@ -16,14 +16,12 @@ import android.widget.ListView;
 
 import com.google.inject.Inject;
 
-import de.greenrobot.event.EventBus;
 import im.youtiao.android_client.R;
 import im.youtiao.android_client.adapter.BulletinCursorAdapter;
 import im.youtiao.android_client.dao.BulletinDao;
 import im.youtiao.android_client.dao.BulletinHelper;
 import im.youtiao.android_client.dao.DaoHelper;
 import im.youtiao.android_client.dao.DaoSession;
-import im.youtiao.android_client.event.BulletinStampEvent;
 import im.youtiao.android_client.model.Bulletin;
 import im.youtiao.android_client.rest.RemoteApi;
 import im.youtiao.android_client.util.NetworkExceptionHandler;
@@ -52,7 +50,7 @@ public class BulletinsFragment extends RoboFragment implements LoaderManager.Loa
     private static final int ID_CROSS = 2;
     private static final int ID_QUESTION = 3;
 
-    private static int LIMIT = 5;
+    private static int LIMIT = 25;
 
     private PtrClassicFrameLayout mPtrFrame;
 
@@ -97,7 +95,6 @@ public class BulletinsFragment extends RoboFragment implements LoaderManager.Loa
     public void onStart() {
         Log.i(TAG, "OnStart");
         super.onStart();
-        EventBus.getDefault().register(this);
     }
 
     @Override
@@ -110,7 +107,7 @@ public class BulletinsFragment extends RoboFragment implements LoaderManager.Loa
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_bulletins2, container, false);
+        return inflater.inflate(R.layout.fragment_bulletins, container, false);
     }
 
     @Override
@@ -118,7 +115,7 @@ public class BulletinsFragment extends RoboFragment implements LoaderManager.Loa
         Log.i(TAG, "OnViewCreated");
         super.onViewCreated(view, savedInstanceState);
 
-        bulletinLv.setDividerHeight(20);
+        //bulletinLv.setDividerHeight(20);
         mAdapter = new BulletinCursorAdapter(getActivity(), this);
         bulletinLv.setAdapter(mAdapter);
 
@@ -207,7 +204,6 @@ public class BulletinsFragment extends RoboFragment implements LoaderManager.Loa
     @Override
     public void onStop() {
         Log.i(TAG, "OnStop");
-        EventBus.getDefault().unregister(this);
         super.onStop();
     }
 
@@ -261,6 +257,7 @@ public class BulletinsFragment extends RoboFragment implements LoaderManager.Loa
                 .subscribe(resp -> {
                     BulletinDao bulletinDao = daoSession.getBulletinDao();
                     bulletinDao.deleteAll();
+                    Log.i(TAG, "size=" + resp.size());
                     for (Bulletin item : resp) {
                         DaoHelper.insertOrUpdate(daoSession, BulletinWrap.validate(item));
                     }
@@ -272,7 +269,10 @@ public class BulletinsFragment extends RoboFragment implements LoaderManager.Loa
                     isInit = false;
                     mPtrFrame.refreshComplete();
                     getActivity().getContentResolver().notifyChange(BulletinHelper.CONTENT_URI, null);
-                }, error -> NetworkExceptionHandler.handleThrowable(error, getActivity()));
+                }, error -> {
+                    mPtrFrame.refreshComplete();
+                    NetworkExceptionHandler.handleThrowable(error, getActivity());
+                });
     }
 
     private void loadMoreData() {
@@ -296,18 +296,4 @@ public class BulletinsFragment extends RoboFragment implements LoaderManager.Loa
                 }, error -> NetworkExceptionHandler.handleThrowable(error, getActivity()));
     }
 
-
-    public void onEventAsync(BulletinStampEvent event) {
-        Log.i(TAG, "onEventAsync");
-        Bulletin bulletin = event.bulletin;
-        String symbol = event.symbol;
-
-        remoteApi.markBulletin(bulletin.id, symbol)
-                .observeOn(Schedulers.io())
-                .subscribeOn(Schedulers.io())
-                .subscribe(resp -> {
-                    DaoHelper.insertOrUpdate(daoSession, BulletinWrap.validate(resp));
-                    getActivity().getContentResolver().notifyChange(BulletinHelper.CONTENT_URI, null);
-                }, error -> NetworkExceptionHandler.handleThrowable(error, getActivity()));
-    }
 }

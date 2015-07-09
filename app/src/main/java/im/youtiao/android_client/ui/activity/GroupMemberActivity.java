@@ -13,13 +13,19 @@ import android.widget.ListView;
 import com.google.inject.Inject;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 
 import im.youtiao.android_client.R;
 import im.youtiao.android_client.adapter.MemberArrayAdapter;
+import im.youtiao.android_client.dao.DaoHelper;
+import im.youtiao.android_client.dao.GroupHelper;
+import im.youtiao.android_client.model.Bulletin;
 import im.youtiao.android_client.model.Group;
 import im.youtiao.android_client.model.Membership;
 import im.youtiao.android_client.rest.RemoteApi;
 import im.youtiao.android_client.util.NetworkExceptionHandler;
+import im.youtiao.android_client.wrap.GroupWrap;
 import roboguice.activity.RoboActionBarActivity;
 import roboguice.inject.InjectView;
 import rx.android.schedulers.AndroidSchedulers;
@@ -40,13 +46,13 @@ public class GroupMemberActivity extends RoboActionBarActivity {
     Group group;
 
     MemberArrayAdapter mAdapter = null;
-    ArrayList<Membership> memberships = new ArrayList<Membership>();
+    LinkedList<Membership> memberships = new LinkedList<Membership>();
 
     @Override
     protected void onStart() {
         Log.i(TAG, "OnStart");
         super.onStart();
-        loadMemberships();
+        //startMembershipsSyncing();
     }
 
     @Override
@@ -70,11 +76,14 @@ public class GroupMemberActivity extends RoboActionBarActivity {
                 Membership membership = (Membership) mAdapter.getItem(position);
                 Bundle data = new Bundle();
                 data.putSerializable(GroupMemberProfileActivity.PARAM_MEMBER, membership);
+                data.putSerializable(GroupMemberProfileActivity.PARAM_GROUP, group);
                 Intent intent = new Intent(GroupMemberActivity.this, GroupMemberProfileActivity.class);
                 intent.putExtras(data);
-                startActivity(intent);
+                startActivityForResult(intent, 0);
             }
         });
+
+        startMembershipsSyncing();
     }
 
     @Override
@@ -88,7 +97,6 @@ public class GroupMemberActivity extends RoboActionBarActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                // app icon in action bar clicked; goto parent activity.
                 this.finish();
                 return true;
             default:
@@ -96,15 +104,39 @@ public class GroupMemberActivity extends RoboActionBarActivity {
         }
     }
 
-    void loadMemberships() {
-        remoteApi.listGroupMemberships(group.id, null, 100)
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode,
+                                    Intent intent) {
+        if (requestCode == 0 && resultCode == 0 && intent != null) {
+            Log.i(TAG, "onActivityResult: requestCode=" + requestCode + ", resultCode=" + resultCode);
+            Membership membership = (Membership) intent.getSerializableExtra(GroupMemberProfileActivity.PARAM_MEMBER);
+            if (membership != null) {
+                for (Membership item : memberships) {
+                    if (item.id.equalsIgnoreCase(membership.id)) {
+                        memberships.remove(item);
+                        break;
+                    }
+                }
+                memberships.remove(membership);
+                mAdapter.notifyDataSetChanged();
+            }
+        }
+    }
+
+    void startMembershipsSyncing() {
+        memberships.clear();
+        remoteApi.listGroupMemberships(group.id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(resp -> {
-                    for (Membership item : resp) {
-                        memberships.add(item);
-                    }
-                    mAdapter.notifyDataSetChanged();
+                    processMemberships(resp);
                 }, error -> NetworkExceptionHandler.handleThrowable(error, this));
+    }
+
+    void processMemberships(List<Membership> membershipList) {
+        for (Membership item : membershipList) {
+            memberships.add(item);
+        }
+        mAdapter.notifyDataSetChanged();
     }
 }
