@@ -205,7 +205,7 @@ public class LoginActivity extends RoboActionBarActivity {
         String authToken = token.accessToken;
         String tokenType = token.tokenType;
 
-        RemoteApiFactory.setApiToken(tokenType, authToken);
+        RemoteApiFactory.setApiToken(this, tokenType, authToken);
         RemoteApi remoteApi = RemoteApiFactory.getApi();
         remoteApi.getAuthenticatedUser()
                 .subscribeOn(Schedulers.io())

@@ -63,6 +63,7 @@ public class NewGroupActivity extends RoboActionBarActivity {
     public void addNew(View v) {
         ProgressDialog progressDialog = new ProgressDialog(NewGroupActivity.this);
         progressDialog.setMessage("Save ...");
+        progressDialog.setCancelable(false);
         progressDialog.show();
         String name = mTitle.getText().toString().trim();
         if (name != null && name.length() != 0) {

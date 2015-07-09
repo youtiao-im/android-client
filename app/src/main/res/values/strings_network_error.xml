@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="error_bad_request">Bad request</string>
+    <string name="error_unauthorized">Unauthorized</string>
+    <string name="error_forbidden">Access limit</string>
+    <string name="error_not_found">Not found</string>
+    <string name="error_method_not_allowed">Method not allowed</string>
+    <string name="error_unprocessable_entity">Unprocessable entity</string>
+    <string name="error_server_error">Unkown server error</string>
+    <string name="error_email_too_long">Email is too long</string>
+    <string name="error_email_too_short">Email is too short</string>
+    <string name="error_email_blank">Email can not be empty</string>
+    <string name="error_email_invalid">Email is invalid</string>
+    <string name="error_email_taken">Email already exists</string>
+    <string name="error_password_too_long">Password is too long</string>
+    <string name="error_password_too_short">Password is too short</string>
+    <string name="error_password_blank">Password can not be empty</string>
+    <string name="error_password_invalid">Password is invalid</string>
+    <string name="error_password_taken">Password already exists</string>
+    <string name="error_group_code_too_long">Group code is too long</string>
+    <string name="error_group_code_too_short">Group code is too short</string>
+    <string name="error_group_code_blank">Group code can not be empty</string>
+    <string name="error_group_code_invalid">Group code is invalid</string>
+    <string name="error_group_code_taken">Group code already exists</string>
+    <string name="error_group_name_too_long">Group name is too long</string>
+    <string name="error_group_name_too_short">Group name is too short</string>
+    <string name="error_group_name_blank">Group name can not be empty</string>
+    <string name="error_group_name_invalid">Group name is invalid</string>
+    <string name="error_group_name_taken">Group name already exists</string>
+
+
+
+</resources>

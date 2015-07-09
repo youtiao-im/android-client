@@ -1,5 +1,7 @@
 package im.youtiao.android_client.providers;
 
+import android.content.Context;
+
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.squareup.okhttp.OkHttpClient;
@@ -10,6 +12,7 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
+import im.youtiao.android_client.YTApplication;
 import im.youtiao.android_client.rest.JacksonConverter;
 import im.youtiao.android_client.rest.LoginApi;
 import im.youtiao.android_client.rest.RemoteApi;
@@ -28,6 +31,9 @@ public class LoginApiProvider implements Provider<LoginApi> {
 
     @Inject private JacksonConverter converter;
 
+    @Inject
+    Context mContext;
+
     @Override
     public LoginApi get() {
         RequestInterceptor interceptor = request -> request.addHeader("Accept", "application/vnd.youtiao.im+json; version=1");
@@ -36,6 +42,7 @@ public class LoginApiProvider implements Provider<LoginApi> {
         okHttpClient.setReadTimeout(5, TimeUnit.SECONDS);
         okHttpClient.setConnectTimeout(5, TimeUnit.SECONDS);
         okHttpClient.setWriteTimeout(5, TimeUnit.SECONDS);
+        endPoint.setRemoteEndPoint(((YTApplication) mContext.getApplicationContext()).getApiHost());
         RestAdapter restAdapter = builder.setEndpoint(endPoint)
                 .setExecutors(executor, executor)
                 .setRequestInterceptor(interceptor)

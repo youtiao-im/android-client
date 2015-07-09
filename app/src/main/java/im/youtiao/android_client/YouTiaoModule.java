@@ -23,7 +23,7 @@ public class YouTiaoModule extends AbstractModule {
     @Override
     protected void configure() {
         bind(DaoSession.class).toProvider(DaoSessionProvider.class);
-        bind(LoginApi.class).toProvider(LoginApiProvider.class).asEagerSingleton();
+        bind(LoginApi.class).toProvider(LoginApiProvider.class);
         bind(RemoteApi.class).toProvider(RemoteApiProvider.class);
     }
 }

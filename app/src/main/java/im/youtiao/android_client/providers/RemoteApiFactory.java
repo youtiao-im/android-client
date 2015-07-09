@@ -41,11 +41,12 @@ public class RemoteApiFactory {
         return instance;
     }
 
-    public static void setApiToken(String tokenType, String token) {
+    public static void setApiToken(Context context, String tokenType, String token) {
         RequestInterceptor interceptor = (request) -> {
             request.addHeader("Accept", "application/vnd.youtiao.im+json; version=1");
             request.addHeader("Authorization", tokenType + " " + token);
         };
+        endPoint.setRemoteEndPoint(((YTApplication)context.getApplicationContext()).getApiHost());
         final OkHttpClient okHttpClient = new OkHttpClient();
         okHttpClient.setReadTimeout(5, TimeUnit.SECONDS);
         okHttpClient.setConnectTimeout(5, TimeUnit.SECONDS);

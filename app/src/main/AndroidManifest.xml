@@ -109,16 +109,6 @@
             android:name="roboguice.annotations.packages"
             android:value="roboguice,im.youtiao.android_client" />
 
-        <service android:name=".authenticator.AuthenticationService" >
-            <intent-filter>
-                <action android:name="android.accounts.AccountAuthenticator" />
-            </intent-filter>
-
-            <meta-data
-                android:name="android.accounts.AccountAuthenticator"
-                android:resource="@xml/authenticator" />
-        </service>
-
         <activity
             android:name="cn.jpush.android.ui.PushActivity"
             android:configChanges="orientation|keyboardHidden"
@@ -175,6 +165,9 @@
         <meta-data
             android:name="JPUSH_APPKEY"
             android:value="f0f3323a4fa7a41a7cbcd9b7" />
+        <meta-data
+            android:name="YOUTIAO_API_HOST"
+            android:value="http://192.168.241.129:3000" />
 
         <activity
             android:name=".ui.activity.ForgotPasswordActivity"

@@ -55,7 +55,7 @@ public class BootstrapActivity extends RoboActivity {
 
         AccountDescriptor currentAccount = getApp().getCurrentAccount();
         if (currentAccount != null && currentAccount.getToken() != null) {
-            RemoteApiFactory.setApiToken(currentAccount.getTokenType(), currentAccount.getToken());
+            RemoteApiFactory.setApiToken(this, currentAccount.getTokenType(), currentAccount.getToken());
             DaoSessionFactory.setDaoSession(this);
             LibraryProvider.daoSession = DaoSessionFactory.getDaoSession();
             startActivity(new Intent(BootstrapActivity.this, MainActivity.class));

@@ -6,12 +6,12 @@ import retrofit.Endpoint;
 public class RemoteEndPoint implements Endpoint {
 
     private static final String DEFAULT_ENDPOINT =
-            String.format("http://%s:3000", "192.168.241.129");
+            String.format("http://%s:3000", "192.168.241.19");
 
     private String mEndPoint;
 
-    public void setConnectionSettings(String address, int port) {
-        mEndPoint = String.format("http://%s:%d", address, port);
+    public void setRemoteEndPoint(String host) {
+        mEndPoint = host;
     }
 
     @Override

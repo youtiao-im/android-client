@@ -5,6 +5,9 @@ import android.accounts.AccountManager;
 import android.app.Application;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
+import android.os.Bundle;
 import android.preference.PreferenceManager;
 
 import org.json.JSONArray;
@@ -13,13 +16,7 @@ import org.json.JSONException;
 import java.util.ArrayList;
 
 import cn.jpush.android.api.JPushInterface;
-import im.youtiao.android_client.dao.DaoSession;
-import im.youtiao.android_client.dao.LibraryProvider;
 import im.youtiao.android_client.model.User;
-import im.youtiao.android_client.providers.DaoSessionFactory;
-import im.youtiao.android_client.providers.DaoSessionProvider;
-import im.youtiao.android_client.ui.activity.LoginActivity;
-import im.youtiao.android_client.ui.activity.MainActivity;
 
 
 public class YTApplication extends Application {
@@ -28,6 +25,7 @@ public class YTApplication extends Application {
 
     private ArrayList<AccountDescriptor> mAccounts;
     private Integer mCurrentAccountIndex;
+    private String apiHost = "";
 
     @Override
     public void onCreate() {
@@ -38,6 +36,18 @@ public class YTApplication extends Application {
         mPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         mAccounts = new ArrayList<AccountDescriptor>();
         updateAccounts();
+
+        updateMetaData();
+    }
+
+    void updateMetaData(){
+        try {
+            ApplicationInfo ai = getPackageManager().getApplicationInfo(this.getPackageName(), PackageManager.GET_META_DATA);
+            Bundle bundle  = ai.metaData;
+            apiHost = bundle.getString("YOUTIAO_API_HOST");
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
     void updateAccounts() {
@@ -211,27 +221,7 @@ public class YTApplication extends Application {
         return SharedPreferencesConstants.ACCOUNT_DESCRIPTOR_PREFIX + id;
     }
 
-
-//    public User getCurrentUser() {
-//        return currentUser;
-//    }
-//
-//    public void setCurrentUser(User user) {
-//        this.currentUser = user;
-//    }
-
-//    public Account getCurrentAccount() {
-//        AccountManager accountManager = AccountManager.get(this);
-//        Account[] accounts = accountManager
-//                .getAccountsByType(LoginActivity.PARAM_ACCOUNT_TYPE);
-//
-//        if (accounts.length > 0) {
-//            return accounts[0];
-//        } else {
-//            Intent intent = new Intent(this, MainActivity.class);
-//            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//            startActivity(intent);
-//            return null;
-//        }
-//    }
+    public String getApiHost() {
+        return apiHost;
+    }
 }

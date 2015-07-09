@@ -148,7 +148,7 @@ public class RegisterActivity extends RoboActionBarActivity {
                             .subscribe(token -> {
                                 String authToken = token.accessToken;
                                 String tokenType = token.tokenType;
-                                RemoteApiFactory.setApiToken(tokenType, authToken);
+                                RemoteApiFactory.setApiToken(this, tokenType, authToken);
                                 getApp().onPostSignIn(resp, password, tokenType, authToken);
                                 Intent newIntent = getIntent();
                                 RegisterActivity.this.setResult(1, newIntent);

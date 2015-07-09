@@ -22,31 +22,21 @@
             style="@style/layout_section"
             android:layout_alignParentTop="true"
             android:id="@+id/layout_section1"
-            android:layout_marginTop="20dp"
-            android:weightSum="1">
+            android:layout_marginTop="20dp">
 
             <LinearLayout style="@style/layout_row"
                 android:id="@+id/layout_email">
 
-                <TextView style="@style/font_row_label"
-                    android:layout_height="wrap_content"
-                    android:layout_width="0dp"
-                    android:text="@string/label_account"
-                    android:id="@+id/tv_email_label"
-                    android:layout_alignParentLeft="true"
-                    android:layout_weight="0.3" />
-
                 <EditText style="@style/font_row_text"
                     android:layout_height="wrap_content"
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
                     android:hint="@string/hint_email_address"
                     android:id="@+id/edtTxt_email"
                     android:background="@null"
                     android:maxLines="1"
                     android:singleLine="true"
                     android:layout_alignParentRight="false"
-                    android:layout_toRightOf="@+id/tv_email_label"
-                    android:layout_weight="0.7" />
+                    android:layout_toRightOf="@+id/tv_email_label"/>
             </LinearLayout>
 
             <View  style="@style/bg_line"/>
@@ -54,20 +44,9 @@
             <LinearLayout style="@style/layout_row"
                 android:id="@+id/layout_password">
 
-                <TextView style="@style/font_row_label"
-                    android:layout_height="wrap_content"
-                    android:layout_width="0dp"
-                    android:text="@string/label_password"
-                    android:id="@+id/tv_password_label"
-                    android:inputType="textEmailAddress"
-                    android:maxLines="1"
-                    android:singleLine="true"
-                    android:layout_alignParentLeft="true"
-                    android:layout_weight="0.3" />
-
                 <EditText style="@style/font_row_text"
                     android:layout_height="wrap_content"
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
                     android:hint="@string/hint_password"
                     android:id="@+id/edtTxt_password"
                     android:background="@null"
@@ -78,8 +57,7 @@
                     android:maxLines="1"
                     android:singleLine="true"
                     android:layout_alignParentRight="false"
-                    android:layout_toRightOf="@+id/tv_password_label"
-                    android:layout_weight="0.7" />
+                    android:layout_toRightOf="@+id/tv_password_label" />
             </LinearLayout>
 
             <View  style="@style/bg_line"/>
