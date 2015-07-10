@@ -74,11 +74,15 @@ public class MainActivity extends RoboActionBarActivity implements MaterialTabLi
     }
 
     @Override
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        EventBus.getDefault().register(this);
 
         res = this.getResources();
 
@@ -170,9 +174,10 @@ public class MainActivity extends RoboActionBarActivity implements MaterialTabLi
 
 
 
-    public void OnDestory() {
-        super.onDestroy();
+    @Override
+    public void onStop() {
         EventBus.getDefault().unregister(this);
+        super.onStop();
     }
 
     @Override
