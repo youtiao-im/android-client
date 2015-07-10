@@ -6,8 +6,7 @@
         android:background="#ffffffff"
         android:layout_alignParentBottom="true"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_below="@+id/layout_group_info">
+        android:layout_height="fill_parent">
 
 
         <RelativeLayout style="@style/layout_row"

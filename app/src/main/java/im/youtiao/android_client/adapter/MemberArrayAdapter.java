@@ -6,14 +6,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 
 import im.youtiao.android_client.R;
-import im.youtiao.android_client.model.Comment;
 import im.youtiao.android_client.model.Membership;
 
 public class MemberArrayAdapter extends ArrayAdapter<Membership> {

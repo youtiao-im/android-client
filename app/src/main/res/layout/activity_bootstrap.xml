@@ -7,7 +7,7 @@
     <Button
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="Log In"
+        android:text="@string/btn_sign_in"
         android:id="@+id/btn_login"
         android:layout_alignParentBottom="false"
         android:layout_alignParentLeft="false"
@@ -17,7 +17,7 @@
     <Button
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="Sign Up"
+        android:text="@string/btn_sign_up"
         android:id="@+id/btn_sign_up"
         android:layout_alignParentBottom="false"
         android:layout_alignParentRight="false"

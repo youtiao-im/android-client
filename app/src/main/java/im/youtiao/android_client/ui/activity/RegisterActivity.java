@@ -48,16 +48,12 @@ public class RegisterActivity extends RoboActionBarActivity {
 
     @InjectView(R.id.email_register_form)
     private View mProgressView;
-    @InjectView(R.id.register_progress)
-    private View mRegisterFormView;
 
     @InjectView(R.id.btn_sign_up)
     private Button signUpBtn;
 
     @Inject
     LoginApi loginApi;
-
-    private UserRegisterTask mRegisterTask = null;
 
     YTApplication getApp() {
         return (YTApplication) getApplication();
@@ -92,11 +88,6 @@ public class RegisterActivity extends RoboActionBarActivity {
     }
 
     public void register() {
-        if (mRegisterTask != null) {
-            return;
-        }
-
-
         // Store values at the time of the login attempt.
         String email = mEmailEdtTxt.getText().toString();
         String name = mNameEdtTxt.getText().toString();
@@ -122,7 +113,7 @@ public class RegisterActivity extends RoboActionBarActivity {
         if (cancel) {
             AlertDialog.Builder builder = new AlertDialog.Builder(RegisterActivity.this);
             builder.setMessage(errorString)
-                    .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                    .setPositiveButton(getString(R.string.tip_btn_ok), new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             dialog.dismiss();
@@ -135,7 +126,7 @@ public class RegisterActivity extends RoboActionBarActivity {
 
     void remoteSignUp(String email, String name, String password) {
         ProgressDialog progressDialog = new ProgressDialog(RegisterActivity.this);
-        progressDialog.setMessage("Sign up ...");
+        progressDialog.setMessage(getString(R.string.progress_message_sing_up));
         progressDialog.show();
         loginApi.signUpUser(email, name, password)
                 .subscribeOn(Schedulers.io())
@@ -167,20 +158,8 @@ public class RegisterActivity extends RoboActionBarActivity {
      */
     @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
     public void showProgress(final boolean show) {
-        // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
-        // for very easy animations. If available, use these APIs to fade-in
-        // the progress spinner.
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
             int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
-
-//            mRegisterFormView.setVisibility(show ? View.GONE : View.VISIBLE);
-//            mRegisterFormView.animate().setDuration(shortAnimTime).alpha(
-//                    show ? 0 : 1).setListener(new AnimatorListenerAdapter() {
-//                @Override
-//                public void onAnimationEnd(Animator animation) {
-//                    mRegisterFormView.setVisibility(show ? View.GONE : View.VISIBLE);
-//                }
-//            });
 
             mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
             mProgressView.animate().setDuration(shortAnimTime).alpha(
@@ -191,10 +170,7 @@ public class RegisterActivity extends RoboActionBarActivity {
                 }
             });
         } else {
-            // The ViewPropertyAnimator APIs are not available, so simply show
-            // and hide the relevant UI components.
             mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-            //mRegisterFormView.setVisibility(show ? View.GONE : View.VISIBLE);
         }
     }
 
@@ -225,46 +201,4 @@ public class RegisterActivity extends RoboActionBarActivity {
         }
     }
 
-    public class UserRegisterTask extends AsyncTask<Void, Void, Boolean> {
-
-        private final String mEmail;
-        private final String mPassword;
-
-        UserRegisterTask(String email, String password) {
-            mEmail = email;
-            mPassword = password;
-        }
-
-        @Override
-        protected Boolean doInBackground(Void... params) {
-            try {
-                //TODO: register
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
-                return false;
-            }
-            return false;
-        }
-
-        @Override
-        protected void onPostExecute(final Boolean success) {
-            mRegisterTask = null;
-            showProgress(false);
-
-            if (success) {
-                finish();
-                Intent myIntent = new Intent(RegisterActivity.this, MainActivity.class);
-                RegisterActivity.this.startActivity(myIntent);
-            } else {
-                mPasswordEdtTxt.setError(getString(R.string.error_incorrect_password));
-                mPasswordEdtTxt.requestFocus();
-            }
-        }
-
-        @Override
-        protected void onCancelled() {
-            mRegisterTask = null;
-            showProgress(false);
-        }
-    }
 }

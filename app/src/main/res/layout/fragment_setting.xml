@@ -16,10 +16,11 @@
                 android:id="@+id/tv_email_label"
                 android:layout_alignParentLeft="true" />
 
-            <TextView style="@style/layout_row_text"
+            <TextView style="@style/layout_row_right_text"
                 android:text="@string/label_name"
                 android:id="@+id/tv_email"
-                android:layout_alignParentRight="true" />
+                android:layout_alignParentRight="false"
+                android:layout_toRightOf="@+id/tv_email_label" />
         </RelativeLayout>
 
         <View  style="@style/bg_line"/>
@@ -30,11 +31,12 @@
                 android:text="Name"
                 android:id="@+id/tv_name_label"
                 android:layout_alignParentLeft="true" />
-            <TextView style="@style/layout_row_text"
+            <TextView style="@style/layout_row_right_text"
                 android:text="luffy"
                 android:id="@+id/tv_name"
                 android:layout_alignParentLeft="false"
-                android:layout_alignParentRight="true" />
+                android:layout_alignParentRight="false"
+                android:layout_toRightOf="@+id/tv_name_label" />
         </RelativeLayout>
         <View  style="@style/bg_line"/>
 
@@ -58,10 +60,11 @@
                 android:text="@string/label_version"
                 android:id="@+id/tv_version_label"
                 android:layout_alignParentLeft="true" />
-            <TextView style="@style/layout_row_text"
+            <TextView style="@style/layout_row_right_text"
                 android:text="1.0"
                 android:id="@+id/tv_version"
-                android:layout_alignParentRight="true" />
+                android:layout_alignParentRight="false"
+                android:layout_toRightOf="@+id/tv_version_label" />
         </RelativeLayout>
     </LinearLayout>
 

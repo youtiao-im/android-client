@@ -157,6 +157,7 @@ public class NetworkExceptionHandler {
                             resourceId = R.string.error_email_taken;
                             break;
                     }
+                    break;
                 case "password":
                     switch(reason) {
                         case "too_long":
@@ -175,6 +176,7 @@ public class NetworkExceptionHandler {
                             resourceId = R.string.error_password_taken;
                             break;
                     }
+                    break;
                 case "name":
                     switch(reason) {
                         case "too_long":
@@ -193,6 +195,7 @@ public class NetworkExceptionHandler {
                             resourceId = R.string.error_group_name_taken;
                             break;
                     }
+                    break;
                 case "code":
                     switch(reason) {
                         case "too_long":
@@ -211,6 +214,7 @@ public class NetworkExceptionHandler {
                             resourceId = R.string.error_group_code_taken;
                             break;
                     }
+                    break;
                 default:
 
             }

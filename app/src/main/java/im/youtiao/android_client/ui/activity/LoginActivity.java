@@ -178,7 +178,7 @@ public class LoginActivity extends RoboActionBarActivity {
         if (cancel) {
             AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
             builder.setMessage(errorString)
-                    .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                    .setPositiveButton(getString(R.string.tip_btn_ok), new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             dialog.dismiss();
@@ -186,7 +186,7 @@ public class LoginActivity extends RoboActionBarActivity {
                     }).create().show();
         } else {
             ProgressDialog progressDialog = new ProgressDialog(LoginActivity.this);
-            progressDialog.setMessage("Sign in...");
+            progressDialog.setMessage(getString(R.string.progress_message_sign_in));
             progressDialog.show();
             loginApi.getTokenSync("password", mUsername, mPassword)
                     .subscribeOn(Schedulers.io())

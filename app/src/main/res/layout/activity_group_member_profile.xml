@@ -18,9 +18,10 @@
                 android:id="@+id/tv_user_name_label"
                 android:layout_alignParentLeft="true" />
 
-            <TextView style="@style/layout_row_text"
+            <TextView style="@style/layout_row_right_text"
                 android:id="@+id/tv_user_name"
-                android:layout_alignParentRight="true" />
+                android:text="fadfafdadfdfdddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
+                android:layout_toRightOf="@+id/tv_user_name_label" />
         </RelativeLayout>
 
         <View  style="@style/bg_line"/>
@@ -31,10 +32,9 @@
                 android:text="@string/label_email"
                 android:id="@+id/tv_user_email_label"
                 android:layout_alignParentLeft="true" />
-            <TextView style="@style/layout_row_text"
+            <TextView style="@style/layout_row_right_text"
                 android:id="@+id/tv_user_email"
-                android:layout_alignParentLeft="false"
-                android:layout_alignParentRight="true" />
+                android:layout_toRightOf="@+id/tv_user_email_label" />
         </RelativeLayout>
     </LinearLayout>
 

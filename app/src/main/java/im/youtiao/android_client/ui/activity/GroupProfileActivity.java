@@ -9,8 +9,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -18,13 +16,11 @@ import com.google.inject.Inject;
 
 import im.youtiao.android_client.R;
 import im.youtiao.android_client.dao.DaoHelper;
-import im.youtiao.android_client.dao.DaoMaster;
 import im.youtiao.android_client.dao.DaoSession;
 import im.youtiao.android_client.dao.GroupHelper;
 import im.youtiao.android_client.model.Group;
 import im.youtiao.android_client.rest.RemoteApi;
 import im.youtiao.android_client.wrap.GroupWrap;
-import mehdi.sakout.fancybuttons.FancyButton;
 import roboguice.activity.RoboActionBarActivity;
 import roboguice.inject.InjectView;
 
@@ -95,21 +91,19 @@ public class GroupProfileActivity extends RoboActionBarActivity {
             @Override
             public void onClick(View v) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(GroupProfileActivity.this);
-                builder.setMessage("Are you sure you want to remove this group?");
-                builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                builder.setMessage(getString(R.string.tip_delete_group));
+                        builder.setPositiveButton(getString(R.string.tip_btn_yes), new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                                Intent intent = getIntent();
+                                GroupProfileActivity.this.setResult(0, intent);
+                                GroupProfileActivity.this.finish();
+                            }
+                        });
+                builder.setNegativeButton(getString(R.string.tip_btn_cancel), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        Log.e(TAG, "Yes Click");
-                        dialog.dismiss();
-                        Intent intent = getIntent();
-                        GroupProfileActivity.this.setResult(0, intent);
-                        GroupProfileActivity.this.finish();
-                    }
-                });
-                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        Log.e(TAG, "Cancel Click");
                         dialog.dismiss();
                     }
                 });
@@ -122,8 +116,8 @@ public class GroupProfileActivity extends RoboActionBarActivity {
             @Override
             public void onClick(View v) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(GroupProfileActivity.this);
-                builder.setMessage(getString(R.string.unsubscribe_tip));
-                builder.setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
+                builder.setMessage(getString(R.string.tip_unsubscribe_group));
+                builder.setPositiveButton(getString(R.string.tip_btn_yes), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
@@ -132,7 +126,7 @@ public class GroupProfileActivity extends RoboActionBarActivity {
                         GroupProfileActivity.this.finish();
                     }
                 });
-                builder.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
+                builder.setNegativeButton(getString(R.string.tip_btn_cancel), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();

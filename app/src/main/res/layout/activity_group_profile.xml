@@ -18,9 +18,10 @@
                 android:id="@+id/tv_group_name_label"
                 android:layout_alignParentLeft="true" />
 
-            <TextView style="@style/layout_row_text"
+            <TextView style="@style/layout_row_right_text"
                 android:id="@+id/tv_group_name"
-                android:layout_alignParentRight="true" />
+                android:text="This is a long text view test ,so it is right?"
+                android:layout_toRightOf="@+id/tv_group_name_label" />
         </RelativeLayout>
 
         <View  style="@style/bg_line"/>
@@ -29,12 +30,12 @@
             android:id="@+id/layout_group_code">
             <TextView style="@style/layout_row_label"
                 android:text="@string/label_group_code"
-                android:id="@+id/tv_name_label"
-                android:layout_alignParentLeft="true" />
-            <TextView style="@style/layout_row_text"
+                android:id="@+id/tv_group_code_label"
+                android:layout_alignParentLeft="true"
+                android:layout_marginRight="10dp" />
+            <TextView style="@style/layout_row_right_text"
                 android:id="@+id/tv_group_code"
-                android:layout_alignParentLeft="false"
-                android:layout_alignParentRight="true" />
+                android:layout_toRightOf="@+id/tv_group_code_label"/>
         </RelativeLayout>
     </LinearLayout>
 

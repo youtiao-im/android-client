@@ -59,11 +59,11 @@ public class JoinGroupActivity extends RoboActionBarActivity {
     }
 
     public void joinNew(View v) {
-        ProgressDialog progressDialog = new ProgressDialog(JoinGroupActivity.this);
-        progressDialog.setMessage("Save ...");
-        progressDialog.show();
         String code = groupCodeEdtTxt.getText().toString().trim();
         if (code != null && code.length() != 0) {
+            ProgressDialog progressDialog = new ProgressDialog(JoinGroupActivity.this);
+            progressDialog.setMessage(getString(R.string.progress_message_save));
+            progressDialog.show();
             remoteApi.joinGroup(code).subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe( resp -> {

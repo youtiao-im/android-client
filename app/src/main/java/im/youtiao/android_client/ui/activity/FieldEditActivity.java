@@ -142,7 +142,7 @@ public class FieldEditActivity extends RoboActionBarActivity {
 
     boolean save() {
         ProgressDialog progressDialog = new ProgressDialog(FieldEditActivity.this);
-        progressDialog.setMessage("Save ...");
+        progressDialog.setMessage(getString(R.string.progress_message_save));
         progressDialog.show();
         String fieldContent = fieldEdtTxt.getText().toString();
         switch(editType) {

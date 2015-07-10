@@ -12,7 +12,6 @@ import android.widget.TextView;
 import java.util.LinkedList;
 
 import im.youtiao.android_client.R;
-import im.youtiao.android_client.model.Comment;
 import im.youtiao.android_client.model.Stamp;
 import im.youtiao.android_client.util.TimeWrap;
 

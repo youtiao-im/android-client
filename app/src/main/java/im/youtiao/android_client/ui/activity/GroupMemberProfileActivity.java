@@ -4,12 +4,10 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -52,8 +50,8 @@ public class GroupMemberProfileActivity extends RoboActionBarActivity {
             @Override
             public void onClick(View v) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(GroupMemberProfileActivity.this);
-                builder.setMessage(getString(R.string.unsubscribe_tip));
-                builder.setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
+                builder.setMessage(getString(R.string.tip_unsubscribe_group));
+                builder.setPositiveButton(getString(R.string.tip_btn_yes), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
@@ -66,7 +64,7 @@ public class GroupMemberProfileActivity extends RoboActionBarActivity {
                         GroupMemberProfileActivity.this.finish();
                     }
                 });
-                builder.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
+                builder.setNegativeButton(getString(R.string.tip_btn_cancel), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();

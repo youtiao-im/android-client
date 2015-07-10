@@ -115,6 +115,59 @@ public class MainActivity extends RoboActionBarActivity implements MaterialTabLi
         tabHost.getCurrentTab().setIconColor(getResources().getColor(R.color.tab_icon_selected_color));
     }
 
+    private class ViewPagerAdapter extends FragmentStatePagerAdapter {
+        public ViewPagerAdapter(FragmentManager fm) {
+            super(fm);
+        }
+
+        public Fragment getItem(int num) {
+            switch (num) {
+                case 0:
+                    return new BulletinsFragment();
+                case 1:
+                    return new GroupsFragment();
+                case 2:
+                    return new SettingsFragment();
+                default:
+                    return null;
+            }
+        }
+
+        @Override
+        public int getCount() {
+            return 3;
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            switch (position) {
+                case 0:
+                    return getString(R.string.bulletins);
+                case 1:
+                    return getString(R.string.groups);
+                case 2:
+                    return getString(R.string.settings);
+                default:
+                    return null;
+            }
+        }
+    }
+
+    /*
+    * It doesn't matter the color of the icons, but they must have solid colors
+    */
+    private Drawable getIcon(int position) {
+        switch (position) {
+            case 0:
+                return res.getDrawable(R.mipmap.tab_home_filled);
+            case 1:
+                return res.getDrawable(R.mipmap.tab_group_filled);
+            case 2:
+                return res.getDrawable(R.mipmap.tab_settings_filled);
+        }
+        return null;
+    }
+
 
 
     public void OnDestory() {
@@ -194,8 +247,8 @@ public class MainActivity extends RoboActionBarActivity implements MaterialTabLi
     @Override
     public void onSignOut() {
         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-        builder.setMessage("Are you sure you want to remove this group?");
-        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+        builder.setMessage(getString(R.string.tip_sign_out));
+        builder.setPositiveButton(getString(R.string.tip_btn_yes), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
@@ -204,7 +257,7 @@ public class MainActivity extends RoboActionBarActivity implements MaterialTabLi
                 startActivity(intent);
             }
         });
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+        builder.setNegativeButton(getString(R.string.tip_btn_cancel), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
@@ -280,59 +333,5 @@ public class MainActivity extends RoboActionBarActivity implements MaterialTabLi
         Intent intent = new Intent(this, GroupProfileActivity.class);
         intent.putExtras(data);
         startActivity(intent);
-    }
-
-
-    private class ViewPagerAdapter extends FragmentStatePagerAdapter {
-        public ViewPagerAdapter(FragmentManager fm) {
-            super(fm);
-        }
-
-        public Fragment getItem(int num) {
-            switch (num) {
-                case 0:
-                    return new BulletinsFragment();
-                case 1:
-                    return new GroupsFragment();
-                case 2:
-                    return new SettingsFragment();
-                default:
-                    return null;
-            }
-        }
-
-        @Override
-        public int getCount() {
-            return 3;
-        }
-
-        @Override
-        public CharSequence getPageTitle(int position) {
-            switch (position) {
-                case 0:
-                    return "Bulletins";
-                case 1:
-                    return "Groups";
-                case 2:
-                    return "Profile";
-                default:
-                    return null;
-            }
-        }
-    }
-
-    /*
-    * It doesn't matter the color of the icons, but they must have solid colors
-    */
-    private Drawable getIcon(int position) {
-        switch (position) {
-            case 0:
-                return res.getDrawable(R.mipmap.tab_home_filled);
-            case 1:
-                return res.getDrawable(R.mipmap.tab_group_filled);
-            case 2:
-                return res.getDrawable(R.mipmap.tab_settings_filled);
-        }
-        return null;
     }
 }

@@ -61,12 +61,11 @@ public class NewGroupActivity extends RoboActionBarActivity {
     }
 
     public void addNew(View v) {
-        ProgressDialog progressDialog = new ProgressDialog(NewGroupActivity.this);
-        progressDialog.setMessage("Save ...");
-        progressDialog.setCancelable(false);
-        progressDialog.show();
         String name = mTitle.getText().toString().trim();
         if (name != null && name.length() != 0) {
+            ProgressDialog progressDialog = new ProgressDialog(NewGroupActivity.this);
+            progressDialog.setMessage(getString(R.string.progress_message_save));
+            progressDialog.show();
             remoteApi.createGroup(name, null).subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe( resp -> {

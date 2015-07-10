@@ -8,14 +8,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.LinkedList;
 
 import de.greenrobot.event.EventBus;
 import im.youtiao.android_client.R;
-import im.youtiao.android_client.event.BulletinCommentClickEvent;
 import im.youtiao.android_client.event.BulletinStampEvent;
 import im.youtiao.android_client.model.Bulletin;
 import im.youtiao.android_client.model.Stamp;

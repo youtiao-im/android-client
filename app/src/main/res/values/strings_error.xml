@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="error_invalid_email">Invalid Email</string>
+    <string name="error_invalid_password">Invalid Password</string>
+    <string name="error_user_name_required">Username Required</string>
+
+
     <string name="error_bad_request">Bad request</string>
     <string name="error_unauthorized">Unauthorized</string>
     <string name="error_forbidden">Access limit</string>
@@ -27,7 +32,4 @@
     <string name="error_group_name_blank">Group name can not be empty</string>
     <string name="error_group_name_invalid">Group name is invalid</string>
     <string name="error_group_name_taken">Group name already exists</string>
-
-
-
 </resources>

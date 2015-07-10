@@ -55,7 +55,7 @@
     <Button
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="Done"
+        android:text="@string/btn_done"
         android:id="@+id/btn_done"
         android:layout_alignParentBottom="true"
         android:background="@color/btn_background_color" />

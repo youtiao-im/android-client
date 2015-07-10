@@ -175,7 +175,7 @@
         </activity>
         <activity
             android:name=".ui.activity.FieldEditActivity"
-            android:label="@string/title_activity_account" >
+            android:label="@string/title_activity_edit_account_name" >
         </activity>
         <activity
             android:name=".ui.activity.ChangePasswordActivity"

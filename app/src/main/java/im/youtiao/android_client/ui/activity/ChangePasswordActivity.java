@@ -73,7 +73,7 @@ public class ChangePasswordActivity extends RoboActionBarActivity {
         String newPassword = newPasswordEdtTxt.getText().toString();
         ProgressDialog progressDialog = new ProgressDialog(ChangePasswordActivity.this);
         progressDialog.setIndeterminate(true);
-        progressDialog.setMessage("Change Password...");
+        progressDialog.setMessage(getString(R.string.progress_message_change_password));
         progressDialog.show();
         remoteApi.changePassword(password, newPassword)
                 .subscribeOn(Schedulers.io())
