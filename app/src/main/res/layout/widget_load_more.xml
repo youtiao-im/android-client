@@ -5,7 +5,8 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:paddingTop="10dp"
-        android:paddingBottom="10dip">
+        android:paddingBottom="10dip"
+    android:background="@android:color/white">
 
     <TextView
             android:id="@+id/load_more_text"

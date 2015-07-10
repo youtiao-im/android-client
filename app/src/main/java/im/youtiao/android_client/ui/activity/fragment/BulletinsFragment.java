@@ -179,6 +179,7 @@ public class BulletinsFragment extends RoboFragment implements LoaderManager.Loa
                 //mPtrFrame.autoRefresh();
             }
         }, 100);
+        refreshData();
     }
 
 
