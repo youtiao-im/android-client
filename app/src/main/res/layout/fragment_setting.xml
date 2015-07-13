@@ -17,7 +17,7 @@
                 android:layout_alignParentLeft="true" />
 
             <TextView style="@style/layout_row_right_text"
-                android:text="@string/label_name"
+
                 android:id="@+id/tv_email"
                 android:layout_alignParentRight="false"
                 android:layout_toRightOf="@+id/tv_email_label" />
@@ -28,7 +28,7 @@
         <RelativeLayout style="@style/layout_row"
             android:id="@+id/layout_name">
             <TextView style="@style/layout_row_label"
-                android:text="Name"
+                android:text="@string/label_name"
                 android:id="@+id/tv_name_label"
                 android:layout_alignParentLeft="true" />
             <TextView style="@style/layout_row_right_text"

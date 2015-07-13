@@ -24,7 +24,7 @@
             fancy:fb_focusColor="#9bd823"
             fancy:fb_iconPosition="left"
             fancy:fb_radius="0dp"
-            fancy:fb_text="+ Create a group"
+            fancy:fb_text="@string/btn_create_group"
             fancy:fb_textColor="#ff104896" />
         <mehdi.sakout.fancybuttons.FancyButton
             android:id="@+id/join_channel_button"
@@ -41,7 +41,7 @@
             fancy:fb_focusColor="#9bd823"
             fancy:fb_iconPosition="left"
             fancy:fb_radius="0dp"
-            fancy:fb_text="+ Join a group"
+            fancy:fb_text="@string/btn_join_group"
             fancy:fb_textColor="#ff104896"/>
     </LinearLayout>
     <in.srain.cube.views.ptr.PtrClassicFrameLayout

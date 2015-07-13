@@ -91,44 +91,48 @@ public class NetworkExceptionHandler {
     public static final int SERVER_ERROR = 500;
 
     public static void handleServerError(ServerError serverError, Context context) {
-        int status = serverError.status;
-        String displayMessage = "";
-        switch(status){
-            case UNAUTHORIZED:
-                YTApplication application = (YTApplication) context.getApplicationContext();
-                application.signOutAccount(application.getCurrentAccount().getId());
-                Intent intent = new Intent(context, BootstrapActivity.class);
-                context.startActivity(intent);
-                return;
-            case BAD_REQUEST:
-                displayMessage = context.getString(R.string.error_bad_request);
-                break;
-            case FORBIDDEN:
-                displayMessage = context.getString(R.string.error_forbidden);
-                break;
-            case NOT_FOUND:
-                displayMessage = context.getString(R.string.error_not_found);
-                break;
-            case METHOD_NOT_ALLOWED:
-                displayMessage = context.getString(R.string.error_method_not_allowed);
-                break;
-            case SERVER_ERROR:
-                displayMessage = context.getString(R.string.error_server_error);
-                break;
-            case UNPROCESSABLE_ENTITY:
-                displayMessage = getDisplayMessageFromErrorMessage(serverError.errorMessage, context);
-                break;
-            default:
+        try {
+            int status = serverError.status;
+            String displayMessage = "";
+            switch (status) {
+                case UNAUTHORIZED:
+                    YTApplication application = (YTApplication) context.getApplicationContext();
+                    application.signOutAccount(application.getCurrentAccount().getId());
+                    Intent intent = new Intent(context, BootstrapActivity.class);
+                    context.startActivity(intent);
+                    return;
+                case BAD_REQUEST:
+                    displayMessage = context.getString(R.string.error_bad_request);
+                    break;
+                case FORBIDDEN:
+                    displayMessage = context.getString(R.string.error_forbidden);
+                    break;
+                case NOT_FOUND:
+                    displayMessage = context.getString(R.string.error_not_found);
+                    break;
+                case METHOD_NOT_ALLOWED:
+                    displayMessage = context.getString(R.string.error_method_not_allowed);
+                    break;
+                case SERVER_ERROR:
+                    displayMessage = context.getString(R.string.error_server_error);
+                    break;
+                case UNPROCESSABLE_ENTITY:
+                    displayMessage = getDisplayMessageFromErrorMessage(serverError.errorMessage, context);
+                    break;
+                default:
 
+            }
+            AlertDialog.Builder builder = new AlertDialog.Builder(context);
+            builder.setMessage(displayMessage)
+                    .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    }).create().show();
+        } catch(Exception e) {
+            e.printStackTrace();
         }
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setMessage(displayMessage)
-                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                }).create().show();
     }
 
     private static String getDisplayMessageFromErrorMessage(String errorMessage, Context context) {

@@ -3,7 +3,6 @@ package im.youtiao.android_client.ui.activity;
 import android.accounts.AccountManager;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -15,6 +14,7 @@ import im.youtiao.android_client.YTApplication;
 import im.youtiao.android_client.dao.LibraryProvider;
 import im.youtiao.android_client.providers.DaoSessionFactory;
 import im.youtiao.android_client.providers.RemoteApiFactory;
+import im.youtiao.android_client.util.Log;
 import roboguice.activity.RoboActivity;
 import roboguice.inject.InjectView;
 

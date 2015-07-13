@@ -1,22 +1,14 @@
 package im.youtiao.android_client.ui.activity;
 
-import android.content.Intent;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.EditText;
 
 import im.youtiao.android_client.R;
-import im.youtiao.android_client.model.Group;
-import im.youtiao.android_client.util.Utility;
 import roboguice.activity.RoboActionBarActivity;
-import roboguice.inject.InjectView;
 
 public class ForgotPasswordActivity extends RoboActionBarActivity {
 

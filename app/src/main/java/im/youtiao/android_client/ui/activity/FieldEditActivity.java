@@ -1,31 +1,24 @@
 package im.youtiao.android_client.ui.activity;
 
-import android.accounts.Account;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.v7.app.ActionBar;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import com.google.inject.Inject;
-
-import de.greenrobot.event.EventBus;
 import im.youtiao.android_client.AccountDescriptor;
 import im.youtiao.android_client.R;
 import im.youtiao.android_client.YTApplication;
-import im.youtiao.android_client.dao.GroupDao;
-import im.youtiao.android_client.dao.GroupHelper;
-import im.youtiao.android_client.event.AccountModifyEvent;
 import im.youtiao.android_client.model.Group;
 import im.youtiao.android_client.rest.RemoteApi;
 import im.youtiao.android_client.util.NetworkExceptionHandler;
-import im.youtiao.android_client.wrap.GroupWrap;
+import im.youtiao.android_client.util.Log;
 import roboguice.activity.RoboActionBarActivity;
 import roboguice.inject.InjectView;
 import rx.android.schedulers.AndroidSchedulers;

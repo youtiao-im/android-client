@@ -31,7 +31,6 @@ import im.youtiao.android_client.providers.RemoteApiFactory;
 import im.youtiao.android_client.rest.LoginApi;
 import im.youtiao.android_client.rest.RemoteApi;
 import im.youtiao.android_client.rest.RemoteApiErrorHandler;
-import im.youtiao.android_client.rest.responses.TokenResponse;
 import im.youtiao.android_client.util.NetworkExceptionHandler;
 import roboguice.activity.RoboActionBarActivity;
 import roboguice.inject.InjectView;

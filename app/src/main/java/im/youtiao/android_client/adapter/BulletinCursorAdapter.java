@@ -6,7 +6,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.support.v4.app.Fragment;
 import android.text.Html;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +25,7 @@ import im.youtiao.android_client.ui.activity.fragment.BulletinsFragment;
 import im.youtiao.android_client.ui.widget.LoadMoreView;
 import im.youtiao.android_client.util.TimeWrap;
 import im.youtiao.android_client.wrap.BulletinWrap;
+import im.youtiao.android_client.util.Log;
 
 public class BulletinCursorAdapter extends CursorAdapter {
     private static final String TAG = BulletinCursorAdapter.class

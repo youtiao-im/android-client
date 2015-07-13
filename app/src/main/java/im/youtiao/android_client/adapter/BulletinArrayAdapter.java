@@ -2,7 +2,6 @@ package im.youtiao.android_client.adapter;
 
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +18,8 @@ import im.youtiao.android_client.model.Bulletin;
 import im.youtiao.android_client.model.Stamp;
 import im.youtiao.android_client.ui.activity.GroupDetailActivity;
 import im.youtiao.android_client.ui.widget.LoadMoreView;
+import im.youtiao.android_client.util.Log;
+
 
 public class BulletinArrayAdapter extends ArrayAdapter<Bulletin> {
     private static final String TAG = BulletinArrayAdapter.class

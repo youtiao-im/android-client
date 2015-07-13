@@ -3,7 +3,6 @@ package im.youtiao.android_client.ui.activity;
 import android.content.Intent;
 import android.support.v7.app.ActionBar;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -12,20 +11,16 @@ import android.widget.ListView;
 
 import com.google.inject.Inject;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
 import im.youtiao.android_client.R;
 import im.youtiao.android_client.adapter.MemberArrayAdapter;
-import im.youtiao.android_client.dao.DaoHelper;
-import im.youtiao.android_client.dao.GroupHelper;
-import im.youtiao.android_client.model.Bulletin;
 import im.youtiao.android_client.model.Group;
 import im.youtiao.android_client.model.Membership;
 import im.youtiao.android_client.rest.RemoteApi;
 import im.youtiao.android_client.util.NetworkExceptionHandler;
-import im.youtiao.android_client.wrap.GroupWrap;
+import im.youtiao.android_client.util.Log;
 import roboguice.activity.RoboActionBarActivity;
 import roboguice.inject.InjectView;
 import rx.android.schedulers.AndroidSchedulers;

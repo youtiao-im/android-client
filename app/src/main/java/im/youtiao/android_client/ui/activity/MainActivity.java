@@ -11,7 +11,6 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -35,6 +34,7 @@ import im.youtiao.android_client.ui.activity.fragment.BulletinsFragment;
 import im.youtiao.android_client.ui.activity.fragment.GroupsFragment;
 import im.youtiao.android_client.ui.activity.fragment.SettingsFragment;
 import im.youtiao.android_client.util.NetworkExceptionHandler;
+import im.youtiao.android_client.util.Log;
 import im.youtiao.android_client.wrap.BulletinWrap;
 import it.neokree.materialtabs.MaterialTab;
 import it.neokree.materialtabs.MaterialTabHost;

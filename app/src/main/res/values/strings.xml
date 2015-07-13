@@ -46,6 +46,9 @@
     <string name="bulletin_comment">bulletin comment</string>
     <string name="bulletin_stamp">bulletin stamp</string>
     <string name="bulletin_receiver">To:</string>
+    <string name="my_groups">My Groups</string>
+    <string name="joined_groups">Joined Groups</string>
+
 
 
 
@@ -93,6 +96,8 @@
     <string name="btn_join">Join</string>
     <string name="btn_add">Add</string>
     <string name="btn_done">Done</string>
+    <string name="btn_create_group">+ Create group</string>
+    <string name="btn_join_group">+ Join group</string>
 
     <string name="several_days_ago">%d days ago</string>
     <string name="in_several_days">in %d days</string>

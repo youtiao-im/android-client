@@ -17,6 +17,7 @@ import java.util.ArrayList;
 
 import cn.jpush.android.api.JPushInterface;
 import im.youtiao.android_client.model.User;
+import im.youtiao.android_client.util.Log;
 
 
 public class YTApplication extends Application {
@@ -32,7 +33,7 @@ public class YTApplication extends Application {
         super.onCreate();
         JPushInterface.setDebugMode(true);    // just for debug, close it when startup
         JPushInterface.init(this);
-
+        Log.setDebugMode(false);    // just for debug, close it when startup
         mPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         mAccounts = new ArrayList<AccountDescriptor>();
         updateAccounts();

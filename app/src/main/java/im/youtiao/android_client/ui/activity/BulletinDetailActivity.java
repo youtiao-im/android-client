@@ -3,12 +3,9 @@ package im.youtiao.android_client.ui.activity;
 import android.content.Intent;
 import android.support.v7.app.ActionBar;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ImageButton;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import com.google.inject.Inject;
 
@@ -28,7 +25,7 @@ import im.youtiao.android_client.model.Bulletin;
 import im.youtiao.android_client.model.Stamp;
 import im.youtiao.android_client.rest.RemoteApi;
 import im.youtiao.android_client.util.NetworkExceptionHandler;
-import im.youtiao.android_client.util.TimeWrap;
+import im.youtiao.android_client.util.Log;
 import im.youtiao.android_client.wrap.BulletinWrap;
 import roboguice.activity.RoboActionBarActivity;
 import roboguice.inject.InjectView;

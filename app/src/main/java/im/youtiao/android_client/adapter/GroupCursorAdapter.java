@@ -3,7 +3,6 @@ package im.youtiao.android_client.adapter;
 import android.app.Activity;
 import android.content.Context;
 import android.database.Cursor;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +16,7 @@ import im.youtiao.android_client.dao.DaoSession;
 import im.youtiao.android_client.dao.GroupHelper;
 import im.youtiao.android_client.model.Group;
 import im.youtiao.android_client.wrap.GroupWrap;
+import im.youtiao.android_client.util.Log;
 
 
 public class GroupCursorAdapter extends CursorAdapter {
@@ -83,7 +83,7 @@ public class GroupCursorAdapter extends CursorAdapter {
         }
 
         if (needSeparator) {
-            holder.separatorTv.setText("owner".equalsIgnoreCase(role) ? "My Channels" : "Joined Channels");
+            holder.separatorTv.setText("owner".equalsIgnoreCase(role) ? mActivity.getString(R.string.my_groups) : mActivity.getString(R.string.joined_groups));
             holder.separatorTv.setVisibility(View.VISIBLE);
         } else {
             holder.separatorTv.setVisibility(View.GONE);
