@@ -42,7 +42,7 @@ public class LoginApiProvider implements Provider<LoginApi> {
         okHttpClient.setReadTimeout(5, TimeUnit.SECONDS);
         okHttpClient.setConnectTimeout(5, TimeUnit.SECONDS);
         okHttpClient.setWriteTimeout(5, TimeUnit.SECONDS);
-        endPoint.setRemoteEndPoint(((YTApplication) mContext.getApplicationContext()).getApiHost());
+        endPoint.setRemoteEndPoint(((YTApplication) mContext.getApplicationContext()).getYTHost());
         RestAdapter restAdapter = builder.setEndpoint(endPoint)
                 .setExecutors(executor, executor)
                 .setRequestInterceptor(interceptor)

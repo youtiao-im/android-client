@@ -8,12 +8,17 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import im.youtiao.android_client.R;
+import im.youtiao.android_client.YTApplication;
 import roboguice.activity.RoboActionBarActivity;
 
 public class ForgotPasswordActivity extends RoboActionBarActivity {
 
 
     WebView forgotPasswordWv;
+
+    YTApplication getApp() {
+        return (YTApplication)getApplication();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,7 +30,7 @@ public class ForgotPasswordActivity extends RoboActionBarActivity {
 
 
         forgotPasswordWv =  (WebView)findViewById(R.id.wv_forgot_password);
-        forgotPasswordWv.loadUrl("http://192.168.200.152:3000/users/password/new");
+        forgotPasswordWv.loadUrl(getApp().getYTHost() + "/users/password/new");
         forgotPasswordWv.setWebViewClient(new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {

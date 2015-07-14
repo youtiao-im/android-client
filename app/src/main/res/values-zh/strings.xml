@@ -3,27 +3,27 @@
 
     <string name="title_activity_login">登陆</string>
     <string name="title_activity_register">注册</string>
-    <string name="title_activity_bulletin_detail">通知详情</string>
+    <string name="title_activity_bulletin_detail">公告详情</string>
     <string name="title_activity_group_detail">群组详情</string>
     <string name="title_activity_new_group">新建群组</string>
     <string name="title_activity_bootstrap">启动</string>
     <string name="title_activity_join_group">加入群组</string>
     <string name="title_activity_group_profile">群组详情</string>
     <string name="title_activity_group_member">群组成员</string>
-    <string name="title_activity_group_code">群组码</string>
+    <string name="title_activity_group_code">群组识别码</string>
     <string name="title_activity_group_member_profile">成员详情</string>
-    <string name="title_activity_new_bulletin">发布通知</string>
+    <string name="title_activity_new_bulletin">发布公告</string>
     <string name="title_activity_select_send_group">发送...</string>
     <string name="title_activity_forgot_password">忘记密码</string>
     <string name="title_activity_group_edit">编辑群组</string>
     <string name="title_activity_edit_group_name">编辑群组名称</string>
-    <string name="title_activity_edit_group_code">编辑群组码</string>
+    <string name="title_activity_edit_group_code">编辑识别码</string>
     <string name="title_activity_edit_account_name">编辑姓名</string>
     <string name="title_activity_change_password">更改密码</string>
 
 
-    <string name="bulletin">通知</string>
-    <string name="bulletins">通知</string>
+    <string name="bulletin">公告</string>
+    <string name="bulletins">公告</string>
     <string name="group">群组</string>
     <string name="groups">群组</string>
     <string name="settings">设置</string>
@@ -39,6 +39,8 @@
     <string name="action_save">保存</string>
     <string name="action_send">发送</string>
     <string name="action_reset">重置</string>
+    <string name="action_create">Create</string>
+    <string name="action_join">Join</string>
 
 
     <string name="bulletin_check">check</string>
@@ -65,6 +67,8 @@
     <string name="hint_old_password">当前密码</string>
     <string name="hint_new_password">新密码</string>
     <string name="hint_name">姓名</string>
+    <string name="hint_group_name">Group name</string>
+    <string name="hint_group_code">Group code</string>
     <string name="hint_pick_account_name">请选择一个易于辨识的名字</string>
     <string name="hint_pick_group_name">请选择一个易于记住的名字</string>
     <string name="hint_pick_group_code">请选择一个易于辨识的群组码</string>
@@ -72,6 +76,8 @@
     <string name="progress_message_save">保存中...</string>
     <string name="progress_message_sign_in">登陆中...</string>
     <string name="progress_message_sing_up">注册中...</string>
+    <string name="progress_message_create">Create ...</string>
+    <string name="progress_message_join">Join ...</string>
 
 
     <string name="label_group_name">群名</string>

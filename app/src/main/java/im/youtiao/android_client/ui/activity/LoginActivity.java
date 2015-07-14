@@ -9,6 +9,7 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -37,6 +38,7 @@ import im.youtiao.android_client.util.Utility;
 import im.youtiao.android_client.util.Log;
 import roboguice.activity.RoboActionBarActivity;
 import roboguice.inject.InjectView;
+import rx.android.app.AppObservable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -124,7 +126,10 @@ public class LoginActivity extends RoboActionBarActivity {
         forgotPasswordTv.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(LoginActivity.this, ForgotPasswordActivity.class));
+                Uri uri = Uri.parse(getApp().getYTHost() + "/users/password/new");
+                Intent  intent = new Intent(Intent.ACTION_VIEW, uri);
+                startActivity(intent);
+                //startActivity(new Intent(LoginActivity.this, ForgotPasswordActivity.class));
             }
         });
 
@@ -187,7 +192,7 @@ public class LoginActivity extends RoboActionBarActivity {
             ProgressDialog progressDialog = new ProgressDialog(LoginActivity.this);
             progressDialog.setMessage(getString(R.string.progress_message_sign_in));
             progressDialog.show();
-            loginApi.getTokenSync("password", mUsername, mPassword)
+            AppObservable.bindActivity(this, loginApi.getTokenSync("password", mUsername, mPassword))
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(token -> {
@@ -195,7 +200,7 @@ public class LoginActivity extends RoboActionBarActivity {
                         finishLogin(token);
                     }, error -> {
                         progressDialog.dismiss();
-                        NetworkExceptionHandler.handleThrowable(error, this);
+                        NetworkExceptionHandler.handleThrowable(error, this, NetworkExceptionHandler.ACTION_OAUTH);
                     });
         }
     }
@@ -206,7 +211,7 @@ public class LoginActivity extends RoboActionBarActivity {
 
         RemoteApiFactory.setApiToken(this, tokenType, authToken);
         RemoteApi remoteApi = RemoteApiFactory.getApi();
-        remoteApi.getAuthenticatedUser()
+        AppObservable.bindActivity(this, remoteApi.getAuthenticatedUser())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(res -> {

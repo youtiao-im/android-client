@@ -21,14 +21,15 @@ import im.youtiao.android_client.util.NetworkExceptionHandler;
 import im.youtiao.android_client.util.Log;
 import roboguice.activity.RoboActionBarActivity;
 import roboguice.inject.InjectView;
+import rx.android.app.AppObservable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 public class FieldEditActivity extends RoboActionBarActivity {
     private static final String TAG = GroupProfileActivity.class.getCanonicalName();
 
-    @InjectView(R.id.tv_hint)
-    TextView hintTv;
+//    @InjectView(R.id.tv_hint)
+//    TextView hintTv;
 
     @InjectView(R.id.edtTxt_field)
     EditText fieldEdtTxt;
@@ -88,8 +89,8 @@ public class FieldEditActivity extends RoboActionBarActivity {
             default:
         }
         setTitle(title);
-        hintTv.setText(hint);
         fieldEdtTxt.setText(field);
+        fieldEdtTxt.setSelection(field.length());
         fieldEdtTxt.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -140,7 +141,8 @@ public class FieldEditActivity extends RoboActionBarActivity {
         String fieldContent = fieldEdtTxt.getText().toString();
         switch(editType) {
             case TYPE_ACCOUNT_NAME:
-                remoteApi.updateUser(fieldContent, null).subscribeOn(Schedulers.io())
+                AppObservable.bindActivity(this, remoteApi.updateUser(fieldContent, null))
+                        .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(resp -> {
                             progressDialog.dismiss();
@@ -148,7 +150,7 @@ public class FieldEditActivity extends RoboActionBarActivity {
                             data.putSerializable(PARAM_USER, resp);
                             Intent intent = getIntent();
                             intent.putExtras(data);
-                            FieldEditActivity.this.setResult(0, intent);
+                            FieldEditActivity.this.setResult(1, intent);
                             FieldEditActivity.this.finish();
                         }, error -> {
                             progressDialog.dismiss();
@@ -156,17 +158,17 @@ public class FieldEditActivity extends RoboActionBarActivity {
                         });
                 break;
             case TYPE_GROUP_NAME:
-                remoteApi.updateGroup(group.id, fieldContent, null)
+                AppObservable.bindActivity(this, remoteApi.updateGroup(group.id, fieldContent, null))
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe( resp -> {
+                        .subscribe(resp -> {
                             progressDialog.dismiss();
                             Log.i(TAG, resp.name);
                             Bundle data = new Bundle();
                             data.putSerializable(PARAM_GROUP, resp);
                             Intent intent = getIntent();
                             intent.putExtras(data);
-                            FieldEditActivity.this.setResult(0, intent);
+                            FieldEditActivity.this.setResult(1, intent);
                             FieldEditActivity.this.finish();
                         }, error -> {
                             progressDialog.dismiss();
@@ -174,17 +176,17 @@ public class FieldEditActivity extends RoboActionBarActivity {
                         });
                 break;
             case TYPE_GROUP_CODE:
-                remoteApi.updateGroup(group.id, null, fieldContent)
+                AppObservable.bindActivity(this, remoteApi.updateGroup(group.id, null, fieldContent))
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe( resp -> {
+                        .subscribe(resp -> {
                             progressDialog.dismiss();
                             Log.i(TAG, resp.code);
                             Bundle data = new Bundle();
                             data.putSerializable(PARAM_GROUP, resp);
                             Intent intent = getIntent();
                             intent.putExtras(data);
-                            FieldEditActivity.this.setResult(0, intent);
+                            FieldEditActivity.this.setResult(1, intent);
                             FieldEditActivity.this.finish();
                         }, error -> {
                             progressDialog.dismiss();

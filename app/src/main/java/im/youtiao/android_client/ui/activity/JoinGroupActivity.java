@@ -4,6 +4,8 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.v7.app.ActionBar;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,6 +22,7 @@ import im.youtiao.android_client.util.NetworkExceptionHandler;
 import im.youtiao.android_client.wrap.GroupWrap;
 import roboguice.activity.RoboActionBarActivity;
 import roboguice.inject.InjectView;
+import rx.android.app.AppObservable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -32,6 +35,8 @@ public class JoinGroupActivity extends RoboActionBarActivity {
     @Inject
     private DaoSession daoSession;
 
+    MenuItem joinMenu;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,11 +44,33 @@ public class JoinGroupActivity extends RoboActionBarActivity {
         ActionBar actionBar = getSupportActionBar();
         actionBar.setHomeButtonEnabled(true);
         actionBar.setDisplayHomeAsUpEnabled(true);
+
+        groupCodeEdtTxt.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                String newField = groupCodeEdtTxt.getText().toString();
+                if (newField == null || newField.length() == 0) {
+                    joinMenu.setEnabled(false);
+                } else {
+                    joinMenu.setEnabled(true);
+                }
+            }
+        });
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_join_group, menu);
+        joinMenu = menu.findItem(R.id.action_join);
+        joinMenu.setEnabled(false);
         return true;
     }
 
@@ -53,20 +80,23 @@ public class JoinGroupActivity extends RoboActionBarActivity {
             case android.R.id.home:
                 this.finish();
                 return true;
+            case R.id.action_join:
+                return joinNew();
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
 
-    public void joinNew(View v) {
+    public boolean joinNew() {
         String code = groupCodeEdtTxt.getText().toString().trim();
         if (code != null && code.length() != 0) {
             ProgressDialog progressDialog = new ProgressDialog(JoinGroupActivity.this);
-            progressDialog.setMessage(getString(R.string.progress_message_save));
+            progressDialog.setMessage(getString(R.string.progress_message_join));
             progressDialog.show();
-            remoteApi.joinGroup(code).subscribeOn(Schedulers.io())
+            AppObservable.bindActivity(this, remoteApi.joinGroup(code))
+                    .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe( resp -> {
+                    .subscribe(resp -> {
                         progressDialog.dismiss();
                         GroupDao groupDao = daoSession.getGroupDao();
                         groupDao.insertOrReplace(GroupWrap.validate(resp));
@@ -77,5 +107,6 @@ public class JoinGroupActivity extends RoboActionBarActivity {
                         NetworkExceptionHandler.handleThrowable(error, this);
                     });
         }
+        return true;
     }
 }

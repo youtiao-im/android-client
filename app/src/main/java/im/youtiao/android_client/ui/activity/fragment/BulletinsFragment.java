@@ -32,6 +32,7 @@ import in.srain.cube.views.ptr.PtrFrameLayout;
 import in.srain.cube.views.ptr.PtrHandler;
 import roboguice.fragment.RoboFragment;
 import roboguice.inject.InjectView;
+import rx.android.app.AppObservable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -252,7 +253,7 @@ public class BulletinsFragment extends RoboFragment implements LoaderManager.Loa
 
     private void refreshData() {
         Log.i(TAG, "refreshData");
-        remoteApi.listBulletins(null, LIMIT)
+        AppObservable.bindFragment(this, remoteApi.listBulletins(null, LIMIT))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(resp -> {
@@ -280,7 +281,8 @@ public class BulletinsFragment extends RoboFragment implements LoaderManager.Loa
         Log.i(TAG, "load More");
         im.youtiao.android_client.dao.Bulletin oldestBulletin = DaoHelper.getOldestBulletin(daoSession);
         String lastBulletinId = oldestBulletin == null ? null : oldestBulletin.getServerId();
-        remoteApi.listBulletins(lastBulletinId, LIMIT)
+
+        AppObservable.bindFragment(this, remoteApi.listBulletins(lastBulletinId, LIMIT))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(resp -> {

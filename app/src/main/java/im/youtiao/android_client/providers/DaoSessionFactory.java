@@ -3,12 +3,12 @@ package im.youtiao.android_client.providers;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
 
 import im.youtiao.android_client.AccountDescriptor;
 import im.youtiao.android_client.YTApplication;
 import im.youtiao.android_client.dao.DaoMaster;
 import im.youtiao.android_client.dao.DaoSession;
+import im.youtiao.android_client.util.Log;
 
 
 public class DaoSessionFactory {

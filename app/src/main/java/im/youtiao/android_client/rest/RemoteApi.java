@@ -14,7 +14,7 @@ import retrofit.http.Query;
 import rx.Observable;
 
 public interface RemoteApi {
-    final String PREFIX = "/api/v1";
+    final String PREFIX = "/v1";
 
     @GET(PREFIX + "/user.info")
     Observable<User> getAuthenticatedUser();
@@ -22,7 +22,7 @@ public interface RemoteApi {
     @POST(PREFIX + "/user.update")
     Observable<User> updateUser(@Query("name") String name, @Query("avatar_id") String avatarId);
 
-    @POST(PREFIX + "/user.sign_up")
+    @POST(PREFIX + "/users.sign_up")
     Observable<User> signUpUser(@Query("email") String email, @Query("name") String name, @Query("password") String password);
 
     @POST(PREFIX + "/user.change_password")

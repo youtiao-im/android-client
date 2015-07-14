@@ -1,26 +1,26 @@
 <resources>
-    <string name="app_name">YouTiao</string>
+    <string name="app_name">Youtiao</string>
 
     <string name="title_activity_login">Sign In</string>
     <string name="title_activity_register">Sign Up</string>
     <string name="title_activity_bulletin_detail">Bulletin Detail</string>
     <string name="title_activity_group_detail">Group</string>
-    <string name="title_activity_new_group">Add a group</string>
+    <string name="title_activity_new_group">New Group</string>
     <string name="title_activity_bootstrap">Bootstrap</string>
-    <string name="title_activity_join_group">Join a group</string>
-    <string name="title_activity_group_profile">Group Profile</string>
-    <string name="title_activity_group_member">Group Members</string>
+    <string name="title_activity_join_group">Join Group</string>
+    <string name="title_activity_group_profile">Group Settings</string>
+    <string name="title_activity_group_member">Members</string>
     <string name="title_activity_group_code">Group Code</string>
     <string name="title_activity_group_member_profile">Member Profile</string>
     <string name="title_activity_new_bulletin">New Bulletin</string>
     <string name="title_activity_select_send_group">Send to...</string>
-    <string name="title_activity_forgot_password">Forgot password</string>
-    <string name="title_activity_group_edit">Edit Group</string>
+    <string name="title_activity_forgot_password">Forgot Password</string>
+    <string name="title_activity_group_edit">Group</string>
     <string name="title_activity_joined_group_profile">Group Profile</string>
-    <string name="title_activity_edit_group_name">Edit Group Name</string>
-    <string name="title_activity_edit_group_code">Edit Group Code</string>
-    <string name="title_activity_edit_account_name">Edit Name</string>
-    <string name="title_activity_change_password">Change Password</string>
+    <string name="title_activity_edit_group_name">Group Name</string>
+    <string name="title_activity_edit_group_code">Group Code</string>
+    <string name="title_activity_edit_account_name">Name</string>
+    <string name="title_activity_change_password">Password</string>
 
 
     <string name="bulletin">Bulletin</string>
@@ -39,6 +39,8 @@
     <string name="action_new">New</string>
     <string name="action_save">Save</string>
     <string name="action_send">Send</string>
+    <string name="action_create">Create</string>
+    <string name="action_join">Join</string>
 
 
     <string name="bulletin_check">check</string>
@@ -65,6 +67,8 @@
     <string name="hint_old_password">Current Password</string>
     <string name="hint_new_password">New Password</string>
     <string name="hint_name">Full name</string>
+    <string name="hint_group_name">Group name</string>
+    <string name="hint_group_code">Group code</string>
     <string name="hint_pick_account_name">Pick a name easy to remember</string>
     <string name="hint_pick_group_name">Pick a name easy to remember</string>
     <string name="hint_pick_group_code">Pick a code easy to remember</string>
@@ -72,11 +76,13 @@
     <string name="progress_message_save">Save ...</string>
     <string name="progress_message_sign_in">Sign in ...</string>
     <string name="progress_message_sing_up">Sign up ...</string>
+    <string name="progress_message_create">Create ...</string>
+    <string name="progress_message_join">Join ...</string>
 
 
-    <string name="label_group_name">GroupName</string>
-    <string name="label_group_code">GroupCode</string>
-    <string name="label_group_members">Group Members</string>
+    <string name="label_group_name">Group Name</string>
+    <string name="label_group_code">Group Code</string>
+    <string name="label_group_members">Members</string>
     <string name="label_email">Email</string>
     <string name="label_account">Account</string>
     <string name="label_password">Password</string>
@@ -88,16 +94,17 @@
     <string name="btn_sign_up">Sign up</string>
     <string name="btn_sign_out">Sign out</string>
     <string name="btn_forgot_password">Forgot password?</string>
-    <string name="btn_change_password">Change password</string>
+    <string name="btn_change_password">Password</string>
     <string name="btn_delete_group">Delete Group</string>
     <string name="btn_unsubscribe_group">Unsubscribe from this Group</string>
     <string name="btn_unsubscribe_user">Unsubscribe this user</string>
     <string name="btn_confirm">Confirm</string>
     <string name="btn_join">Join</string>
     <string name="btn_add">Add</string>
+    <string name="btn_create">Create</string>
     <string name="btn_done">Done</string>
-    <string name="btn_create_group">+ Create group</string>
-    <string name="btn_join_group">+ Join group</string>
+    <string name="btn_create_group">+ Create a Group</string>
+    <string name="btn_join_group">+ Join a Group</string>
 
     <string name="several_days_ago">%d days ago</string>
     <string name="in_several_days">in %d days</string>

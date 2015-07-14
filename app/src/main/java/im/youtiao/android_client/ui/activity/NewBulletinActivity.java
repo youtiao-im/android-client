@@ -20,6 +20,7 @@ import im.youtiao.android_client.rest.RemoteApi;
 import im.youtiao.android_client.util.NetworkExceptionHandler;
 import roboguice.activity.RoboActionBarActivity;
 import roboguice.inject.InjectView;
+import rx.android.app.AppObservable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -117,7 +118,7 @@ public class NewBulletinActivity extends RoboActionBarActivity {
     private boolean send() {
         String content = bulletinContentEdtTxt.getText().toString().trim();
         if (content != null && content.length() != 0) {
-            remoteApi.createBulletin(group.id, content)
+            AppObservable.bindActivity(this, remoteApi.createBulletin(group.id, content))
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(resp -> {

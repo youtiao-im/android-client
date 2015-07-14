@@ -3,38 +3,20 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="#ffffffff"
     android:orientation="vertical">
 
-    <RelativeLayout style="@style/layout_row">
-        <ImageView
-            style="@style/layout_row_text"
-            android:id="@+id/iv_group_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@mipmap/tab_group"
-            android:layout_margin="10dp" />
-        <EditText style="@style/layout_row_text"
-            android:hint="Group name"
-            android:singleLine="true"
-            android:id="@+id/edtTxt_send_to_group_name"
-            android:layout_toRightOf="@+id/iv_group_name"
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent"
-            android:editable="true"
-            android:background="@null"
-            android:layout_centerInParent="true"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp" />
-    </RelativeLayout>
+    <LinearLayout
+        android:id="@+id/layout_section"
+        style="@style/layout_section">
 
-    <View style="@style/bg_line"/>
-
-    <Button
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:onClick="addNew"
-        android:text="@string/btn_add" />
-
+        <RelativeLayout style="@style/layout_row">
+            <EditText style="@style/layout_row_text"
+                android:id="@+id/edtTxt_group_name"
+                android:layout_width="match_parent"
+                android:layout_centerInParent="true"
+                android:background="@null"
+                android:hint="Group name"
+                android:singleLine="true" />
+        </RelativeLayout>
+    </LinearLayout>
 </LinearLayout>

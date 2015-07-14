@@ -97,6 +97,18 @@
             android:name=".ui.activity.SelectSendGroupActivity"
             android:label="@string/title_activity_select_send_group" >
         </activity>
+        <activity
+            android:name=".ui.activity.ForgotPasswordActivity"
+            android:label="@string/title_activity_forgot_password" >
+        </activity>
+        <activity
+            android:name=".ui.activity.FieldEditActivity"
+            android:label="@string/title_activity_edit_account_name" >
+        </activity>
+        <activity
+            android:name=".ui.activity.ChangePasswordActivity"
+            android:label="@string/title_activity_change_password" >
+        </activity>
 
         <provider
             android:name=".dao.LibraryProvider"
@@ -167,20 +179,11 @@
             android:value="f0f3323a4fa7a41a7cbcd9b7" />
         <meta-data
             android:name="YOUTIAO_API_HOST"
-            android:value="http://192.168.241.129:3000" />
+            android:value="http://api.youtiao.im:3000"/>
+        <meta-data
+            android:name="YOUTIAO_HOST"
+            android:value="http://youtiao.im:3000"/>
 
-        <activity
-            android:name=".ui.activity.ForgotPasswordActivity"
-            android:label="@string/title_activity_forgot_password" >
-        </activity>
-        <activity
-            android:name=".ui.activity.FieldEditActivity"
-            android:label="@string/title_activity_edit_account_name" >
-        </activity>
-        <activity
-            android:name=".ui.activity.ChangePasswordActivity"
-            android:label="@string/title_activity_change_password" >
-        </activity>
     </application>
 
 </manifest>

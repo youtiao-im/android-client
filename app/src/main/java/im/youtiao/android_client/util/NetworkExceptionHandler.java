@@ -4,8 +4,6 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.util.Log;
-import android.widget.Toast;
 
 import org.apache.commons.io.IOUtils;
 import org.codehaus.jackson.map.ObjectMapper;
@@ -19,6 +17,7 @@ import im.youtiao.android_client.R;
 import im.youtiao.android_client.YTApplication;
 import im.youtiao.android_client.model.ServerError;
 import im.youtiao.android_client.ui.activity.BootstrapActivity;
+import im.youtiao.android_client.util.Log;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
@@ -55,7 +54,16 @@ public class NetworkExceptionHandler {
     }
 
     public static void handleThrowable(Throwable throwable, Context context) {
+        handleThrowable(throwable, context, ACTION_OTHER);
+    }
+
+    public static void handleThrowable(Throwable throwable, Context context, int actionId) {
         ServerError serverError = new ServerError();
+
+        if (throwable == null) {
+            return;
+        }
+
 
         RetrofitError retrofitError = (RetrofitError) throwable;
         Throwable cause = retrofitError.getCause();
@@ -75,9 +83,9 @@ public class NetworkExceptionHandler {
                 e.printStackTrace();
             }
             Log.e(TAG, r.getStatus() + ", " + r.getReason() + "," + errorBody);
-            handleServerError(serverError, context);
+            handleServerError(serverError, context, actionId);
         } else {
-            handleNetWorkError(cause, context);
+            handleNetWorkError(cause, context, actionId);
         }
     }
 
@@ -90,17 +98,28 @@ public class NetworkExceptionHandler {
     public static final int UNPROCESSABLE_ENTITY = 422;
     public static final int SERVER_ERROR = 500;
 
-    public static void handleServerError(ServerError serverError, Context context) {
+    public static final int ACTION_OTHER = 1000;
+    public static final int ACTION_OAUTH = 1001;
+    public static final int ACTION_GROUP = 1002;
+
+
+
+    public static void handleServerError(ServerError serverError, Context context, int actionId) {
         try {
             int status = serverError.status;
             String displayMessage = "";
             switch (status) {
                 case UNAUTHORIZED:
-                    YTApplication application = (YTApplication) context.getApplicationContext();
-                    application.signOutAccount(application.getCurrentAccount().getId());
-                    Intent intent = new Intent(context, BootstrapActivity.class);
-                    context.startActivity(intent);
-                    return;
+                    if (actionId == ACTION_OAUTH) {
+                        displayMessage = context.getString(R.string.error_user_email_or_password);
+                        break;
+                    } else {
+                        YTApplication application = (YTApplication) context.getApplicationContext();
+                        application.signOutAccount(application.getCurrentAccount().getId());
+                        Intent intent = new Intent(context, BootstrapActivity.class);
+                        context.startActivity(intent);
+                        return;
+                    }
                 case BAD_REQUEST:
                     displayMessage = context.getString(R.string.error_bad_request);
                     break;
@@ -226,10 +245,9 @@ public class NetworkExceptionHandler {
         return context.getString(resourceId);
     }
 
-    public static void handleNetWorkError(Throwable error, Context context) {
-        try {
+    public static void handleNetWorkError(Throwable error, Context context, int actionId) {
+        //try {
             if (error instanceof SocketTimeoutException) {
-                Log.e(TAG, "show alert on:" + context.getClass().toString());
                 AlertDialog.Builder builder = new AlertDialog.Builder(context);
                 builder.setMessage("Network Connect Error")
                         .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
@@ -251,8 +269,8 @@ public class NetworkExceptionHandler {
                             }
                         }).create().show();
             }
-        }catch(Exception e) {
-            e.printStackTrace();
-        }
+        //}catch(Exception e) {
+        //    e.printStackTrace();
+        //}
     }
 }

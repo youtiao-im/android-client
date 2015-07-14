@@ -30,6 +30,7 @@ import in.srain.cube.views.ptr.PtrFrameLayout;
 import in.srain.cube.views.ptr.PtrHandler;
 import mehdi.sakout.fancybuttons.FancyButton;
 import roboguice.fragment.RoboFragment;
+import rx.android.app.AppObservable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -153,7 +154,7 @@ public class GroupsFragment extends RoboFragment implements LoaderManager.Loader
 
     protected void updateData() {
         Log.i(TAG, "updateData");
-        remoteApi.listGroups()
+        AppObservable.bindFragment(this, remoteApi.listGroups())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(resp -> {

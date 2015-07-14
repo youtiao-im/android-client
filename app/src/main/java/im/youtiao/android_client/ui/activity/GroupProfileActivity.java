@@ -187,7 +187,7 @@ public class GroupProfileActivity extends RoboActionBarActivity {
     protected void onActivityResult(int requestCode, int resultCode,
                                     Intent intent) {
         Log.i(TAG, "onActivityResult: requestCode=" + requestCode + ", resultCode=" + resultCode);
-        if (resultCode == 0) {
+        if (resultCode == 1) {
             if (intent != null) {
                 Group group = (Group) intent.getSerializableExtra(FieldEditActivity.PARAM_GROUP);
                 if (group != null) {

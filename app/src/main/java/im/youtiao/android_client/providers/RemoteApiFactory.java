@@ -1,12 +1,8 @@
 package im.youtiao.android_client.providers;
 
 
-import android.accounts.Account;
-import android.accounts.AccountManager;
 import android.content.Context;
-import android.util.Log;
 
-import com.google.inject.Inject;
 import com.squareup.okhttp.OkHttpClient;
 
 import org.codehaus.jackson.map.ObjectMapper;
@@ -20,7 +16,7 @@ import im.youtiao.android_client.rest.JacksonConverter;
 import im.youtiao.android_client.rest.RemoteApi;
 import im.youtiao.android_client.rest.RemoteEndPoint;
 import im.youtiao.android_client.rest.RemoteApiErrorHandler;
-import im.youtiao.android_client.ui.activity.LoginActivity;
+import im.youtiao.android_client.util.Log;
 import retrofit.RequestInterceptor;
 import retrofit.RestAdapter;
 import retrofit.client.OkClient;
@@ -46,7 +42,7 @@ public class RemoteApiFactory {
             request.addHeader("Accept", "application/vnd.youtiao.im+json; version=1");
             request.addHeader("Authorization", tokenType + " " + token);
         };
-        endPoint.setRemoteEndPoint(((YTApplication)context.getApplicationContext()).getApiHost());
+        endPoint.setRemoteEndPoint(((YTApplication)context.getApplicationContext()).getYTApiHost());
         final OkHttpClient okHttpClient = new OkHttpClient();
         okHttpClient.setReadTimeout(5, TimeUnit.SECONDS);
         okHttpClient.setConnectTimeout(5, TimeUnit.SECONDS);

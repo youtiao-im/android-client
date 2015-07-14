@@ -28,9 +28,6 @@ public class ChangePasswordActivity extends RoboActionBarActivity {
     @InjectView(R.id.edtTxt_new_password)
     EditText newPasswordEdtTxt;
 
-    @InjectView(R.id.btn_confirm)
-    Button confirmBtn;
-
     @Inject
     RemoteApi remoteApi;
 
@@ -41,13 +38,6 @@ public class ChangePasswordActivity extends RoboActionBarActivity {
         ActionBar actionBar = getSupportActionBar();
         actionBar.setHomeButtonEnabled(true);
         actionBar.setDisplayHomeAsUpEnabled(true);
-
-        confirmBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                changePassword();
-            }
-        });
     }
 
     @Override
@@ -63,12 +53,14 @@ public class ChangePasswordActivity extends RoboActionBarActivity {
             case android.R.id.home:
                 this.finish();
                 return true;
+            case R.id.action_save:
+                return changePassword();
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
 
-    void changePassword() {
+    boolean changePassword() {
         String password = oldPasswordEdtTxt.getText().toString();
         String newPassword = newPasswordEdtTxt.getText().toString();
         ProgressDialog progressDialog = new ProgressDialog(ChangePasswordActivity.this);
@@ -85,5 +77,6 @@ public class ChangePasswordActivity extends RoboActionBarActivity {
                     progressDialog.dismiss();
                     NetworkExceptionHandler.handleThrowable(error, this);
                 });
+        return true;
     }
 }

@@ -2,4 +2,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="im.youtiao.android_client.ui.activity.JoinGroupActivity">
+    <item android:id="@+id/action_join" android:title="@string/action_join"
+        android:orderInCategory="100" app:showAsAction="always" />
 </menu>

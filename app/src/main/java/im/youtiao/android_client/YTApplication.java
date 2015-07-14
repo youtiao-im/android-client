@@ -1,9 +1,6 @@
 package im.youtiao.android_client;
 
-import android.accounts.Account;
-import android.accounts.AccountManager;
 import android.app.Application;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
@@ -26,14 +23,15 @@ public class YTApplication extends Application {
 
     private ArrayList<AccountDescriptor> mAccounts;
     private Integer mCurrentAccountIndex;
-    private String apiHost = "";
+    private String ytApiHost = "";
+    private String ytHost = "";
 
     @Override
     public void onCreate() {
         super.onCreate();
         JPushInterface.setDebugMode(true);    // just for debug, close it when startup
         JPushInterface.init(this);
-        Log.setDebugMode(false);    // just for debug, close it when startup
+        Log.setDebugMode(true);    // just for debug, close it when startup
         mPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         mAccounts = new ArrayList<AccountDescriptor>();
         updateAccounts();
@@ -45,7 +43,8 @@ public class YTApplication extends Application {
         try {
             ApplicationInfo ai = getPackageManager().getApplicationInfo(this.getPackageName(), PackageManager.GET_META_DATA);
             Bundle bundle  = ai.metaData;
-            apiHost = bundle.getString("YOUTIAO_API_HOST");
+            ytApiHost = bundle.getString("YOUTIAO_API_HOST");
+            ytHost = bundle.getString("YOUTIAO_HOST");
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
@@ -222,7 +221,11 @@ public class YTApplication extends Application {
         return SharedPreferencesConstants.ACCOUNT_DESCRIPTOR_PREFIX + id;
     }
 
-    public String getApiHost() {
-        return apiHost;
+    public String getYTApiHost() {
+        return ytApiHost;
+    }
+
+    public String getYTHost() {
+        return ytHost;
     }
 }

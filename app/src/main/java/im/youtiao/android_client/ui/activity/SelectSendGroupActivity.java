@@ -27,6 +27,7 @@ import im.youtiao.android_client.wrap.GroupWrap;
 import im.youtiao.android_client.util.Log;
 import roboguice.activity.RoboActionBarActivity;
 import roboguice.inject.InjectView;
+import rx.android.app.AppObservable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -138,7 +139,7 @@ public class SelectSendGroupActivity extends RoboActionBarActivity {
             }
             mAdapter.notifyDataSetChanged();
         } else {
-            remoteApi.listGroups()
+            AppObservable.bindActivity(this, remoteApi.listGroups())
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(resp -> {

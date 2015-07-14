@@ -29,6 +29,7 @@ import im.youtiao.android_client.util.Log;
 import im.youtiao.android_client.wrap.BulletinWrap;
 import roboguice.activity.RoboActionBarActivity;
 import roboguice.inject.InjectView;
+import rx.android.app.AppObservable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -190,7 +191,7 @@ public class BulletinDetailActivity extends RoboActionBarActivity {
         if (stamps.size() > 0) {
             lastStampId = stamps.getLast().id;
         }
-        remoteApi.listStamps(bulletin.id, lastStampId, 100)
+        AppObservable.bindActivity(this, remoteApi.listStamps(bulletin.id, lastStampId, 100))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(resp -> {

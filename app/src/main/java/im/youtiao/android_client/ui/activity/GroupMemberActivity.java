@@ -23,6 +23,7 @@ import im.youtiao.android_client.util.NetworkExceptionHandler;
 import im.youtiao.android_client.util.Log;
 import roboguice.activity.RoboActionBarActivity;
 import roboguice.inject.InjectView;
+import rx.android.app.AppObservable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -120,7 +121,7 @@ public class GroupMemberActivity extends RoboActionBarActivity {
 
     void startMembershipsSyncing() {
         memberships.clear();
-        remoteApi.listGroupMemberships(group.id)
+        AppObservable.bindActivity(this, remoteApi.listGroupMemberships(group.id))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(resp -> {

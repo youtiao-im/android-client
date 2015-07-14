@@ -2,11 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="match_parent">
     <LinearLayout
-        style="@style/layout_section"
-        android:background="#ffffffff"
-        android:layout_alignParentBottom="true"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent">
+        style="@style/layout_section">
 
 
         <RelativeLayout style="@style/layout_row"
@@ -16,19 +12,6 @@
                 android:id="@+id/edtTxt_field"
                 android:background="@null"
                 android:layout_alignParentLeft="false"
-                android:layout_marginLeft="20dp"
-                android:layout_width="fill_parent"
-                android:layout_centerInParent="true" />
-        </RelativeLayout>
-        <View  style="@style/bg_line"/>
-        <RelativeLayout style="@style/layout_row"
-            android:id="@+id/layout_hint">
-            <TextView style="@style/layout_row_text"
-                android:text="Pick a name easy to remember"
-                android:id="@+id/tv_hint"
-                android:background="@null"
-                android:layout_alignParentLeft="false"
-                android:layout_marginLeft="20dp"
                 android:layout_width="fill_parent"
                 android:layout_centerInParent="true" />
         </RelativeLayout>
