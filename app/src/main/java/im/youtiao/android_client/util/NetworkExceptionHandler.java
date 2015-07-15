@@ -127,7 +127,11 @@ public class NetworkExceptionHandler {
                     displayMessage = context.getString(R.string.error_forbidden);
                     break;
                 case NOT_FOUND:
-                    displayMessage = context.getString(R.string.error_not_found);
+                    if (actionId == ACTION_GROUP) {
+                        displayMessage = context.getString(R.string.error_group_not_found);
+                    } else {
+                        displayMessage = context.getString(R.string.error_not_found);
+                    }
                     break;
                 case METHOD_NOT_ALLOWED:
                     displayMessage = context.getString(R.string.error_method_not_allowed);

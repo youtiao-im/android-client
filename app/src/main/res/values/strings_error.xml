@@ -10,6 +10,7 @@
     <string name="error_unauthorized">Unauthorized</string>
     <string name="error_forbidden">Access limit</string>
     <string name="error_not_found">Not found</string>
+    <string name="error_group_not_found">Group not found</string>
     <string name="error_method_not_allowed">Method not allowed</string>
     <string name="error_unprocessable_entity">Unprocessable entity</string>
     <string name="error_server_error">Unkown server error</string>

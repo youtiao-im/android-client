@@ -2,6 +2,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="im.youtiao.android_client.ui.activity.NewBulletinActivity">
-    <item android:id="@+id/action_send" android:title="@string/action_send"
+    <item android:id="@+id/action_create" android:title="@string/action_create"
         android:orderInCategory="100" app:showAsAction="ifRoom" />
 </menu>

@@ -1,25 +1,23 @@
 <resources>
     <string name="app_name">有条</string>
 
-    <string name="title_activity_login">登陆</string>
+    <string name="title_activity_login">登录</string>
     <string name="title_activity_register">注册</string>
-    <string name="title_activity_bulletin_detail">公告详情</string>
-    <string name="title_activity_group_detail">群组详情</string>
-    <string name="title_activity_new_group">新建群组</string>
+    <string name="title_activity_bulletin_detail">公告</string>
+    <string name="title_activity_group_detail">群组</string>
+    <string name="title_activity_new_group">新群组</string>
     <string name="title_activity_bootstrap">启动</string>
     <string name="title_activity_join_group">加入群组</string>
-    <string name="title_activity_group_profile">群组详情</string>
-    <string name="title_activity_group_member">群组成员</string>
-    <string name="title_activity_group_code">群组识别码</string>
+    <string name="title_activity_group_profile">群组设置</string>
+    <string name="title_activity_group_member">成员</string>
     <string name="title_activity_group_member_profile">成员详情</string>
-    <string name="title_activity_new_bulletin">发布公告</string>
+    <string name="title_activity_new_bulletin">新公告</string>
     <string name="title_activity_select_send_group">发送...</string>
     <string name="title_activity_forgot_password">忘记密码</string>
-    <string name="title_activity_group_edit">编辑群组</string>
-    <string name="title_activity_edit_group_name">编辑群组名称</string>
-    <string name="title_activity_edit_group_code">编辑识别码</string>
-    <string name="title_activity_edit_account_name">编辑姓名</string>
-    <string name="title_activity_change_password">更改密码</string>
+    <string name="title_activity_edit_group_name">群组名称</string>
+    <string name="title_activity_edit_group_code">群组识别码</string>
+    <string name="title_activity_edit_account_name">名字</string>
+    <string name="title_activity_change_password">修改密码</string>
 
 
     <string name="bulletin">公告</string>
@@ -29,8 +27,8 @@
     <string name="settings">设置</string>
     <string name="subscriber">成员</string>
     <string name="subscribers">成员</string>
-    <string name="stamp">Stamp</string>
-    <string name="stamps">Stamps</string>
+    <string name="stamp">标记</string>
+    <string name="stamps">标记</string>
 
 
     <string name="action_settings">设置</string>
@@ -66,35 +64,35 @@
     <string name="hint_password">密码</string>
     <string name="hint_old_password">当前密码</string>
     <string name="hint_new_password">新密码</string>
-    <string name="hint_name">姓名</string>
+    <string name="hint_name">名字</string>
     <string name="hint_group_name">群组名字</string>
     <string name="hint_group_code">群组识别码</string>
     <string name="hint_pick_account_name">请选择一个易于辨识的名字</string>
     <string name="hint_pick_group_name">请选择一个易于记住的名字</string>
     <string name="hint_pick_group_code">请选择一个易于辨识的群组码</string>
-    <string name="progress_message_change_password">更改密码</string>
+    <string name="progress_message_change_password">修改密码...</string>
     <string name="progress_message_save">保存中...</string>
-    <string name="progress_message_sign_in">登陆中...</string>
+    <string name="progress_message_sign_in">登录中...</string>
     <string name="progress_message_sing_up">注册中...</string>
-    <string name="progress_message_create">Create ...</string>
-    <string name="progress_message_join">Join ...</string>
+    <string name="progress_message_create">创建中...</string>
+    <string name="progress_message_join">加入中...</string>
 
 
-    <string name="label_group_name">群名</string>
-    <string name="label_group_code">群码</string>
-    <string name="label_group_members">群成员</string>
+    <string name="label_group_name">群组名称</string>
+    <string name="label_group_code">群组识别码</string>
+    <string name="label_group_members">成员</string>
     <string name="label_email">邮箱</string>
     <string name="label_account">账号</string>
     <string name="label_password">密码</string>
     <string name="label_current_password">当前密码</string>
     <string name="label_new_password">新密码</string>
-    <string name="label_name">昵称</string>
+    <string name="label_name">名字</string>
     <string name="label_version">版本</string>
-    <string name="btn_sign_in">登陆</string>
+    <string name="btn_sign_in">登录</string>
     <string name="btn_sign_up">注册</string>
-    <string name="btn_sign_out">登出</string>
+    <string name="btn_sign_out">注销</string>
     <string name="btn_forgot_password">忘记密码?</string>
-    <string name="btn_change_password">更改密码</string>
+    <string name="btn_change_password">修改密码</string>
     <string name="btn_delete_group">解散群组</string>
     <string name="btn_unsubscribe_group">退出群组</string>
     <string name="btn_unsubscribe_user">踢出用户</string>
@@ -102,21 +100,21 @@
     <string name="btn_join">加入</string>
     <string name="btn_add">创建</string>
     <string name="btn_done">确定</string>
-    <string name="btn_create_group">+ 创建群组</string>
-    <string name="btn_join_group">+ 加入群组</string>
+    <string name="btn_create_group">创建群组</string>
+    <string name="btn_join_group">加入群组</string>
 
     <string name="several_days_ago">%d天前</string>
-    <string name="in_several_days">%d天内</string>
+    <string name="in_several_days">%d天后</string>
     <string name="several_hours_ago">%d小时前</string>
-    <string name="in_several_hours">%d小时内</string>
+    <string name="in_several_hours">%d小时后</string>
     <string name="several_minutes_ago">%d分钟前</string>
-    <string name="in_several_minutes">%d分钟内</string>
+    <string name="in_several_minutes">%d分钟后</string>
     <string name="several_seconds_ago">%d秒前</string>
-    <string name="in_several_seconds">%d秒内</string>
+    <string name="in_several_seconds">%d秒后</string>
     <string name="a_few_second_ago">几秒前</string>
-    <string name="in_a_few_second">几秒内</string>
-    <string name="in_one_hour">1小时内</string>
-    <string name="in_one_minute">1分钟内</string>
+    <string name="in_a_few_second">几秒后</string>
+    <string name="in_one_hour">1小时后</string>
+    <string name="in_one_minute">1分钟后</string>
     <string name="one_hour_ago">1小时前</string>
     <string name="one_minute_ago">1分钟前</string>
     <string name="yesterday">昨天</string>

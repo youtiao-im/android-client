@@ -1,35 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="error_invalid_email">邮箱无效</string>
+    <string name="error_invalid_email">邮箱地址格式不正确</string>
     <string name="error_invalid_password">密码无效</string>
     <string name="error_user_name_required">用户名不能为空</string>
     <string name="error_user_email_or_password">错误的账号或密码</string>
 
+    <string name="error_network_connect">网络连接错误</string>
     <string name="error_bad_request">错误请求</string>
-    <string name="error_unauthorized">没有登录</string>
-    <string name="error_forbidden">访问受限</string>
+    <string name="error_unauthorized">会话已失效,请重新登录</string>
+    <string name="error_forbidden">您没有权限进行该操作</string>
     <string name="error_not_found">找不到</string>
+    <string name="error_group_not_found">群组找不到</string>
     <string name="error_method_not_allowed">方法无效</string>
     <string name="error_unprocessable_entity">无法处理的请求参数</string>
     <string name="error_server_error">未知服务器错误</string>
-    <string name="error_email_too_long">邮箱太长</string>
-    <string name="error_email_too_short">邮箱太短</string>
-    <string name="error_email_blank">邮箱不能为空</string>
-    <string name="error_email_invalid">邮箱无效</string>
-    <string name="error_email_taken">邮箱已存在</string>
+    <string name="error_email_too_long">邮箱地址太长</string>
+    <string name="error_email_too_short">邮箱地址太短</string>
+    <string name="error_email_blank">邮箱地址不能为空</string>
+    <string name="error_email_invalid">邮箱地址格式不正确</string>
+    <string name="error_email_taken">邮箱地址已被注册</string>
     <string name="error_password_too_long">密码太长</string>
     <string name="error_password_too_short">密码太短</string>
     <string name="error_password_blank">密码不能为空</string>
-    <string name="error_password_invalid">密码无效</string>
+    <string name="error_password_invalid">密码含有非法字符</string>
     <string name="error_password_taken">密码已存在</string>
-    <string name="error_group_code_too_long">群组码太长</string>
-    <string name="error_group_code_too_short">群组码太短</string>
-    <string name="error_group_code_blank">群组码不能为空</string>
-    <string name="error_group_code_invalid">群组码无效</string>
-    <string name="error_group_code_taken">群组码已存在</string>
-    <string name="error_group_name_too_long">群组名太长</string>
-    <string name="error_group_name_too_short">群组名太短</string>
-    <string name="error_group_name_blank">群组名不能为空</string>
-    <string name="error_group_name_invalid">群组名无效</string>
-    <string name="error_group_name_taken">群组名已存在</string>
+    <string name="error_group_code_too_long">群组识别码太长</string>
+    <string name="error_group_code_too_short">群组识别码太短</string>
+    <string name="error_group_code_blank">群组识别码不能为空</string>
+    <string name="error_group_code_invalid">群组识别码含有非法字符</string>
+    <string name="error_group_code_taken">群组识别码已存在</string>
+    <string name="error_group_name_too_long">群组名称太长</string>
+    <string name="error_group_name_too_short">群组名称太短</string>
+    <string name="error_group_name_blank">群组名称不能为空</string>
+    <string name="error_group_name_invalid">群组名称含有非法字符</string>
+    <string name="error_group_name_taken">群组名称已存在</string>
 </resources>

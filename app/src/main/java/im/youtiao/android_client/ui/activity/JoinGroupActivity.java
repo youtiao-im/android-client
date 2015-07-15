@@ -117,7 +117,7 @@ public class JoinGroupActivity extends RoboActionBarActivity {
                         finish();
                     }, error -> {
                         progressDialog.dismiss();
-                        NetworkExceptionHandler.handleThrowable(error, this);
+                        NetworkExceptionHandler.handleThrowable(error, this, NetworkExceptionHandler.ACTION_GROUP);
                     });
         }
         return true;

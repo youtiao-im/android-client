@@ -3,7 +3,7 @@
 
     <string name="title_activity_login">Sign In</string>
     <string name="title_activity_register">Sign Up</string>
-    <string name="title_activity_bulletin_detail">Bulletin Detail</string>
+    <string name="title_activity_bulletin_detail">Bulletin</string>
     <string name="title_activity_group_detail">Group</string>
     <string name="title_activity_new_group">New Group</string>
     <string name="title_activity_bootstrap">Bootstrap</string>
@@ -103,8 +103,8 @@
     <string name="btn_add">Add</string>
     <string name="btn_create">Create</string>
     <string name="btn_done">Done</string>
-    <string name="btn_create_group">+ Create a Group</string>
-    <string name="btn_join_group">+ Join a Group</string>
+    <string name="btn_create_group">Create a Group</string>
+    <string name="btn_join_group">Join a Group</string>
 
     <string name="several_days_ago">%d days ago</string>
     <string name="in_several_days">in %d days</string>

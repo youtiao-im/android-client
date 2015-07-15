@@ -45,7 +45,7 @@ public class NewBulletinActivity extends RoboActionBarActivity {
     DaoSession daoSession;
 
 
-    MenuItem sendMenu;
+    MenuItem createMenu;
 
     @Override
     public void onResume() {
@@ -109,8 +109,8 @@ public class NewBulletinActivity extends RoboActionBarActivity {
         getMenuInflater().inflate(R.menu.menu_new_bulletin, menu);
 
 
-        sendMenu = menu.findItem(R.id.action_send);
-        sendMenu.setEnabled(false);
+        createMenu = menu.findItem(R.id.action_create);
+        createMenu.setEnabled(false);
         return true;
     }
 
@@ -121,7 +121,7 @@ public class NewBulletinActivity extends RoboActionBarActivity {
                 // app icon in action bar clicked; goto parent activity.
                 this.finish();
                 return true;
-            case R.id.action_send:
+            case R.id.action_create:
                 return send();
             default:
                 return super.onOptionsItemSelected(item);
@@ -162,10 +162,10 @@ public class NewBulletinActivity extends RoboActionBarActivity {
                                   int count) {
             String content = bulletinContentEdtTxt.getText().toString();
             if (content == null || content.length() == 0) {
-                sendMenu.setEnabled(false);
+                createMenu.setEnabled(false);
                 bulletinContentEdtTxt.setHint(getString(R.string.hint_type_bulletin_content));
             } else {
-                sendMenu.setEnabled(true);
+                createMenu.setEnabled(true);
             }
         }
     };

@@ -5,6 +5,7 @@
     <item
         android:id="@+id/action_new_bulletin"
         android:title="@string/action_new"
+        android:icon="@mipmap/new_bulletin"
         android:orderInCategory="100"
         app:showAsAction="always" />
 </menu>
