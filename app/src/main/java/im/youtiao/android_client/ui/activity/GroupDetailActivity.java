@@ -37,6 +37,7 @@ import roboguice.activity.RoboActionBarActivity;
 import roboguice.inject.InjectView;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
+import com.umeng.analytics.MobclickAgent;
 
 public class GroupDetailActivity extends RoboActionBarActivity {
     private static final String TAG = GroupDetailActivity.class.getCanonicalName();
@@ -77,6 +78,17 @@ public class GroupDetailActivity extends RoboActionBarActivity {
         Log.i(TAG, "onStart");
         super.onStart();
         EventBus.getDefault().register(this);
+    }
+
+    public void onResume() {
+        super.onResume();
+        MobclickAgent.onResume(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(this);
     }
 
 

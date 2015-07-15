@@ -13,6 +13,7 @@ import com.google.inject.Inject;
 import java.util.LinkedList;
 import java.util.List;
 
+import cn.jpush.android.api.JPushInterface;
 import de.greenrobot.event.EventBus;
 import im.youtiao.android_client.R;
 import im.youtiao.android_client.adapter.StampArrayAdapter;
@@ -32,6 +33,7 @@ import roboguice.inject.InjectView;
 import rx.android.app.AppObservable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
+import com.umeng.analytics.MobclickAgent;
 
 public class BulletinDetailActivity extends RoboActionBarActivity {
     private static final String TAG = BulletinDetailActivity.class.getCanonicalName();
@@ -80,6 +82,17 @@ public class BulletinDetailActivity extends RoboActionBarActivity {
     public void onStop() {
         EventBus.getDefault().unregister(this);
         super.onStop();
+    }
+
+    public void onResume() {
+        super.onResume();
+        MobclickAgent.onResume(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(this);
     }
 
     protected void initView(Bulletin bulletin) {

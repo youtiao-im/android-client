@@ -11,6 +11,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CursorAdapter;
 import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import de.greenrobot.event.EventBus;
@@ -94,10 +96,12 @@ public class BulletinCursorAdapter extends CursorAdapter {
         viewHolder.createdInfoTv = (TextView) convertView.findViewById(R.id.tv_created_info);
         viewHolder.feedContentTv = (TextView) convertView.findViewById(R.id.tv_bulletin_text);
         viewHolder.groupNameTv = (TextView) convertView.findViewById(R.id.tv_group_name);
-        viewHolder.checkImgBtn = (ImageButton) convertView.findViewById(R.id.imgBtn_bulletin_check);
-        viewHolder.crossImgBtn = (ImageButton) convertView.findViewById(R.id.imgBtn_bulletin_cross);
+        viewHolder.checkImgBtn = (ImageView) convertView.findViewById(R.id.imgBtn_bulletin_check);
+        viewHolder.crossImgBtn = (ImageView) convertView.findViewById(R.id.imgBtn_bulletin_cross);
         viewHolder.checksCountTv = (TextView) convertView.findViewById(R.id.tv_bulletin_checks_count);
         viewHolder.crossesCountTv = (TextView) convertView.findViewById(R.id.tv_bulletin_crosses_count);
+        viewHolder.checkLayout = (LinearLayout) convertView.findViewById(R.id.layout_check);
+        viewHolder.crossLayout = (LinearLayout) convertView.findViewById(R.id.layout_cross);
         convertView.setTag(viewHolder);
         return convertView;
     }
@@ -141,14 +145,13 @@ public class BulletinCursorAdapter extends CursorAdapter {
             }
         }
 
-        viewHolder.checkImgBtn.setOnClickListener(v -> {
+        viewHolder.checkLayout.setOnClickListener(v -> {
             EventBus.getDefault().post(new BulletinStampEvent(bulletin, Stamp.Mark.CHECK.toString().toLowerCase()));
 
         });
 
-        viewHolder.crossImgBtn.setOnClickListener(v -> {
+        viewHolder.crossLayout.setOnClickListener(v -> {
             EventBus.getDefault().post(new BulletinStampEvent(bulletin, Stamp.Mark.CROSS.toString().toLowerCase()));
-
         });
 
         viewHolder.groupNameTv.setOnClickListener(v -> {
@@ -161,9 +164,11 @@ public class BulletinCursorAdapter extends CursorAdapter {
         public TextView feedContentTv;
         public TextView groupNameTv;
         public TextView createdInfoTv;
-        public ImageButton checkImgBtn;
+        public ImageView checkImgBtn;
         public TextView checksCountTv;
-        public ImageButton crossImgBtn;
+        public ImageView crossImgBtn;
         public TextView crossesCountTv;
+        public LinearLayout checkLayout;
+        public LinearLayout crossLayout;
     }
 }

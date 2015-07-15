@@ -7,6 +7,8 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 
+import com.umeng.analytics.MobclickAgent;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 
@@ -29,13 +31,13 @@ public class YTApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        JPushInterface.setDebugMode(true);    // just for debug, close it when startup
+        JPushInterface.setDebugMode(false);    // just for debug, close it when startup
         JPushInterface.init(this);
-        Log.setDebugMode(true);    // just for debug, close it when startup
+        Log.setDebugMode(false);    // just for debug, close it when startup
+        MobclickAgent.setDebugMode(false);
         mPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         mAccounts = new ArrayList<AccountDescriptor>();
         updateAccounts();
-
         updateMetaData();
     }
 

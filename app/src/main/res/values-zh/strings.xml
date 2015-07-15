@@ -39,8 +39,8 @@
     <string name="action_save">保存</string>
     <string name="action_send">发送</string>
     <string name="action_reset">重置</string>
-    <string name="action_create">Create</string>
-    <string name="action_join">Join</string>
+    <string name="action_create">创建</string>
+    <string name="action_join">加入</string>
 
 
     <string name="bulletin_check">check</string>
@@ -67,8 +67,8 @@
     <string name="hint_old_password">当前密码</string>
     <string name="hint_new_password">新密码</string>
     <string name="hint_name">姓名</string>
-    <string name="hint_group_name">Group name</string>
-    <string name="hint_group_code">Group code</string>
+    <string name="hint_group_name">群组名字</string>
+    <string name="hint_group_code">群组识别码</string>
     <string name="hint_pick_account_name">请选择一个易于辨识的名字</string>
     <string name="hint_pick_group_name">请选择一个易于记住的名字</string>
     <string name="hint_pick_group_code">请选择一个易于辨识的群组码</string>

@@ -10,6 +10,7 @@ import android.webkit.WebViewClient;
 import im.youtiao.android_client.R;
 import im.youtiao.android_client.YTApplication;
 import roboguice.activity.RoboActionBarActivity;
+import com.umeng.analytics.MobclickAgent;
 
 public class ForgotPasswordActivity extends RoboActionBarActivity {
 
@@ -18,6 +19,17 @@ public class ForgotPasswordActivity extends RoboActionBarActivity {
 
     YTApplication getApp() {
         return (YTApplication)getApplication();
+    }
+
+    public void onResume() {
+        super.onResume();
+        MobclickAgent.onResume(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(this);
     }
 
     @Override

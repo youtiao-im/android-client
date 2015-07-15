@@ -24,6 +24,7 @@ import roboguice.inject.InjectView;
 import rx.android.app.AppObservable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
+import com.umeng.analytics.MobclickAgent;
 
 public class FieldEditActivity extends RoboActionBarActivity {
     private static final String TAG = GroupProfileActivity.class.getCanonicalName();
@@ -57,6 +58,16 @@ public class FieldEditActivity extends RoboActionBarActivity {
         return (YTApplication)getApplication();
     }
 
+    public void onResume() {
+        super.onResume();
+        MobclickAgent.onResume(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(this);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

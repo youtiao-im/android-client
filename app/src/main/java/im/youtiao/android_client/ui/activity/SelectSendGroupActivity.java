@@ -30,6 +30,7 @@ import roboguice.inject.InjectView;
 import rx.android.app.AppObservable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
+import com.umeng.analytics.MobclickAgent;
 
 public class SelectSendGroupActivity extends RoboActionBarActivity {
 
@@ -62,6 +63,18 @@ public class SelectSendGroupActivity extends RoboActionBarActivity {
     protected void onStart() {
         super.onStart();
         loadOwnerGroups();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        MobclickAgent.onResume(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(this);
     }
 
     @Override

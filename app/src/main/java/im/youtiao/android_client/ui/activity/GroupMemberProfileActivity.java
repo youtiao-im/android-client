@@ -16,6 +16,7 @@ import im.youtiao.android_client.model.Group;
 import im.youtiao.android_client.model.Membership;
 import roboguice.activity.RoboActionBarActivity;
 import roboguice.inject.InjectView;
+import com.umeng.analytics.MobclickAgent;
 
 public class GroupMemberProfileActivity extends RoboActionBarActivity {
 
@@ -31,6 +32,20 @@ public class GroupMemberProfileActivity extends RoboActionBarActivity {
 
     Group group;
     Membership membership;
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        MobclickAgent.onResume(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(this);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

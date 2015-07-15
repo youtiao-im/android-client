@@ -23,6 +23,7 @@ import im.youtiao.android_client.wrap.GroupWrap;
 import im.youtiao.android_client.util.Log;
 import roboguice.activity.RoboActionBarActivity;
 import roboguice.inject.InjectView;
+import com.umeng.analytics.MobclickAgent;
 
 public class GroupProfileActivity extends RoboActionBarActivity {
     private static final String TAG = GroupProfileActivity.class.getCanonicalName();
@@ -49,6 +50,18 @@ public class GroupProfileActivity extends RoboActionBarActivity {
     static final int INTENT_GROUP_CODE = 1;
 
     private boolean isOwner = false;
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        MobclickAgent.onResume(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(this);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

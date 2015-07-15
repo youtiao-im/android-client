@@ -25,6 +25,7 @@ import roboguice.inject.InjectView;
 import rx.android.app.AppObservable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
+import com.umeng.analytics.MobclickAgent;
 
 public class NewGroupActivity extends RoboActionBarActivity {
     private static final String TAG = NewGroupActivity.class
@@ -38,6 +39,18 @@ public class NewGroupActivity extends RoboActionBarActivity {
     @Inject private DaoSession daoSession;
 
     MenuItem createMenu;
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        MobclickAgent.onResume(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(this);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

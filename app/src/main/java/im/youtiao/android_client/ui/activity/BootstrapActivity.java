@@ -17,6 +17,8 @@ import im.youtiao.android_client.providers.RemoteApiFactory;
 import im.youtiao.android_client.util.Log;
 import roboguice.activity.RoboActivity;
 import roboguice.inject.InjectView;
+import com.umeng.analytics.MobclickAgent;
+
 
 public class BootstrapActivity extends RoboActivity {
     private static final String TAG = BootstrapActivity.class
@@ -40,12 +42,14 @@ public class BootstrapActivity extends RoboActivity {
     protected void onResume() {
         super.onResume();
         JPushInterface.onResume(this);
+        MobclickAgent.onResume(this);
     }
 
     @Override
     protected void onPause() {
-        super.onStop();
+        super.onPause();
         JPushInterface.onPause(this);
+        MobclickAgent.onPause(this);
     }
 
     @Override

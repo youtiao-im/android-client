@@ -19,6 +19,7 @@ import roboguice.activity.RoboActionBarActivity;
 import roboguice.inject.InjectView;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
+import com.umeng.analytics.MobclickAgent;
 
 public class ChangePasswordActivity extends RoboActionBarActivity {
 
@@ -30,6 +31,17 @@ public class ChangePasswordActivity extends RoboActionBarActivity {
 
     @Inject
     RemoteApi remoteApi;
+
+    public void onResume() {
+        super.onResume();
+        MobclickAgent.onResume(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(this);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

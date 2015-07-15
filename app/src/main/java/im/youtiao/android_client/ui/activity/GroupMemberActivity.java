@@ -26,6 +26,7 @@ import roboguice.inject.InjectView;
 import rx.android.app.AppObservable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
+import com.umeng.analytics.MobclickAgent;
 
 public class GroupMemberActivity extends RoboActionBarActivity {
 
@@ -49,6 +50,18 @@ public class GroupMemberActivity extends RoboActionBarActivity {
         Log.i(TAG, "OnStart");
         super.onStart();
         //startMembershipsSyncing();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        MobclickAgent.onResume(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(this);
     }
 
     @Override

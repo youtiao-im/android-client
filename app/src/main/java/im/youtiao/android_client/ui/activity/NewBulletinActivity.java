@@ -23,6 +23,7 @@ import roboguice.inject.InjectView;
 import rx.android.app.AppObservable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
+import com.umeng.analytics.MobclickAgent;
 
 public class NewBulletinActivity extends RoboActionBarActivity {
     private static final String TAG = NewBulletinActivity.class.getCanonicalName();
@@ -45,6 +46,18 @@ public class NewBulletinActivity extends RoboActionBarActivity {
 
 
     MenuItem sendMenu;
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        MobclickAgent.onResume(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(this);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
