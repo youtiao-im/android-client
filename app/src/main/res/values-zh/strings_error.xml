@@ -34,4 +34,9 @@
     <string name="error_group_name_blank">群组名称不能为空</string>
     <string name="error_group_name_invalid">群组名称含有非法字符</string>
     <string name="error_group_name_taken">群组名称已存在</string>
+    <string name="error_text_too_long">公告内容太长</string>
+    <string name="error_text_too_short">公告内容太短</string>
+    <string name="error_text_blank">公告内容不能为空</string>
+    <string name="error_text_invalid">公告内容含有非法字符</string>
+    <string name="error_text_taken">公告内容已存在</string>
 </resources>

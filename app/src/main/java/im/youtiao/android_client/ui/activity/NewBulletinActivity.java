@@ -96,6 +96,12 @@ public class NewBulletinActivity extends RoboActionBarActivity {
                 if (sendToGroup != null) {
                     bulletinReceiverTv.setText(sendToGroup.name);
                     group = sendToGroup;
+                    String content = bulletinContentEdtTxt.getText().toString();
+                    if (content == null || content.length() == 0 || group == null) {
+                        createMenu.setEnabled(false);
+                    } else {
+                        createMenu.setEnabled(true);
+                    }
                 }
             }
         }
@@ -130,7 +136,7 @@ public class NewBulletinActivity extends RoboActionBarActivity {
 
     private boolean send() {
         String content = bulletinContentEdtTxt.getText().toString().trim();
-        if (content != null && content.length() != 0) {
+        if (content != null && content.length() != 0 && group != null) {
             AppObservable.bindActivity(this, remoteApi.createBulletin(group.id, content))
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
@@ -161,9 +167,8 @@ public class NewBulletinActivity extends RoboActionBarActivity {
         public void onTextChanged(CharSequence s, int start, int before,
                                   int count) {
             String content = bulletinContentEdtTxt.getText().toString();
-            if (content == null || content.length() == 0) {
+            if (content == null || content.length() == 0 || group == null) {
                 createMenu.setEnabled(false);
-                bulletinContentEdtTxt.setHint(getString(R.string.hint_type_bulletin_content));
             } else {
                 createMenu.setEnabled(true);
             }

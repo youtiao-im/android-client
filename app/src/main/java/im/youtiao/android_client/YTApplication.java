@@ -33,7 +33,7 @@ public class YTApplication extends Application {
         super.onCreate();
         JPushInterface.setDebugMode(false);    // just for debug, close it when startup
         JPushInterface.init(this);
-        Log.setDebugMode(false);    // just for debug, close it when startup
+        Log.setDebugMode(true);    // just for debug, close it when startup
         MobclickAgent.setDebugMode(false);
         mPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         mAccounts = new ArrayList<AccountDescriptor>();

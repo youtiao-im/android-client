@@ -143,7 +143,8 @@ public class SelectSendGroupActivity extends RoboActionBarActivity {
 
         GroupDao groupDao = daoSession.getGroupDao();
         List<im.youtiao.android_client.dao.Group> groupsOnDb = groupDao.loadAll();
-        if (groups.size() > 0) {
+        if (groupsOnDb.size() > 0) {
+            groups.clear();
             for (im.youtiao.android_client.dao.Group group : groupsOnDb) {
                 groups.add(GroupWrap.wrap(group));
             }

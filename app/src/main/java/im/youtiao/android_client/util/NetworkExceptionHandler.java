@@ -147,7 +147,7 @@ public class NetworkExceptionHandler {
             }
             AlertDialog.Builder builder = new AlertDialog.Builder(context);
             builder.setMessage(displayMessage)
-                    .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                    .setPositiveButton(context.getString(R.string.tip_btn_ok), new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             dialog.dismiss();
@@ -242,6 +242,25 @@ public class NetworkExceptionHandler {
                             break;
                     }
                     break;
+                case "text":
+                    switch(reason) {
+                        case "too_long":
+                            resourceId = R.string.error_text_too_long;
+                            break;
+                        case "too_short":
+                            resourceId = R.string.error_text_too_short;
+                            break;
+                        case "blank":
+                            resourceId = R.string.error_text_blank;
+                            break;
+                        case "invalid":
+                            resourceId = R.string.error_text_invalid;
+                            break;
+                        case "taken":
+                            resourceId = R.string.error_text_taken;
+                            break;
+                    }
+                    break;
                 default:
 
             }
@@ -253,8 +272,8 @@ public class NetworkExceptionHandler {
         //try {
             if (error instanceof SocketTimeoutException) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                builder.setMessage("Network Connect Error")
-                        .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                builder.setMessage(context.getString(R.string.error_network_connect))
+                        .setPositiveButton(context.getString(R.string.tip_btn_ok), new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 dialog.dismiss();
@@ -266,7 +285,7 @@ public class NetworkExceptionHandler {
             } else {
                 AlertDialog.Builder builder = new AlertDialog.Builder(context);
                 builder.setMessage(error.getMessage())
-                        .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                        .setPositiveButton(context.getString(R.string.tip_btn_ok), new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 dialog.dismiss();

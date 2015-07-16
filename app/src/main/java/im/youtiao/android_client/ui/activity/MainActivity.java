@@ -113,6 +113,7 @@ public class MainActivity extends RoboActionBarActivity implements MaterialTabLi
             @Override
             public void onPageSelected(int position) {
                 tabHost.setSelectedNavigationItem(position);
+                tabHost.getCurrentTab().setIconColor(getResources().getColor(R.color.tab_icon_selected_color));
                 if (position == 0) {
                     newBulletinMenu.setVisible(true);
                 } else {

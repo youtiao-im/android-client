@@ -34,4 +34,9 @@
     <string name="error_group_name_blank">Group name can not be empty</string>
     <string name="error_group_name_invalid">Group name is invalid</string>
     <string name="error_group_name_taken">Group name already exists</string>
+    <string name="error_text_too_long">bulletin content is too long</string>
+    <string name="error_text_too_short">bulletin content is too short</string>
+    <string name="error_text_blank">bulletin content can not be empty</string>
+    <string name="error_text_invalid">bulletin content is invalid</string>
+    <string name="error_text_taken">bulletin content already exists</string>
 </resources>

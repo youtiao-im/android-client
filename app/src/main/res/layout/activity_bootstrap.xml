@@ -11,7 +11,7 @@
         android:id="@+id/btn_login"
         android:layout_alignParentBottom="false"
         android:layout_alignParentLeft="false"
-        android:background="@android:color/holo_green_dark"
+        android:background="@color/green_color"
         android:layout_centerInParent="true" />
 
     <Button

@@ -76,7 +76,7 @@
                 android:id="@+id/tv_sign_out"
                 android:text="@string/btn_sign_out"
                 android:layout_centerInParent="true"
-                android:textColor="@android:color/holo_red_light" />
+                android:textColor="@color/red_color" />
         </RelativeLayout>
     </LinearLayout>
 

@@ -133,13 +133,17 @@ public class BulletinCursorAdapter extends CursorAdapter {
 
         viewHolder.checkImgBtn.setColorFilter(mActivity.getResources().getColor(R.color.icon_unselected_color));
         viewHolder.crossImgBtn.setColorFilter(mActivity.getResources().getColor(R.color.icon_unselected_color));
+        viewHolder.checksCountTv.setTextColor(mActivity.getResources().getColor(R.color.icon_unselected_color));
+        viewHolder.crossesCountTv.setTextColor(mActivity.getResources().getColor(R.color.icon_unselected_color));
         if (bulletin.stamp != null && bulletin.stamp.symbol != null) {
             switch (Stamp.Mark.valueOf(bulletin.stamp.symbol.toUpperCase())) {
                 case CHECK:
                     viewHolder.checkImgBtn.setColorFilter(mActivity.getResources().getColor(R.color.icon_stamp_check_selected_color));
+                    viewHolder.checksCountTv.setTextColor(mActivity.getResources().getColor(R.color.icon_stamp_check_selected_color));
                     break;
                 case CROSS:
                     viewHolder.crossImgBtn.setColorFilter(mActivity.getResources().getColor(R.color.icon_stamp_cross_selected_color));
+                    viewHolder.crossesCountTv.setTextColor(mActivity.getResources().getColor(R.color.icon_stamp_cross_selected_color));
                     break;
                 default:
             }

@@ -113,6 +113,7 @@ public class LoginActivity extends RoboActionBarActivity {
         if (mAccount != null) {
             mUsernameEdtTxt.setText(mAccount.getEmail());
             mPasswordEdtTxt.setText(mAccount.getPassword());
+            mUsernameEdtTxt.setSelection(mAccount.getEmail().length());
         }
 
         mPasswordEdtTxt = (EditText) findViewById(R.id.edtTxt_password);
