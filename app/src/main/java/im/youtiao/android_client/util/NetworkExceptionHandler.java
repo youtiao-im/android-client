@@ -12,6 +12,7 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.net.SocketTimeoutException;
+import java.net.UnknownHostException;
 
 import im.youtiao.android_client.R;
 import im.youtiao.android_client.YTApplication;
@@ -103,7 +104,6 @@ public class NetworkExceptionHandler {
     public static final int ACTION_GROUP = 1002;
 
 
-
     public static void handleServerError(ServerError serverError, Context context, int actionId) {
         try {
             int status = serverError.status;
@@ -153,7 +153,7 @@ public class NetworkExceptionHandler {
                             dialog.dismiss();
                         }
                     }).create().show();
-        } catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -165,9 +165,9 @@ public class NetworkExceptionHandler {
         if (items.length == 2) {
             String attribute = items[0];
             String reason = items[1];
-            switch(attribute) {
+            switch (attribute) {
                 case "email":
-                    switch(reason) {
+                    switch (reason) {
                         case "too_long":
                             resourceId = R.string.error_email_too_long;
                             break;
@@ -186,7 +186,7 @@ public class NetworkExceptionHandler {
                     }
                     break;
                 case "password":
-                    switch(reason) {
+                    switch (reason) {
                         case "too_long":
                             resourceId = R.string.error_password_too_long;
                             break;
@@ -205,7 +205,7 @@ public class NetworkExceptionHandler {
                     }
                     break;
                 case "name":
-                    switch(reason) {
+                    switch (reason) {
                         case "too_long":
                             resourceId = R.string.error_group_name_too_long;
                             break;
@@ -224,7 +224,7 @@ public class NetworkExceptionHandler {
                     }
                     break;
                 case "code":
-                    switch(reason) {
+                    switch (reason) {
                         case "too_long":
                             resourceId = R.string.error_group_code_too_long;
                             break;
@@ -243,7 +243,7 @@ public class NetworkExceptionHandler {
                     }
                     break;
                 case "text":
-                    switch(reason) {
+                    switch (reason) {
                         case "too_long":
                             resourceId = R.string.error_text_too_long;
                             break;
@@ -269,8 +269,17 @@ public class NetworkExceptionHandler {
     }
 
     public static void handleNetWorkError(Throwable error, Context context, int actionId) {
-        //try {
-            if (error instanceof SocketTimeoutException) {
+        if (error instanceof SocketTimeoutException) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(context);
+            builder.setMessage(context.getString(R.string.error_network_connect))
+                    .setPositiveButton(context.getString(R.string.tip_btn_ok), new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    }).create();
+            builder.show();
+        } else if (error instanceof UnknownHostException) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(context);
                 builder.setMessage(context.getString(R.string.error_network_connect))
                         .setPositiveButton(context.getString(R.string.tip_btn_ok), new DialogInterface.OnClickListener() {
@@ -280,20 +289,16 @@ public class NetworkExceptionHandler {
                             }
                         }).create();
                 builder.show();
-                //Toast.makeText(context, "NewWork Connect Error", Toast.LENGTH_LONG).show();
-                Log.e(TAG, error.getMessage());
-            } else {
-                AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                builder.setMessage(error.getMessage())
-                        .setPositiveButton(context.getString(R.string.tip_btn_ok), new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                            }
-                        }).create().show();
-            }
-        //}catch(Exception e) {
-        //    e.printStackTrace();
-        //}
+        } else {
+            AlertDialog.Builder builder = new AlertDialog.Builder(context);
+            Log.e(TAG, error.getClass().toString());
+            builder.setMessage(context.getString(R.string.error_network_connect))
+                    .setPositiveButton(context.getString(R.string.tip_btn_ok), new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    }).create().show();
+        }
     }
 }

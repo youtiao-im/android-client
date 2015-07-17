@@ -36,4 +36,12 @@ public class DaoHelper {
             return group;
         }
     }
+
+    public static void delete(DaoSession daoSession, Group entity) {
+        GroupDao groupDao = daoSession.getGroupDao();
+        Group group = groupDao.queryBuilder().where(GroupDao.Properties.ServerId.eq(entity.getServerId())).unique();
+        if (group != null) {
+            groupDao.delete(group);
+        }
+    }
 }

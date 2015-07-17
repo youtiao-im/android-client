@@ -37,6 +37,9 @@ public interface RemoteApi {
     @POST(PREFIX + "/groups.join")
     Observable<Group> joinGroup(@Query("code") String code);
 
+    @POST(PREFIX + "/groups.leave")
+    Observable<Group> leaveGroup(@Query("id") String groupId);
+
     @POST(PREFIX + "/groups.update")
     Observable<Group> updateGroup(@Query("id") String groupId, @Query("name") String name, @Query("code") String code);
 

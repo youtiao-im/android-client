@@ -17,6 +17,7 @@ import im.youtiao.android_client.R;
 import im.youtiao.android_client.YTApplication;
 import im.youtiao.android_client.model.Group;
 import im.youtiao.android_client.rest.RemoteApi;
+import im.youtiao.android_client.ui.widget.ProgressHUD;
 import im.youtiao.android_client.util.NetworkExceptionHandler;
 import im.youtiao.android_client.util.Log;
 import roboguice.activity.RoboActionBarActivity;
@@ -146,9 +147,10 @@ public class FieldEditActivity extends RoboActionBarActivity {
     }
 
     boolean save() {
-        ProgressDialog progressDialog = new ProgressDialog(FieldEditActivity.this);
-        progressDialog.setMessage(getString(R.string.progress_message_save));
-        progressDialog.show();
+//        ProgressDialog progressDialog = new ProgressDialog(FieldEditActivity.this);
+//        progressDialog.setMessage(getString(R.string.progress_message_save));
+//        progressDialog.show();
+        ProgressHUD progressDialog = ProgressHUD.show(this, "", true, true, null);
         String fieldContent = fieldEdtTxt.getText().toString();
         switch(editType) {
             case TYPE_ACCOUNT_NAME:
@@ -205,6 +207,8 @@ public class FieldEditActivity extends RoboActionBarActivity {
                         });
                 break;
             default:
+                progressDialog.dismiss();
+                break;
         }
         return true;
     }

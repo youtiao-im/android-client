@@ -33,6 +33,7 @@ import im.youtiao.android_client.model.Token;
 import im.youtiao.android_client.providers.RemoteApiFactory;
 import im.youtiao.android_client.rest.LoginApi;
 import im.youtiao.android_client.rest.RemoteApi;
+import im.youtiao.android_client.ui.widget.ProgressHUD;
 import im.youtiao.android_client.util.NetworkExceptionHandler;
 import im.youtiao.android_client.util.Utility;
 import im.youtiao.android_client.util.Log;
@@ -58,9 +59,6 @@ public class LoginActivity extends RoboActionBarActivity {
     public static final String PARAM_USER = "user";
     public static final String PARAM_ACCOUNT = "account";
     public static final String PARAM_CONFIRMCREDENTIALS = "confirmCredentials";
-
-    private View mProgressView;
-    private View mLoginFormView;
 
     private String mPassword;
     @InjectView(R.id.edtTxt_password)
@@ -145,9 +143,6 @@ public class LoginActivity extends RoboActionBarActivity {
                 //startActivity(new Intent(LoginActivity.this, ForgotPasswordActivity.class));
             }
         });
-
-        mLoginFormView = findViewById(R.id.email_login_form);
-        mProgressView = findViewById(R.id.login_progress);
     }
 
     @Override
@@ -202,17 +197,15 @@ public class LoginActivity extends RoboActionBarActivity {
                         }
                     }).create().show();
         } else {
-            ProgressDialog progressDialog = new ProgressDialog(LoginActivity.this);
-            progressDialog.setMessage(getString(R.string.progress_message_sign_in));
-            progressDialog.show();
+            ProgressHUD mProgressHUD = ProgressHUD.show(this, "", true, true, null);
             AppObservable.bindActivity(this, loginApi.getTokenSync("password", mUsername, mPassword))
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(token -> {
-                        progressDialog.dismiss();
+                        mProgressHUD.dismiss();
                         finishLogin(token);
                     }, error -> {
-                        progressDialog.dismiss();
+                        mProgressHUD.dismiss();
                         NetworkExceptionHandler.handleThrowable(error, this, NetworkExceptionHandler.ACTION_OAUTH);
                     });
         }
@@ -235,25 +228,5 @@ public class LoginActivity extends RoboActionBarActivity {
                 }, error -> NetworkExceptionHandler.handleThrowable(error, this));
     }
 
-    /**
-     * Shows the progress UI and hides the login form.
-     */
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
-    public void showProgress(final boolean show) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
-            int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
-
-            mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-            mProgressView.animate().setDuration(shortAnimTime).alpha(
-                    show ? 1 : 0).setListener(new AnimatorListenerAdapter() {
-                @Override
-                public void onAnimationEnd(Animator animation) {
-                    mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-                }
-            });
-        } else {
-            mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-        }
-    }
 }
 

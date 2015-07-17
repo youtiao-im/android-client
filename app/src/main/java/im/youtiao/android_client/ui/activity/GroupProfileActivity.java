@@ -16,13 +16,18 @@ import com.google.inject.Inject;
 import im.youtiao.android_client.R;
 import im.youtiao.android_client.dao.DaoHelper;
 import im.youtiao.android_client.dao.DaoSession;
+import im.youtiao.android_client.dao.GroupDao;
 import im.youtiao.android_client.dao.GroupHelper;
 import im.youtiao.android_client.model.Group;
 import im.youtiao.android_client.rest.RemoteApi;
+import im.youtiao.android_client.util.NetworkExceptionHandler;
 import im.youtiao.android_client.wrap.GroupWrap;
 import im.youtiao.android_client.util.Log;
 import roboguice.activity.RoboActionBarActivity;
 import roboguice.inject.InjectView;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
+
 import com.umeng.analytics.MobclickAgent;
 
 public class GroupProfileActivity extends RoboActionBarActivity {
@@ -109,9 +114,8 @@ public class GroupProfileActivity extends RoboActionBarActivity {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 dialog.dismiss();
-                                Intent intent = getIntent();
-                                GroupProfileActivity.this.setResult(0, intent);
-                                GroupProfileActivity.this.finish();
+                                //TODO: delete group?
+                                finish();
                             }
                         });
                 builder.setNegativeButton(getString(R.string.tip_btn_cancel), new DialogInterface.OnClickListener() {
@@ -137,6 +141,16 @@ public class GroupProfileActivity extends RoboActionBarActivity {
                         Intent intent = getIntent();
                         GroupProfileActivity.this.setResult(1, intent);
                         GroupProfileActivity.this.finish();
+
+                        remoteApi.leaveGroup(group.id)
+                                .subscribeOn(Schedulers.io())
+                                .observeOn(AndroidSchedulers.mainThread())
+                                .subscribe(res -> {
+                                    DaoHelper.delete(daoSession, GroupWrap.validate(group));
+                                    getContentResolver().notifyChange(GroupHelper.CONTENT_URI, null);
+                                    finish();
+                                }, error -> NetworkExceptionHandler.handleThrowable(error, GroupProfileActivity.this));
+
                     }
                 });
                 builder.setNegativeButton(getString(R.string.tip_btn_cancel), new DialogInterface.OnClickListener() {

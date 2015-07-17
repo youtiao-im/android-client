@@ -12,90 +12,84 @@
     android:background="@android:color/white">
 
 
-    <LinearLayout
-        android:id="@+id/email_login_form"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_height="match_parent"
+        android:id="@+id/scrollView" >
 
         <LinearLayout
-            style="@style/layout_section"
-            android:layout_alignParentTop="true"
-            android:id="@+id/layout_section1"
-            android:layout_marginTop="20dp">
-
-            <LinearLayout style="@style/layout_row"
-                android:id="@+id/layout_email">
-
-                <EditText style="@style/font_row_text"
-                    android:layout_height="wrap_content"
-                    android:layout_width="match_parent"
-                    android:hint="@string/hint_email_address"
-                    android:id="@+id/edtTxt_email"
-                    android:background="@null"
-                    android:maxLines="1"
-                    android:singleLine="true"
-                    android:layout_alignParentRight="false"
-                    android:layout_toRightOf="@+id/tv_email_label"/>
-            </LinearLayout>
-
-            <View  style="@style/bg_line"/>
-
-            <LinearLayout style="@style/layout_row"
-                android:id="@+id/layout_password">
-
-                <EditText style="@style/font_row_text"
-                    android:layout_height="wrap_content"
-                    android:layout_width="match_parent"
-                    android:hint="@string/hint_password"
-                    android:id="@+id/edtTxt_password"
-                    android:background="@null"
-                    android:imeActionId="@+id/login"
-                    android:imeActionLabel="@string/btn_sign_in"
-                    android:imeOptions="actionUnspecified"
-                    android:inputType="textPassword"
-                    android:maxLines="1"
-                    android:singleLine="true"
-                    android:layout_alignParentRight="false"
-                    android:layout_toRightOf="@+id/tv_password_label" />
-            </LinearLayout>
-
-            <View  style="@style/bg_line"/>
-        </LinearLayout>
-
-        <Button
-            android:id="@+id/btn_sign_in"
-            style="?android:textAppearanceSmall"
+            android:id="@+id/email_login_form"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="@string/btn_sign_in"
-            android:textStyle="bold"
-            android:background="@color/green_color"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp" />
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/tv_forgot_password"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/btn_forgot_password"
-            android:layout_marginTop="10dp"
-            android:layout_gravity="center_horizontal"
-            android:textColor="@android:color/holo_blue_light" />
-    </LinearLayout>
+            <LinearLayout
+                style="@style/layout_section"
+                android:layout_alignParentTop="true"
+                android:id="@+id/layout_section1"
+                android:layout_marginTop="20dp">
 
-    <!-- Login progress -->
-    <ProgressBar
-        android:id="@+id/login_progress"
-        style="?android:attr/progressBarStyleLarge"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="false"
-        android:layout_marginBottom="8dp"
-        android:visibility="gone"
-        android:layout_below="@+id/email_login_form"
-        android:layout_centerInParent="true" />
+                <LinearLayout style="@style/layout_row"
+                    android:id="@+id/layout_email">
+
+                    <EditText style="@style/font_row_text"
+                        android:layout_height="wrap_content"
+                        android:layout_width="match_parent"
+                        android:hint="@string/hint_email_address"
+                        android:id="@+id/edtTxt_email"
+                        android:background="@null"
+                        android:maxLines="1"
+                        android:singleLine="true"
+                        android:layout_alignParentRight="false"
+                        android:layout_toRightOf="@+id/tv_email_label"/>
+                </LinearLayout>
+
+                <View  style="@style/bg_line"/>
+
+                <LinearLayout style="@style/layout_row"
+                    android:id="@+id/layout_password">
+
+                    <EditText style="@style/font_row_text"
+                        android:layout_height="wrap_content"
+                        android:layout_width="match_parent"
+                        android:hint="@string/hint_password"
+                        android:id="@+id/edtTxt_password"
+                        android:background="@null"
+                        android:imeActionId="@+id/login"
+                        android:imeActionLabel="@string/btn_sign_in"
+                        android:imeOptions="actionUnspecified"
+                        android:inputType="textPassword"
+                        android:maxLines="1"
+                        android:singleLine="true"
+                        android:layout_alignParentRight="false"
+                        android:layout_toRightOf="@+id/tv_password_label" />
+                </LinearLayout>
+
+                <View  style="@style/bg_line"/>
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/btn_sign_in"
+                style="?android:textAppearanceSmall"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/btn_sign_in"
+                android:textStyle="bold"
+                android:background="@color/green_color"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp" />
+
+            <TextView
+                android:id="@+id/tv_forgot_password"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/btn_forgot_password"
+                android:layout_marginTop="10dp"
+                android:layout_gravity="center_horizontal"
+                android:textColor="@android:color/holo_blue_light" />
+        </LinearLayout>
+    </ScrollView>
 
 </RelativeLayout>
 

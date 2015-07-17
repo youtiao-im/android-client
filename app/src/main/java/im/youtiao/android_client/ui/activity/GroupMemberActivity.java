@@ -19,6 +19,7 @@ import im.youtiao.android_client.adapter.MemberArrayAdapter;
 import im.youtiao.android_client.model.Group;
 import im.youtiao.android_client.model.Membership;
 import im.youtiao.android_client.rest.RemoteApi;
+import im.youtiao.android_client.ui.widget.ProgressHUD;
 import im.youtiao.android_client.util.NetworkExceptionHandler;
 import im.youtiao.android_client.util.Log;
 import roboguice.activity.RoboActionBarActivity;
@@ -45,11 +46,12 @@ public class GroupMemberActivity extends RoboActionBarActivity {
     MemberArrayAdapter mAdapter = null;
     LinkedList<Membership> memberships = new LinkedList<Membership>();
 
+    ProgressHUD progressDialog;
+
     @Override
     protected void onStart() {
         Log.i(TAG, "OnStart");
         super.onStart();
-        //startMembershipsSyncing();
     }
 
     @Override
@@ -133,13 +135,18 @@ public class GroupMemberActivity extends RoboActionBarActivity {
     }
 
     void startMembershipsSyncing() {
+        progressDialog = ProgressHUD.show(this, "", true, true, null);
         memberships.clear();
         AppObservable.bindActivity(this, remoteApi.listGroupMemberships(group.id))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(resp -> {
+                    progressDialog.dismiss();
                     processMemberships(resp);
-                }, error -> NetworkExceptionHandler.handleThrowable(error, this));
+                }, error -> {
+                    progressDialog.dismiss();
+                    NetworkExceptionHandler.handleThrowable(error, this);
+                });
     }
 
     void processMemberships(List<Membership> membershipList) {

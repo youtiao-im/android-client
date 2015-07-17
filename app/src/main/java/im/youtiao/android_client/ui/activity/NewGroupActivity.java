@@ -18,6 +18,7 @@ import im.youtiao.android_client.dao.DaoSession;
 import im.youtiao.android_client.dao.GroupDao;
 import im.youtiao.android_client.dao.GroupHelper;
 import im.youtiao.android_client.rest.RemoteApi;
+import im.youtiao.android_client.ui.widget.ProgressHUD;
 import im.youtiao.android_client.util.NetworkExceptionHandler;
 import im.youtiao.android_client.wrap.GroupWrap;
 import roboguice.activity.RoboActionBarActivity;
@@ -106,9 +107,10 @@ public class NewGroupActivity extends RoboActionBarActivity {
     public boolean addNew() {
         String name = groupNameEdtTxt.getText().toString().trim();
         if (name != null && name.length() != 0) {
-            ProgressDialog progressDialog = new ProgressDialog(NewGroupActivity.this);
-            progressDialog.setMessage(getString(R.string.progress_message_create));
-            progressDialog.show();
+//            ProgressDialog progressDialog = new ProgressDialog(NewGroupActivity.this);
+//            progressDialog.setMessage(getString(R.string.progress_message_create));
+//            progressDialog.show();
+            ProgressHUD progressDialog = ProgressHUD.show(this, "", true, true, null);
             AppObservable.bindActivity(this, remoteApi.createGroup(name, null))
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())

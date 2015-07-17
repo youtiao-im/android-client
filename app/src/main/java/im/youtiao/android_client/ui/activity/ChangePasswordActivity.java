@@ -14,6 +14,7 @@ import com.google.inject.Inject;
 
 import im.youtiao.android_client.R;
 import im.youtiao.android_client.rest.RemoteApi;
+import im.youtiao.android_client.ui.widget.ProgressHUD;
 import im.youtiao.android_client.util.NetworkExceptionHandler;
 import roboguice.activity.RoboActionBarActivity;
 import roboguice.inject.InjectView;
@@ -75,10 +76,11 @@ public class ChangePasswordActivity extends RoboActionBarActivity {
     boolean changePassword() {
         String password = oldPasswordEdtTxt.getText().toString();
         String newPassword = newPasswordEdtTxt.getText().toString();
-        ProgressDialog progressDialog = new ProgressDialog(ChangePasswordActivity.this);
-        progressDialog.setIndeterminate(true);
-        progressDialog.setMessage(getString(R.string.progress_message_change_password));
-        progressDialog.show();
+//        ProgressDialog progressDialog = new ProgressDialog(ChangePasswordActivity.this);
+//        progressDialog.setIndeterminate(true);
+//        progressDialog.setMessage(getString(R.string.progress_message_change_password));
+//        progressDialog.show();
+        ProgressHUD progressDialog = ProgressHUD.show(this, "", true, true, null);
         remoteApi.changePassword(password, newPassword)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

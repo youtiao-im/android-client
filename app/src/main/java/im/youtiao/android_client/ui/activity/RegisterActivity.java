@@ -28,6 +28,7 @@ import im.youtiao.android_client.YTApplication;
 import im.youtiao.android_client.providers.RemoteApiFactory;
 import im.youtiao.android_client.rest.LoginApi;
 import im.youtiao.android_client.rest.RemoteApi;
+import im.youtiao.android_client.ui.widget.ProgressHUD;
 import im.youtiao.android_client.util.NetworkExceptionHandler;
 import roboguice.activity.RoboActionBarActivity;
 import roboguice.inject.InjectView;
@@ -135,9 +136,10 @@ public class RegisterActivity extends RoboActionBarActivity {
     }
 
     void remoteSignUp(String email, String name, String password) {
-        ProgressDialog progressDialog = new ProgressDialog(RegisterActivity.this);
-        progressDialog.setMessage(getString(R.string.progress_message_sing_up));
-        progressDialog.show();
+//        ProgressDialog progressDialog = new ProgressDialog(RegisterActivity.this);
+//        progressDialog.setMessage(getString(R.string.progress_message_sing_up));
+//        progressDialog.show();
+        ProgressHUD progressDialog = ProgressHUD.show(this, "", true, true, null);
         RemoteApiFactory.setApiToken(this, null, null);
         RemoteApi remoteApi = RemoteApiFactory.getApi();
         AppObservable.bindActivity(this, remoteApi.signUpUser(email, name, password))

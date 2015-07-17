@@ -25,6 +25,7 @@ import im.youtiao.android_client.event.BulletinStampEvent;
 import im.youtiao.android_client.model.Bulletin;
 import im.youtiao.android_client.model.Stamp;
 import im.youtiao.android_client.rest.RemoteApi;
+import im.youtiao.android_client.ui.widget.ProgressHUD;
 import im.youtiao.android_client.util.NetworkExceptionHandler;
 import im.youtiao.android_client.util.Log;
 import im.youtiao.android_client.wrap.BulletinWrap;
@@ -46,20 +47,6 @@ public class BulletinDetailActivity extends RoboActionBarActivity {
     @InjectView(R.id.lv_stamps)
     ListView stampsLv;
 
-//    @InjectView(R.id.tv_created_info)
-//    TextView bulletinCreatedInfoTv;
-//    @InjectView(R.id.tv_bulletin_text)
-//    TextView bulletinTextTv;
-//    @InjectView(R.id.tv_group_name)
-//    TextView bulletinGroupNameTv;
-//    @InjectView(R.id.tv_bulletin_checks_count)
-//    TextView bulletinChecksCountTv;
-//    @InjectView(R.id.tv_bulletin_crosses_count)
-//    TextView bulletinCrossesCountTv;
-//    @InjectView(R.id.imgBtn_bulletin_check)
-//    ImageButton checkImgBtn;
-//    @InjectView(R.id.imgBtn_bulletin_cross)
-//    ImageButton crossImgBtn;
     @Inject
     RemoteApi remoteApi;
     @Inject
@@ -70,17 +57,17 @@ public class BulletinDetailActivity extends RoboActionBarActivity {
     private LinkedList<Stamp> stamps = new LinkedList<Stamp>();
     StampArrayAdapter mAdapter;
 
+    ProgressHUD progressDialog;
+
     @Override
     public void onStart() {
         Log.i(TAG, "OnStart");
         super.onStart();
-        EventBus.getDefault().register(this);
         sync();
     }
 
     @Override
     public void onStop() {
-        EventBus.getDefault().unregister(this);
         super.onStop();
     }
 
@@ -93,43 +80,6 @@ public class BulletinDetailActivity extends RoboActionBarActivity {
     protected void onPause() {
         super.onPause();
         MobclickAgent.onPause(this);
-    }
-
-    protected void initView(Bulletin bulletin) {
-//        bulletinTextTv.setText(bulletin.text);
-//        String createdAt = (TimeWrap.wrapTimeDisplyValue(Math.round(1000 * Double.parseDouble(bulletin.createdAt)), this));
-//        String creatorName = bulletin.createdBy.name;
-//        bulletinCreatedInfoTv.setText(String.format(getString(R.string.bulletin_create_info_format), creatorName, createdAt));
-//        bulletinGroupNameTv.setText("#" + bulletin.group.name);
-//        bulletinTextTv.setText(bulletin.text);
-//        bulletinGroupNameTv.setText("#" + bulletin.group.name);
-//        bulletinChecksCountTv.setText("" + bulletin.checksCount);
-//        bulletinCrossesCountTv.setText("" + bulletin.crossesCount);
-//
-//        checkImgBtn.setColorFilter(getResources().getColor(R.color.icon_unselected_color));
-//        crossImgBtn.setColorFilter(getResources().getColor(R.color.icon_unselected_color));
-//        if (bulletin.stamp != null && bulletin.stamp.symbol != null) {
-//            switch (Stamp.Mark.valueOf(bulletin.stamp.symbol.toUpperCase())) {
-//                case CHECK:
-//                    checkImgBtn.setColorFilter(getResources().getColor(R.color.icon_selected_color));
-//                    break;
-//                case CROSS:
-//                    crossImgBtn.setColorFilter(getResources().getColor(R.color.icon_selected_color));
-//                    break;
-//                default:
-//            }
-//        }
-//
-//        checkImgBtn.setOnClickListener(v -> {
-//            Log.i(TAG, "checkImgBtn clicked");
-//            EventBus.getDefault().post(new BulletinStampEvent(bulletin, Stamp.Mark.CHECK.toString().toLowerCase()));
-//
-//        });
-//
-//        crossImgBtn.setOnClickListener(v -> {
-//            Log.i(TAG, "crossImgBtn clicked");
-//            EventBus.getDefault().post(new BulletinStampEvent(bulletin, Stamp.Mark.CROSS.toString().toLowerCase()));
-//        });
     }
 
     @Override
@@ -145,9 +95,10 @@ public class BulletinDetailActivity extends RoboActionBarActivity {
         Intent intent = getIntent();
         bulletin = (Bulletin) intent.getSerializableExtra(PARAM_BULLETIN);
 
-        //initView(bulletin);
         mAdapter = new StampArrayAdapter(this, R.layout.row_stamp, stamps);
         stampsLv.setAdapter(mAdapter);
+
+        progressDialog = ProgressHUD.show(this, "", true, true, null);
     }
 
     @Override
@@ -169,23 +120,10 @@ public class BulletinDetailActivity extends RoboActionBarActivity {
         }
     }
 
-    public void onEventMainThread(BulletinStampEvent event) {
-        final Bulletin bulletin = event.bulletin;
-        final String symbol = event.symbol;
-        remoteApi.markBulletin(bulletin.id, symbol.toLowerCase())
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(resp -> {
-                    initView(resp);
-                    DaoHelper.insertOrUpdate(daoSession, BulletinWrap.validate(resp));
-                    getContentResolver().notifyChange(BulletinHelper.CONTENT_URI, null);
-                    sync();
-                }, error -> NetworkExceptionHandler.handleThrowable(error, this));
-    }
-
     void sync() {
         stamps.clear();
         startStampsSyncing();
+        progressDialog.dismiss();
     }
 
     void processStamps(List<Stamp> stampList) {
@@ -209,6 +147,9 @@ public class BulletinDetailActivity extends RoboActionBarActivity {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(resp -> {
                     processStamps(resp);
-                }, error -> NetworkExceptionHandler.handleThrowable(error, this));
+                }, error -> {
+                    progressDialog.dismiss();
+                    NetworkExceptionHandler.handleThrowable(error, this);
+                });
     }
 }

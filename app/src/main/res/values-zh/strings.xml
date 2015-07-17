@@ -48,12 +48,12 @@
     <string name="bulletin_receiver">To:</string>
 
     <string name="my_groups">我的群组</string>
-    <string name="joined_groups">加入群组</string>
+    <string name="joined_groups">加入的群组</string>
 
 
 
     <string name="tip_unsubscribe_group">确定要退出这个群组吗?</string>
-    <string name="tip_sign_out">确定要登出吗?</string>
+    <string name="tip_sign_out">确定要注销吗?</string>
     <string name="tip_delete_group">确定要删除这个群组吗?</string>
     <string name="tip_btn_yes">确定</string>
     <string name="tip_btn_ok">确定</string>
