@@ -50,6 +50,9 @@
     <string name="my_groups">我的群组</string>
     <string name="joined_groups">加入的群组</string>
 
+    <string name="role_owner">创建者</string>
+    <string name="role_admin">管理者</string>
+    <string name="role_member">成员</string>
 
 
     <string name="tip_unsubscribe_group">确定要退出这个群组吗?</string>
@@ -119,4 +122,5 @@
     <string name="one_minute_ago">1分钟前</string>
     <string name="yesterday">昨天</string>
     <string name="tomorrow">明天</string>
+    <string name="welcome">有条,为通知而生</string>
 </resources>

@@ -216,11 +216,12 @@ public class GroupProfileActivity extends RoboActionBarActivity {
         Log.i(TAG, "onActivityResult: requestCode=" + requestCode + ", resultCode=" + resultCode);
         if (resultCode == 1) {
             if (intent != null) {
-                Group group = (Group) intent.getSerializableExtra(FieldEditActivity.PARAM_GROUP);
-                if (group != null) {
-                    groupNameTv.setText(group.name);
-                    groupCodeTv.setText(group.code);
-                    DaoHelper.insertOrUpdate(daoSession, GroupWrap.validate(group));
+                Group editedGroup = (Group) intent.getSerializableExtra(FieldEditActivity.PARAM_GROUP);
+                if (editedGroup != null) {
+                    group = editedGroup;
+                    groupNameTv.setText(editedGroup.name);
+                    groupCodeTv.setText(editedGroup.code);
+                    DaoHelper.insertOrUpdate(daoSession, GroupWrap.validate(editedGroup));
                     getContentResolver().notifyChange(GroupHelper.CONTENT_URI, null);
                 }
             }

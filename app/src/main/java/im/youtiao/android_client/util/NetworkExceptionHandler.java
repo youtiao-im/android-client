@@ -280,15 +280,15 @@ public class NetworkExceptionHandler {
                     }).create();
             builder.show();
         } else if (error instanceof UnknownHostException) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                builder.setMessage(context.getString(R.string.error_network_connect))
-                        .setPositiveButton(context.getString(R.string.tip_btn_ok), new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                            }
-                        }).create();
-                builder.show();
+            AlertDialog.Builder builder = new AlertDialog.Builder(context);
+            builder.setMessage(context.getString(R.string.error_network_connect))
+                    .setPositiveButton(context.getString(R.string.tip_btn_ok), new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    }).create();
+            builder.show();
         } else {
             AlertDialog.Builder builder = new AlertDialog.Builder(context);
             Log.e(TAG, error.getClass().toString());

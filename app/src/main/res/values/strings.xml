@@ -51,7 +51,9 @@
     <string name="my_groups">My Groups</string>
     <string name="joined_groups">Joined Groups</string>
 
-
+    <string name="role_owner">Owner</string>
+    <string name="role_admin">Admin</string>
+    <string name="role_member">Member</string>
 
 
     <string name="tip_unsubscribe_group">Are you sure you want to unsubscribe from this group</string>
@@ -122,4 +124,9 @@
     <string name="one_minute_ago">1 minute ago</string>
     <string name="yesterday">yesterday</string>
     <string name="tomorrow">tomorrow</string>
+    <string name="title_activity_welcome">WelcomeActivity</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="title_activity_guide">GuideActivity</string>
+    <string name="welcome">Youtiao, born to notification</string>
 </resources>

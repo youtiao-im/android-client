@@ -2,9 +2,11 @@ package im.youtiao.android_client.ui.activity;
 
 import android.accounts.AccountManager;
 import android.content.Intent;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 
 
 import cn.jpush.android.api.JPushInterface;
@@ -57,12 +59,16 @@ public class BootstrapActivity extends RoboActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bootstrap);
 
+//        ImageView welcomeIv = (ImageView)findViewById(R.id.iv_welcome);
+//        welcomeIv.setColorFilter(getResources().getColor(R.color.white_color), PorterDuff.Mode.SRC_ATOP);
+
         AccountDescriptor currentAccount = getApp().getCurrentAccount();
         if (currentAccount != null && currentAccount.getToken() != null) {
             RemoteApiFactory.setApiToken(this, currentAccount.getTokenType(), currentAccount.getToken());
             DaoSessionFactory.setDaoSession(this);
             LibraryProvider.daoSession = DaoSessionFactory.getDaoSession();
-            startActivity(new Intent(BootstrapActivity.this, MainActivity.class));
+            JPushInterface.setAliasAndTags(this, getApp().getCurrentAccount().getId(), null);
+            startActivity(new Intent(BootstrapActivity.this, MainActivity2.class));
             finish();
         }
 
@@ -94,7 +100,8 @@ public class BootstrapActivity extends RoboActivity {
         if (resultCode == 1) {
             DaoSessionFactory.setDaoSession(this);
             LibraryProvider.daoSession = DaoSessionFactory.getDaoSession();
-            Intent i = new Intent(this, MainActivity.class);
+            JPushInterface.setAliasAndTags(this, getApp().getCurrentAccount().getId(), null);
+            Intent i = new Intent(this, MainActivity2.class);
             startActivity(i);
             finish();
         }

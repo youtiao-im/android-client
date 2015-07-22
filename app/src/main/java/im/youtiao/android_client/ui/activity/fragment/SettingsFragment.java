@@ -12,6 +12,7 @@ import im.youtiao.android_client.AccountDescriptor;
 import im.youtiao.android_client.R;
 import im.youtiao.android_client.YTApplication;
 import im.youtiao.android_client.model.User;
+import im.youtiao.android_client.util.Log;
 import roboguice.fragment.RoboFragment;
 
 /**
@@ -47,6 +48,7 @@ public class SettingsFragment extends RoboFragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        Log.i(TAG, "OnCreate");
         super.onCreate(savedInstanceState);
     }
 
@@ -58,6 +60,7 @@ public class SettingsFragment extends RoboFragment {
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
+        Log.i(TAG, "OnViewCreated");
         AccountDescriptor account = getApp().getCurrentAccount();
         emailTv = (TextView) view.findViewById(R.id.tv_email);
         emailTv.setText(account.getEmail());

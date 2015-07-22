@@ -5,7 +5,7 @@
     <string name="error_user_name_required">Username Required</string>
     <string name="error_user_email_or_password">Incorrect account or email</string>
 
-
+    <string name="error_network_connect">Network connect error</string>
     <string name="error_bad_request">Bad request</string>
     <string name="error_unauthorized">Unauthorized</string>
     <string name="error_forbidden">Access limit</string>

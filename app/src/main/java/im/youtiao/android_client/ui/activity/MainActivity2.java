@@ -1,28 +1,32 @@
 package im.youtiao.android_client.ui.activity;
 
 import android.app.AlertDialog;
-import android.app.usage.UsageEvents;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
-import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.ActionBar;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import com.google.inject.Inject;
+import com.umeng.analytics.MobclickAgent;
 
 import de.greenrobot.event.EventBus;
+import im.youtiao.android_client.R;
 import im.youtiao.android_client.YTApplication;
 import im.youtiao.android_client.dao.BulletinDao;
 import im.youtiao.android_client.dao.BulletinHelper;
 import im.youtiao.android_client.dao.DaoHelper;
 import im.youtiao.android_client.dao.DaoSession;
-import im.youtiao.android_client.event.AccountModifyEvent;
 import im.youtiao.android_client.event.BulletinCommentClickEvent;
 import im.youtiao.android_client.event.BulletinGroupNameClickEvent;
 import im.youtiao.android_client.event.BulletinStampEvent;
@@ -33,26 +37,22 @@ import im.youtiao.android_client.rest.RemoteApi;
 import im.youtiao.android_client.ui.activity.fragment.BulletinsFragment;
 import im.youtiao.android_client.ui.activity.fragment.GroupsFragment;
 import im.youtiao.android_client.ui.activity.fragment.SettingsFragment;
-import im.youtiao.android_client.util.NetworkExceptionHandler;
 import im.youtiao.android_client.util.Log;
+import im.youtiao.android_client.util.NetworkExceptionHandler;
 import im.youtiao.android_client.wrap.BulletinWrap;
 import it.neokree.materialtabs.MaterialTab;
 import it.neokree.materialtabs.MaterialTabHost;
 import it.neokree.materialtabs.MaterialTabListener;
-
-import im.youtiao.android_client.R;
 import roboguice.activity.RoboActionBarActivity;
 import rx.android.app.AppObservable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
-import com.umeng.analytics.MobclickAgent;
 
-public class MainActivity extends RoboActionBarActivity implements MaterialTabListener, BulletinsFragment.OnBulletinsFragmentInteractionListener,
+public class MainActivity2 extends RoboActionBarActivity implements ActionBar.TabListener, BulletinsFragment.OnBulletinsFragmentInteractionListener,
         SettingsFragment.OnProfileFragmentInteractionListener, GroupsFragment.OnGroupsFragmentInteractionListener {
 
-    private static final String TAG = MainActivity.class
+    private static final String TAG = MainActivity2.class
             .getCanonicalName();
-    MaterialTabHost tabHost;
     ViewPager pager;
     ViewPagerAdapter adapter;
     Resources res;
@@ -69,10 +69,10 @@ public class MainActivity extends RoboActionBarActivity implements MaterialTabLi
     private static final int INTENT_CREATE_GROUP = 1;
     private static final int INTENT_JOIN_GROUP = 2;
     private static final int INTENT_EDIT_ACCOUNT_NAME = 3;
-    private static final int INTENT_CHANGE_PASSWORD= 4;
+    private static final int INTENT_CHANGE_PASSWORD = 4;
 
     YTApplication getApp() {
-        return (YTApplication)getApplication();
+        return (YTApplication) getApplication();
     }
 
     @Override
@@ -96,16 +96,14 @@ public class MainActivity extends RoboActionBarActivity implements MaterialTabLi
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-
+        setContentView(R.layout.activity_main2);
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setHomeButtonEnabled(true);
+        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
         res = this.getResources();
 
-        tabHost = (MaterialTabHost) this.findViewById(R.id.tabHost);
         pager = (ViewPager) this.findViewById(R.id.pager);
 
-
-        tabHost.setIconColor(getResources().getColor(R.color.tab_icon_unselected_color));
-        tabHost.setAccentColor(getResources().getColor(R.color.tab_icon_unselected_color));
 
         // init view pager
         adapter = new ViewPagerAdapter(getSupportFragmentManager());
@@ -113,8 +111,7 @@ public class MainActivity extends RoboActionBarActivity implements MaterialTabLi
         pager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
             @Override
             public void onPageSelected(int position) {
-                tabHost.setSelectedNavigationItem(position);
-                tabHost.getCurrentTab().setIconColor(getResources().getColor(R.color.tab_icon_selected_color));
+                actionBar.setSelectedNavigationItem(position);
                 if (position == 0) {
                     newBulletinMenu.setVisible(true);
                 } else {
@@ -125,21 +122,41 @@ public class MainActivity extends RoboActionBarActivity implements MaterialTabLi
 
         // insert all tabs from pagerAdapter data
         for (int i = 0; i < adapter.getCount(); i++) {
-            tabHost.addTab(
-                    tabHost.newTab()
-                            .setIcon(getIcon(i))
-                            .setTabListener(this));
+            ActionBar.Tab tab = actionBar.newTab()
+                    .setIcon(getIcon(i))
+                    .setTabListener(this);
+            if (i == 0) {
+                tab.getIcon().setColorFilter(getResources().getColor(R.color.tab_icon_selected_color), PorterDuff.Mode.SRC_ATOP);
+            } else {
+                tab.getIcon().setColorFilter(getResources().getColor(R.color.tab_icon_unselected_color), PorterDuff.Mode.SRC_ATOP);
+            }
+            actionBar.addTab(tab);
         }
-        tabHost.setSelectedNavigationItem(0);
-        tabHost.getCurrentTab().setIconColor(getResources().getColor(R.color.tab_icon_selected_color));
     }
 
-    private class ViewPagerAdapter extends FragmentStatePagerAdapter {
+    @Override
+    public void onTabSelected(ActionBar.Tab tab, FragmentTransaction ft) {
+        pager.setCurrentItem(tab.getPosition());
+        tab.getIcon().setColorFilter(getResources().getColor(R.color.tab_icon_selected_color), PorterDuff.Mode.SRC_ATOP);
+    }
+
+    @Override
+    public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction ft) {
+        tab.getIcon().setColorFilter(getResources().getColor(R.color.tab_icon_unselected_color), PorterDuff.Mode.SRC_ATOP);
+    }
+
+    @Override
+    public void onTabReselected(ActionBar.Tab tab, FragmentTransaction ft) {
+
+    }
+
+    private class ViewPagerAdapter extends FragmentPagerAdapter {
         public ViewPagerAdapter(FragmentManager fm) {
             super(fm);
         }
 
         public Fragment getItem(int num) {
+            Log.i(TAG, "getItem " + num);
             switch (num) {
                 case 0:
                     return new BulletinsFragment();
@@ -188,7 +205,6 @@ public class MainActivity extends RoboActionBarActivity implements MaterialTabLi
     }
 
 
-
     @Override
     public void onStop() {
         EventBus.getDefault().unregister(this);
@@ -211,7 +227,7 @@ public class MainActivity extends RoboActionBarActivity implements MaterialTabLi
                 this.finish();
                 return true;
             case R.id.action_new_bulletin:
-                Intent intent = new Intent(MainActivity.this, NewBulletinActivity.class);
+                Intent intent = new Intent(MainActivity2.this, NewBulletinActivity.class);
                 startActivityForResult(intent, INTENT_NEW_BULLETIN);
                 return true;
             default:
@@ -224,34 +240,19 @@ public class MainActivity extends RoboActionBarActivity implements MaterialTabLi
                                     Intent intent) {
         Log.i(TAG, "onActivityResult: requestCode=" + requestCode + ", resultCode=" + resultCode);
         if (requestCode == INTENT_NEW_BULLETIN && resultCode == 0 && intent != null) {
-            Bulletin bulletin = (Bulletin)intent.getSerializableExtra(NewBulletinActivity.PARAM_NEW_BULLETIN);
+            Bulletin bulletin = (Bulletin) intent.getSerializableExtra(NewBulletinActivity.PARAM_NEW_BULLETIN);
             BulletinDao bulletinDao = daoSession.getBulletinDao();
             bulletinDao.insert(BulletinWrap.validate(bulletin));
             getContentResolver().notifyChange(BulletinHelper.CONTENT_URI, null);
         }
 
         if (requestCode == INTENT_EDIT_ACCOUNT_NAME && resultCode == 0 && intent != null) {
-            User user = (User)intent.getSerializableExtra(FieldEditActivity.PARAM_USER);
-            ((SettingsFragment)getSupportFragmentManager().getFragments().get(pager.getCurrentItem())).updateAccount(user);
+            User user = (User) intent.getSerializableExtra(FieldEditActivity.PARAM_USER);
+            ((SettingsFragment) getSupportFragmentManager().getFragments().get(pager.getCurrentItem())).updateAccount(user);
             getApp().onUpdateCurrentAccount(user);
         }
     }
 
-    @Override
-    public void onTabSelected(MaterialTab materialTab) {
-        pager.setCurrentItem(materialTab.getPosition());
-        materialTab.setIconColor(getResources().getColor(R.color.tab_icon_selected_color));
-    }
-
-    @Override
-    public void onTabReselected(MaterialTab materialTab) {
-        materialTab.setIconColor(getResources().getColor(R.color.tab_icon_selected_color));
-    }
-
-    @Override
-    public void onTabUnselected(MaterialTab materialTab) {
-        materialTab.setIconColor(getResources().getColor(R.color.tab_icon_unselected_color));
-    }
 
     @Override
     public void onBulletinClick(Bulletin bulletin) {
@@ -263,17 +264,16 @@ public class MainActivity extends RoboActionBarActivity implements MaterialTabLi
     }
 
 
-
     @Override
     public void onSignOut() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity2.this);
         builder.setMessage(getString(R.string.tip_sign_out));
         builder.setPositiveButton(getString(R.string.tip_btn_yes), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
                 getApp().signOutAccount(getApp().getCurrentAccount().getId());
-                Intent intent = new Intent(MainActivity.this, BootstrapActivity.class);
+                Intent intent = new Intent(MainActivity2.this, BootstrapActivity.class);
                 startActivity(intent);
             }
         });
@@ -316,7 +316,7 @@ public class MainActivity extends RoboActionBarActivity implements MaterialTabLi
     public void onGroupItemClick(Group group) {
         Bundle data = new Bundle();
         data.putSerializable(GroupProfileActivity.PARAM_GROUP, group);
-        Intent intent = new Intent(MainActivity.this, GroupProfileActivity.class);
+        Intent intent = new Intent(MainActivity2.this, GroupProfileActivity.class);
         intent.putExtras(data);
         startActivity(intent);
     }

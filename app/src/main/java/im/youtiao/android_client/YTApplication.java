@@ -41,6 +41,17 @@ public class YTApplication extends Application {
         updateMetaData();
     }
 
+    public boolean readIsFistUse() {
+        return mPreferences.getBoolean(SharedPreferencesConstants.GUIDE_IS_USE, false);
+    }
+
+    public void writeIsFirstUse() {
+        final SharedPreferences.Editor edit = mPreferences.edit();
+        edit.putBoolean(SharedPreferencesConstants.GUIDE_IS_USE, true);
+        edit.commit();
+    }
+
+
     void updateMetaData(){
         try {
             ApplicationInfo ai = getPackageManager().getApplicationInfo(this.getPackageName(), PackageManager.GET_META_DATA);

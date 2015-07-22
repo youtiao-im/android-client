@@ -103,11 +103,13 @@ public class BulletinsFragment extends RoboFragment implements LoaderManager.Loa
         Log.i(TAG, "OnCreate");
         super.onCreate(savedInstanceState);
         getLoaderManager().initLoader(URL_LOADER, null, this);
+        refreshData();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        Log.i(TAG, "onCreateView");
         return inflater.inflate(R.layout.fragment_bulletins, container, false);
     }
 
@@ -174,38 +176,36 @@ public class BulletinsFragment extends RoboFragment implements LoaderManager.Loa
         mPtrFrame.setDurationToCloseHeader(1000);
         mPtrFrame.setPullToRefresh(false);
         mPtrFrame.setKeepHeaderWhenRefresh(true);
-        mPtrFrame.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                //mPtrFrame.autoRefresh();
-            }
-        }, 100);
-        refreshData();
+//        mPtrFrame.postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                mPtrFrame.autoRefresh();
+//            }
+//        }, 100);
     }
 
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
-        Log.i(TAG, "OnActivityCreated");
         super.onActivityCreated(savedInstanceState);
         getLoaderManager().initLoader(URL_LOADER, null, this);
     }
 
     @Override
     public void onResume() {
-        Log.i(TAG, "OnResume");
+        //Log.i(TAG, "OnResume");
         super.onResume();
     }
 
     @Override
     public void onPause() {
-        Log.i(TAG, "OnPause");
+        //Log.i(TAG, "OnPause");
         super.onPause();
     }
 
     @Override
     public void onStop() {
-        Log.i(TAG, "OnStop");
+        //Log.i(TAG, "OnStop");
         super.onStop();
     }
 
@@ -230,14 +230,12 @@ public class BulletinsFragment extends RoboFragment implements LoaderManager.Loa
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        Log.i(TAG, "OnCreateLoader");
         return new CursorLoader(getActivity(), BulletinHelper.CONTENT_URI,
                 BulletinHelper.getProjection(), null, null, DEFAULT_SORT_ORDER);
     }
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
-        Log.i(TAG, "onLoadFinished: " + cursor.getCount());
         mAdapter.swapCursor(cursor);
     }
 
@@ -259,7 +257,6 @@ public class BulletinsFragment extends RoboFragment implements LoaderManager.Loa
                 .subscribe(resp -> {
                     BulletinDao bulletinDao = daoSession.getBulletinDao();
                     bulletinDao.deleteAll();
-                    Log.i(TAG, "size=" + resp.size());
                     for (Bulletin item : resp) {
                         DaoHelper.insertOrUpdate(daoSession, BulletinWrap.validate(item));
                     }

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="im.youtiao.android_client">
+    package="im.youtiao.android_client" >
 
     <permission
         android:name="im.youtiao.android_client.permission.JPUSH_MESSAGE"
@@ -19,8 +19,6 @@
     <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
-
-
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.USE_CREDENTIALS" />
     <uses-permission android:name="android.permission.MANAGE_ACCOUNTS" />
@@ -37,10 +35,10 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/Theme.AppCompat.Light">
+        android:theme="@style/AppTheme" >
         <activity
             android:name=".ui.activity.BootstrapActivity"
-            android:label="@string/app_name">
+            android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -48,7 +46,11 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.activity.MainActivity"
+            android:name=".ui.activity.WelcomeActivity"
+            android:label="@string/title_activity_welcome" >
+        </activity>
+        <activity
+            android:name=".ui.activity.MainActivity2"
             android:label="@string/app_name" />
         <activity
             android:name=".ui.activity.LoginActivity"
@@ -69,31 +71,31 @@
             android:label="@string/title_activity_new_group" />
         <activity
             android:name=".ui.activity.JoinGroupActivity"
-            android:label="@string/title_activity_join_group"></activity>
+            android:label="@string/title_activity_join_group" />
         <activity
             android:name=".ui.activity.GroupProfileActivity"
-            android:label="@string/title_activity_group_profile"></activity>
+            android:label="@string/title_activity_group_profile" />
         <activity
             android:name=".ui.activity.GroupMemberActivity"
-            android:label="@string/title_activity_group_member"></activity>
+            android:label="@string/title_activity_group_member" />
         <activity
             android:name=".ui.activity.GroupMemberProfileActivity"
-            android:label="@string/title_activity_group_member_profile"></activity>
+            android:label="@string/title_activity_group_member_profile" />
         <activity
             android:name=".ui.activity.NewBulletinActivity"
-            android:label="@string/title_activity_new_bulletin"></activity>
+            android:label="@string/title_activity_new_bulletin" />
         <activity
             android:name=".ui.activity.SelectSendGroupActivity"
-            android:label="@string/title_activity_select_send_group"></activity>
+            android:label="@string/title_activity_select_send_group" />
         <activity
             android:name=".ui.activity.ForgotPasswordActivity"
-            android:label="@string/title_activity_forgot_password"></activity>
+            android:label="@string/title_activity_forgot_password" />
         <activity
             android:name=".ui.activity.FieldEditActivity"
-            android:label="@string/title_activity_edit_account_name"></activity>
+            android:label="@string/title_activity_edit_account_name" />
         <activity
             android:name=".ui.activity.ChangePasswordActivity"
-            android:label="@string/title_activity_change_password"></activity>
+            android:label="@string/title_activity_change_password" />
 
         <provider
             android:name=".dao.LibraryProvider"
@@ -109,7 +111,7 @@
         <activity
             android:name="cn.jpush.android.ui.PushActivity"
             android:configChanges="orientation|keyboardHidden"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar">
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" >
             <intent-filter>
                 <action android:name="cn.jpush.android.ui.PushActivity" />
 
@@ -121,11 +123,11 @@
         <service
             android:name="cn.jpush.android.service.DownloadService"
             android:enabled="true"
-            android:exported="false"></service>
+            android:exported="false" />
         <service
             android:name="cn.jpush.android.service.PushService"
             android:enabled="true"
-            android:exported="false">
+            android:exported="false" >
             <intent-filter>
                 <action android:name="cn.jpush.android.intent.REGISTER" />
                 <action android:name="cn.jpush.android.intent.REPORT" />
@@ -136,8 +138,8 @@
 
         <receiver
             android:name="cn.jpush.android.service.PushReceiver"
-            android:enabled="true">
-            <intent-filter android:priority="1000">
+            android:enabled="true" >
+            <intent-filter android:priority="1000" >
                 <action android:name="cn.jpush.android.intent.NOTIFICATION_RECEIVED_PROXY" />
 
                 <category android:name="im.youtiao.android_client" />
@@ -160,19 +162,20 @@
             android:value="developer-default" />
         <meta-data
             android:name="JPUSH_APPKEY"
-            android:value="f0f3323a4fa7a41a7cbcd9b7" />
+            android:value="b64c3692fd5766f12e7bf7d8" />
         <meta-data
             android:name="YOUTIAO_API_HOST"
             android:value="http://api.youtiao.im:3000" />
         <meta-data
             android:name="YOUTIAO_HOST"
-            android:value="http://youtiao.im:3000"/>
+            android:value="http://youtiao.im:3000" />
         <meta-data
             android:name="UMENG_APPKEY"
-            android:value="55a6200967e58e2d8e0019c4"/>
+            android:value="55a6200967e58e2d8e0019c4" />
         <meta-data
             android:name="UMENG_CHANNEL"
             android:value="Wandoujia" />
+
 
     </application>
 

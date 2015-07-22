@@ -60,7 +60,6 @@ public class GroupsFragment extends RoboFragment implements LoaderManager.Loader
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        Log.i(TAG, "OnCreate");
         super.onCreate(savedInstanceState);
     }
 
@@ -68,17 +67,18 @@ public class GroupsFragment extends RoboFragment implements LoaderManager.Loader
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         getLoaderManager().initLoader(URL_LOADER, null, this);
+        updateData();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        Log.i(TAG, "onCreateView");
         return inflater.inflate(R.layout.fragment_group, container, false);
     }
 
     @Override
     public void onAttach(Activity activity) {
-        Log.i(TAG, "OnAttach");
         super.onAttach(activity);
         try {
             mListener = (OnGroupsFragmentInteractionListener) activity;
@@ -90,7 +90,7 @@ public class GroupsFragment extends RoboFragment implements LoaderManager.Loader
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-
+        Log.i(TAG, "OnViewCreated");
         final ListView listView = (ListView) view.findViewById(android.R.id.list);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -122,12 +122,12 @@ public class GroupsFragment extends RoboFragment implements LoaderManager.Loader
         mPtrFrame.setPullToRefresh(false);
         // default is true
         mPtrFrame.setKeepHeaderWhenRefresh(true);
-        mPtrFrame.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                mPtrFrame.autoRefresh();
-            }
-        }, 100);
+//        mPtrFrame.postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                mPtrFrame.autoRefresh();
+//            }
+//        }, 100);
 
         FancyButton addNewChannelButton = (FancyButton) view.findViewById(R.id.add_new_channel_button);
         addNewChannelButton.setOnClickListener(v -> {

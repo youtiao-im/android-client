@@ -18,14 +18,26 @@
         android:padding="10dp">
 
         <TextView
-            android:layout_width="match_parent"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:id="@+id/tv_group_name"
             android:text="Brian Ingram"
             android:singleLine="false"
             android:phoneNumber="false"
             android:textSize="20dp"
-            android:textColor="@android:color/black" />
+            android:textColor="@android:color/black"
+            android:layout_toLeftOf="@+id/tv_role"
+            android:gravity="left"
+            android:layout_marginRight="10dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Owner"
+            android:id="@+id/tv_role"
+            android:layout_alignParentRight="true"
+            android:layout_centerInParent="true"
+            android:textSize="18dp" />
 
     </RelativeLayout>
 

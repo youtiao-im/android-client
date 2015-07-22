@@ -2,27 +2,55 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="10dp">
+    android:padding="10dp"
+    android:background="@color/blue_color">
 
-    <Button
+    <ImageView
+        android:id="@+id/iv_welcome"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="130dp"
+        android:src="@mipmap/ic_launcher" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/iv_welcome"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="15dp"
+        android:text="@string/welcome"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="@color/white_color"
+        android:textStyle="bold" />
+
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="@string/btn_sign_in"
-        android:id="@+id/btn_login"
-        android:layout_alignParentBottom="false"
-        android:layout_alignParentLeft="false"
-        android:background="@color/green_color"
-        android:layout_centerInParent="true" />
+        android:layout_alignParentBottom="true">
 
-    <Button
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/btn_sign_up"
-        android:id="@+id/btn_sign_up"
-        android:layout_alignParentBottom="false"
-        android:layout_alignParentRight="false"
-        android:background="@android:color/white"
-        android:layout_below="@+id/btn_login"
-        android:layout_marginTop="20dp" />
+        <Button
+            android:id="@+id/btn_login"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="false"
+            android:layout_alignParentLeft="false"
+            android:layout_centerInParent="true"
+            android:background="@color/white_color"
+            android:text="@string/btn_sign_in" />
+
+        <Button
+            android:id="@+id/btn_sign_up"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="false"
+            android:layout_alignParentRight="false"
+            android:layout_below="@+id/btn_login"
+            android:layout_marginTop="20dp"
+            android:background="@color/white_color"
+            android:text="@string/btn_sign_up" />
+    </LinearLayout>
 </RelativeLayout>
 

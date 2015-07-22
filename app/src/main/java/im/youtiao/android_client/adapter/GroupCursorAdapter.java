@@ -50,7 +50,7 @@ public class GroupCursorAdapter extends CursorAdapter {
         ViewHolder holder = new ViewHolder();
         holder.separatorTv = (TextView) view.findViewById(R.id.tv_separator);
         holder.nameTv = (TextView) view.findViewById(R.id.tv_group_name);
-        holder.creatorTv = (TextView) view.findViewById(R.id.tv_user_name);
+        holder.roleTv = (TextView) view.findViewById(R.id.tv_role);
         view.setTag(holder);
         return view;
     }
@@ -68,34 +68,40 @@ public class GroupCursorAdapter extends CursorAdapter {
 
         final String name = group.name;
         final String role = group.membership.role;
-        if (position == 0) {
-            needSeparator = true;
-        } else {
-            cursor.moveToPosition(position - 1);
-            Group lastGroup = GroupWrap.wrap(GroupHelper.fromCursor(cursor));
-            String lastRole = lastGroup.membership.role;
-            Log.i(TAG, "lastRole=" + lastRole + ", role=" + role);
-            if (!lastRole.equalsIgnoreCase(role)) {
-                Log.i(TAG, "set needSeparator be true");
-                needSeparator = true;
-            }
-            cursor.moveToPosition(position);
-        }
+//        if (position == 0) {
+//            needSeparator = true;
+//        } else {
+//            cursor.moveToPosition(position - 1);
+//            Group lastGroup = GroupWrap.wrap(GroupHelper.fromCursor(cursor));
+//            String lastRole = lastGroup.membership.role;
+//            if (!lastRole.equalsIgnoreCase(role)) {
+//                needSeparator = true;
+//            }
+//            cursor.moveToPosition(position);
+//        }
 
-        if (needSeparator) {
-            holder.separatorTv.setText("owner".equalsIgnoreCase(role) ? mActivity.getString(R.string.my_groups) : mActivity.getString(R.string.joined_groups));
-            holder.separatorTv.setVisibility(View.VISIBLE);
-        } else {
-            holder.separatorTv.setVisibility(View.GONE);
-        }
+//        if (needSeparator) {
+//            //holder.separatorTv.setText("owner".equalsIgnoreCase(role) ? mActivity.getString(R.string.my_groups) : mActivity.getString(R.string.joined_groups));
+//            holder.separatorTv.setVisibility(View.VISIBLE);
+//        } else {
+//
+//        }
+        holder.separatorTv.setVisibility(View.GONE);
         holder.nameTv.setText(name);
+        if (Group.Role.OWNER.toString().equalsIgnoreCase(role)) {
+            holder.roleTv.setText(mActivity.getString(R.string.role_owner));
+        }  else if (Group.Role.ADMIN.toString().equalsIgnoreCase(role)) {
+            holder.roleTv.setText(mActivity.getString(R.string.role_admin));
+        } else {
+            holder.roleTv.setText(mActivity.getString(R.string.role_member));
+        }
         //holder.creatorTv.setText(creator);
     }
 
     private static class ViewHolder {
         TextView separatorTv;
         TextView nameTv;
-        TextView creatorTv;
+        TextView roleTv;
     }
 
 }

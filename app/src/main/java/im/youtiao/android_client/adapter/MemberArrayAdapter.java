@@ -11,6 +11,7 @@ import android.widget.TextView;
 import java.util.LinkedList;
 
 import im.youtiao.android_client.R;
+import im.youtiao.android_client.model.Group;
 import im.youtiao.android_client.model.Membership;
 
 public class MemberArrayAdapter extends ArrayAdapter<Membership> {
@@ -39,7 +40,13 @@ public class MemberArrayAdapter extends ArrayAdapter<Membership> {
 
         Membership membership = getItem(position);
         viewHolder.userNameTv.setText(membership.user.name);
-        viewHolder.memberRoleTv.setText(membership.role.toString());
+        if (Group.Role.OWNER.toString().equalsIgnoreCase(membership.role)) {
+            viewHolder.memberRoleTv.setText(mContext.getString(R.string.role_owner));
+        }  else if (Group.Role.ADMIN.toString().equalsIgnoreCase(membership.role)) {
+            viewHolder.memberRoleTv.setText(mContext.getString(R.string.role_admin));
+        } else {
+            viewHolder.memberRoleTv.setText(mContext.getString(R.string.role_member));
+        }
         return convertView;
     }
 

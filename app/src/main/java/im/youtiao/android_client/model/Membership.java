@@ -5,6 +5,12 @@ import org.codehaus.jackson.annotate.JsonProperty;
 import java.util.Date;
 
 public class Membership implements java.io.Serializable {
+
+    public enum Role {
+        OWNER,
+        MEMBER
+    }
+
     public String type;
 
     public String id;

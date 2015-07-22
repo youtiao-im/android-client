@@ -1,8 +1,12 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
+    <style name="AppTheme" parent="@style/Theme.AppCompat.Light">
+        <item name="actionBarTabStyle">@style/AppTheme.ActionBar.TabView</item>
+    </style>
+
+    <style name="AppTheme.ActionBar.TabView" parent="@style/Widget.AppCompat.Light.ActionBar.TabView">
+        <item name="android:background">@drawable/tab_bar_background</item>
     </style>
 
     <style name="wrap_layout">
@@ -50,6 +54,7 @@
         <item name="android:layout_marginLeft">10dp</item>
         <item name="android:textSize">20dp</item>
     </style>
+
 
     <style name="layout_row_text">
         <item name="android:layout_width">wrap_content</item>

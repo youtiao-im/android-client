@@ -159,7 +159,7 @@ public class BulletinCursorAdapter extends CursorAdapter {
         });
 
         viewHolder.groupNameTv.setOnClickListener(v -> {
-            Log.i(TAG, "groupNameTv click");
+            //Log.i(TAG, "groupNameTv click");
             EventBus.getDefault().post(new BulletinGroupNameClickEvent(bulletin));
         });
     }

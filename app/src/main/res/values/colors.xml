@@ -8,14 +8,16 @@
     <!-- drop down list footer font color -->
     <color name="drop_down_list_footer_font_color">#000000</color>
 
-    <color name="app_primary_background_color">#FFFFFF</color>
-    <color name="tab_icon_selected_color">#ff1b2948</color>
+    <color name="app_primary_background_color">#ff6699FF</color>
+    <color name="tab_icon_selected_color">#ff6699FF</color>
     <color name="tab_icon_unselected_color">#ffcbcac9</color>
 
     <color name="icon_unselected_color">#ffcbcac9</color>
     <color name="icon_selected_color">#ff2fcc70</color>
     <color name="green_color">#ff2fcc70</color>
     <color name="red_color">#ffe84e3c</color>
+    <color name="blue_color">#ff6699FF</color>
+    <color name="white_color">#ffffffff</color>
     <color name="icon_stamp_check_selected_color">#ff2fcc70</color>
     <color name="icon_stamp_cross_selected_color">#ffe84e3c</color>
 

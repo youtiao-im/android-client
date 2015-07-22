@@ -9,6 +9,7 @@ import java.util.Date;
 public class Group implements java.io.Serializable {
     public enum Role {
         OWNER,
+        ADMIN,
         MEMBER
     }
 
