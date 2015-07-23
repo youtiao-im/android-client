@@ -20,6 +20,10 @@ import android.view.MenuItem;
 import com.google.inject.Inject;
 import com.umeng.analytics.MobclickAgent;
 
+import java.util.Set;
+
+import cn.jpush.android.api.JPushInterface;
+import cn.jpush.android.api.TagAliasCallback;
 import de.greenrobot.event.EventBus;
 import im.youtiao.android_client.R;
 import im.youtiao.android_client.YTApplication;
@@ -272,6 +276,7 @@ public class MainActivity2 extends RoboActionBarActivity implements ActionBar.Ta
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
+                JPushInterface.setAliasAndTags(MainActivity2.this, null, null);
                 getApp().signOutAccount(getApp().getCurrentAccount().getId());
                 Intent intent = new Intent(MainActivity2.this, BootstrapActivity.class);
                 startActivity(intent);

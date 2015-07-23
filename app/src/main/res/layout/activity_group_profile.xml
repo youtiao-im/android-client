@@ -69,17 +69,6 @@
         android:layout_below="@+id/layout_section2">
 
         <RelativeLayout style="@style/layout_row"
-            android:id="@+id/layout_delete_group">
-            <TextView style="@style/layout_row_text"
-                android:id="@+id/tv_delete_group"
-                android:text="@string/btn_delete_group"
-                android:layout_centerInParent="true"
-                android:textColor="@color/red_color" />
-        </RelativeLayout>
-
-        <View  style="@style/bg_line"/>
-
-        <RelativeLayout style="@style/layout_row"
             android:id="@+id/layout_unsubscribe_group">
             <TextView style="@style/layout_row_text"
                 android:id="@+id/tv_unsubscribe_group"

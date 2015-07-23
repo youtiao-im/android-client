@@ -80,17 +80,17 @@ public class BootstrapActivity extends RoboActivity {
                 final Intent intent = new Intent(BootstrapActivity.this, LoginActivity.class);
                 intent.putExtras(data);
                 startActivityForResult(intent, EXISTING_ACCOUNT);
-            }
-        });
+        }
+    });
 
-        signUpBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final Intent intent = new Intent(BootstrapActivity.this, RegisterActivity.class);
-                startActivityForResult(intent, NEW_ACCOUNT);
-            }
-        });
-    }
+    signUpBtn.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            final Intent intent = new Intent(BootstrapActivity.this, RegisterActivity.class);
+            startActivityForResult(intent, NEW_ACCOUNT);
+        }
+    });
+}
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode,

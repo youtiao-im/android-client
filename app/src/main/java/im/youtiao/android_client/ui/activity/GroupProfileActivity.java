@@ -45,7 +45,7 @@ public class GroupProfileActivity extends RoboActionBarActivity {
     @InjectView(R.id.layout_group_name) RelativeLayout groupNameLayout;
     @InjectView(R.id.layout_group_code) RelativeLayout groupCodeLayout;
     @InjectView(R.id.layout_group_members) RelativeLayout groupMemsLayout;
-    @InjectView(R.id.layout_delete_group) RelativeLayout deleteGroupLayout;
+    //@InjectView(R.id.layout_delete_group) RelativeLayout deleteGroupLayout;
     @InjectView(R.id.layout_unsubscribe_group) RelativeLayout unsubscribeGroupLayout;
 
     @Inject
@@ -84,7 +84,6 @@ public class GroupProfileActivity extends RoboActionBarActivity {
             unsubscribeGroupLayout.setVisibility(View.GONE);
             isOwner = true;
         } else {
-            deleteGroupLayout.setVisibility(View.GONE);
             isOwner = false;
         }
 
@@ -105,29 +104,29 @@ public class GroupProfileActivity extends RoboActionBarActivity {
         });
 
 
-        deleteGroupLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(GroupProfileActivity.this);
-                builder.setMessage(getString(R.string.tip_delete_group));
-                        builder.setPositiveButton(getString(R.string.tip_btn_yes), new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                                //TODO: delete group?
-                                finish();
-                            }
-                        });
-                builder.setNegativeButton(getString(R.string.tip_btn_cancel), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                });
-                builder.create();
-                builder.show();
-            }
-        });
+//        deleteGroupLayout.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                AlertDialog.Builder builder = new AlertDialog.Builder(GroupProfileActivity.this);
+//                builder.setMessage(getString(R.string.tip_delete_group));
+//                        builder.setPositiveButton(getString(R.string.tip_btn_yes), new DialogInterface.OnClickListener() {
+//                            @Override
+//                            public void onClick(DialogInterface dialog, int which) {
+//                                dialog.dismiss();
+//                                //TODO: delete group?
+//                                finish();
+//                            }
+//                        });
+//                builder.setNegativeButton(getString(R.string.tip_btn_cancel), new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        dialog.dismiss();
+//                    }
+//                });
+//                builder.create();
+//                builder.show();
+//            }
+//        });
 
         unsubscribeGroupLayout.setOnClickListener(new View.OnClickListener() {
             @Override
