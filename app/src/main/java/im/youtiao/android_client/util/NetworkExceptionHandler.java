@@ -292,6 +292,7 @@ public class NetworkExceptionHandler {
         } else {
             AlertDialog.Builder builder = new AlertDialog.Builder(context);
             Log.e(TAG, error.getClass().toString());
+            error.printStackTrace();
             builder.setMessage(context.getString(R.string.error_network_connect))
                     .setPositiveButton(context.getString(R.string.tip_btn_ok), new DialogInterface.OnClickListener() {
                         @Override

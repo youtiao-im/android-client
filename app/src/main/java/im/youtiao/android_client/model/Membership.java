@@ -1,9 +1,11 @@
 package im.youtiao.android_client.model;
 
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.codehaus.jackson.annotate.JsonProperty;
 
 import java.util.Date;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Membership implements java.io.Serializable {
 
     public enum Role {

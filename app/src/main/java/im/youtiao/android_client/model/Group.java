@@ -1,11 +1,13 @@
 package im.youtiao.android_client.model;
 
 
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.codehaus.jackson.annotate.JsonProperty;
 
 import java.lang.reflect.Member;
 import java.util.Date;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Group implements java.io.Serializable {
     public enum Role {
         OWNER,
