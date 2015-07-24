@@ -1,26 +1,18 @@
 package im.youtiao.android_client.ui.activity;
 
-import android.accounts.AccountManager;
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-import android.annotation.TargetApi;
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 
 import android.net.Uri;
-import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.text.TextUtils;
 import android.view.KeyEvent;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.inputmethod.EditorInfo;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -31,12 +23,11 @@ import im.youtiao.android_client.R;
 import im.youtiao.android_client.YTApplication;
 import im.youtiao.android_client.model.Token;
 import im.youtiao.android_client.providers.RemoteApiFactory;
-import im.youtiao.android_client.rest.LoginApi;
+import im.youtiao.android_client.rest.OAuthApi;
 import im.youtiao.android_client.rest.RemoteApi;
 import im.youtiao.android_client.ui.widget.ProgressHUD;
 import im.youtiao.android_client.util.NetworkExceptionHandler;
 import im.youtiao.android_client.util.Utility;
-import im.youtiao.android_client.util.Log;
 import roboguice.activity.RoboActionBarActivity;
 import roboguice.inject.InjectView;
 import rx.android.app.AppObservable;
@@ -71,7 +62,7 @@ public class LoginActivity extends RoboActionBarActivity {
     TextView forgotPasswordTv;
 
     @Inject
-    private LoginApi loginApi;
+    private OAuthApi oAuthApi;
 
     public static final String KEY_ERROR_MESSAGE = "ERR_MSG";
 
@@ -110,7 +101,7 @@ public class LoginActivity extends RoboActionBarActivity {
         mAccount = (AccountDescriptor) intent.getSerializableExtra(PARAM_ACCOUNT);
         if (mAccount != null) {
             mUsernameEdtTxt.setText(mAccount.getEmail());
-            mPasswordEdtTxt.setText(mAccount.getPassword());
+            //mPasswordEdtTxt.setText(mAccount.getPassword());
             mUsernameEdtTxt.setSelection(mAccount.getEmail().length());
         }
 
@@ -126,13 +117,6 @@ public class LoginActivity extends RoboActionBarActivity {
             }
         });
 
-        Button mEmailSignInButton = (Button) findViewById(R.id.btn_sign_in);
-        mEmailSignInButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                attemptLogin();
-            }
-        });
 
         forgotPasswordTv.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -146,10 +130,18 @@ public class LoginActivity extends RoboActionBarActivity {
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_login, menu);
+        return true;
+    }
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
                 this.finish();
+                return true;
+            case R.id.action_sign_in:
+                attemptLogin();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -198,7 +190,7 @@ public class LoginActivity extends RoboActionBarActivity {
                     }).create().show();
         } else {
             ProgressHUD mProgressHUD = ProgressHUD.show(this, "", true, true, null);
-            AppObservable.bindActivity(this, loginApi.getTokenSync("password", mUsername, mPassword))
+            AppObservable.bindActivity(this, oAuthApi.getTokenSync("password", mUsername, mPassword))
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(token -> {

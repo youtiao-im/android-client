@@ -3,86 +3,77 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
     android:weightSum="1"
-    tools:context="im.youtiao.android_client.ui.activity.RegisterActivity"
-    android:background="@android:color/white">
+    tools:context="im.youtiao.android_client.ui.activity.RegisterActivity">
 
 
-    <LinearLayout
-        android:id="@+id/email_register_form"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-
-        <LinearLayout style="@style/layout_row"
-            android:id="@+id/layout_email">
-
-            <EditText style="@style/font_row_text"
-                android:layout_height="wrap_content"
-                android:layout_width="match_parent"
-                android:hint="@string/hint_email_address"
-                android:id="@+id/edtTxt_email"
-                android:background="@null"
-                android:maxLines="1"
-                android:singleLine="true"
-                android:layout_alignParentRight="false"
-                android:layout_toRightOf="@+id/tv_email_label"/>
-        </LinearLayout>
-
-        <View style="@style/bg_line"/>
-
-        <LinearLayout style="@style/layout_row"
-            android:id="@+id/layout_name">
-
-            <EditText style="@style/font_row_text"
-                android:layout_height="wrap_content"
-                android:layout_width="match_parent"
-                android:hint="@string/hint_name"
-                android:id="@+id/edtTxt_name"
-                android:maxLines="1"
-                android:singleLine="true"
-                android:background="@null"
-                android:layout_alignParentRight="false"
-                android:layout_toRightOf="@+id/tv_name_label"/>
-        </LinearLayout>
-
-        <View style="@style/bg_line"/>
-
-        <LinearLayout style="@style/layout_row"
-            android:id="@+id/layout_password">
-
-            <EditText style="@style/font_row_text"
-                android:layout_height="wrap_content"
-                android:layout_width="match_parent"
-                android:hint="@string/hint_password"
-                android:id="@+id/edtTxt_password"
-                android:background="@null"
-                android:imeActionId="@+id/register"
-                android:imeActionLabel="@string/btn_sign_up"
-                android:imeOptions="actionUnspecified"
-                android:inputType="textPassword"
-                android:maxLines="1"
-                android:singleLine="true"
-                android:layout_alignParentRight="false"
-                android:layout_toRightOf="@+id/tv_password_label"/>
-        </LinearLayout>
-
-        <View style="@style/bg_line"/>
-
-        <Button
-            android:id="@+id/btn_sign_up"
-            style="?android:textAppearanceSmall"
+        <LinearLayout
+            style="@style/layout_section"
+            android:id="@+id/email_register_form"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="@string/btn_sign_up"
-            android:textStyle="bold"
-            android:background="@color/green_color" />
-    </LinearLayout>
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/layout_email"
+                style="@style/layout_row">
+
+                <EditText
+                    android:id="@+id/edtTxt_email"
+                    style="@style/font_row_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="false"
+                    android:layout_toRightOf="@+id/tv_email_label"
+                    android:background="@null"
+                    android:hint="@string/hint_email_address"
+                    android:maxLines="1"
+                    android:singleLine="true" />
+            </LinearLayout>
+
+            <View style="@style/bg_line" />
+
+            <LinearLayout
+                android:id="@+id/layout_name"
+                style="@style/layout_row">
+
+                <EditText
+                    android:id="@+id/edtTxt_name"
+                    style="@style/font_row_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="false"
+                    android:layout_toRightOf="@+id/tv_name_label"
+                    android:background="@null"
+                    android:hint="@string/hint_name"
+                    android:maxLines="1"
+                    android:singleLine="true" />
+            </LinearLayout>
+
+            <View style="@style/bg_line" />
+
+            <LinearLayout
+                android:id="@+id/layout_password"
+                style="@style/layout_row">
+
+                <EditText
+                    android:id="@+id/edtTxt_password"
+                    style="@style/font_row_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="false"
+                    android:layout_toRightOf="@+id/tv_password_label"
+                    android:background="@null"
+                    android:hint="@string/hint_password"
+                    android:imeActionId="@+id/register"
+                    android:imeActionLabel="@string/btn_sign_up"
+                    android:imeOptions="actionUnspecified"
+                    android:inputType="textPassword"
+                    android:maxLines="1"
+                    android:singleLine="true" />
+            </LinearLayout>
+
+        </LinearLayout>
 
 </RelativeLayout>
 

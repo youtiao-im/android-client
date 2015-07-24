@@ -20,6 +20,7 @@ import im.youtiao.android_client.util.Log;
 
 
 public class YTApplication extends Application {
+    private static final String TAG = YTApplication.class.getCanonicalName();
     private SharedPreferences mPreferences;
     private User currentUser;
 
@@ -69,6 +70,7 @@ public class YTApplication extends Application {
                 SharedPreferencesConstants.CURRENT_ACCOUNT_ID, null);
         String accountIndices = mPreferences.getString(
                 SharedPreferencesConstants.ACCOUNT_INDICES, null);
+        Log.i(TAG, "currentAccountId:" + currentAccountId);
         if (accountIndices != null) {
             try {
                 JSONArray jsonArray = new JSONArray(accountIndices);
@@ -77,6 +79,7 @@ public class YTApplication extends Application {
 
                     String key = getAccountDescriptorKey(id);
                     String jsonAsString = mPreferences.getString(key, null);
+                    Log.i(TAG, jsonAsString);
                     if (jsonAsString != null) {
                         AccountDescriptor account = new AccountDescriptor(jsonAsString);
                         mAccounts.add(account);
@@ -185,7 +188,7 @@ public class YTApplication extends Application {
                 accountIndices = newIndicies.toString();
                 edit.putString(SharedPreferencesConstants.ACCOUNT_INDICES,
                         accountIndices);
-                edit.remove(SharedPreferencesConstants.CURRENT_ACCOUNT_ID);   //sign out
+                //edit.remove(SharedPreferencesConstants.CURRENT_ACCOUNT_ID);   //sign out
                 edit.commit();
             } catch (JSONException e) {
                 // TODO Auto-generated catch block

@@ -2,11 +2,9 @@ package im.youtiao.android_client.ui.activity;
 
 import android.accounts.AccountManager;
 import android.content.Intent;
-import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 
 
 import cn.jpush.android.api.JPushInterface;
@@ -68,7 +66,7 @@ public class BootstrapActivity extends RoboActivity {
             DaoSessionFactory.setDaoSession(this);
             LibraryProvider.daoSession = DaoSessionFactory.getDaoSession();
             JPushInterface.setAliasAndTags(this, getApp().getCurrentAccount().getId(), null);
-            startActivity(new Intent(BootstrapActivity.this, MainActivity2.class));
+            startActivity(new Intent(BootstrapActivity.this, MainActivity.class));
             finish();
         }
 
@@ -101,7 +99,7 @@ public class BootstrapActivity extends RoboActivity {
             DaoSessionFactory.setDaoSession(this);
             LibraryProvider.daoSession = DaoSessionFactory.getDaoSession();
             JPushInterface.setAliasAndTags(this, getApp().getCurrentAccount().getId(), null);
-            Intent i = new Intent(this, MainActivity2.class);
+            Intent i = new Intent(this, MainActivity.class);
             startActivity(i);
             finish();
         }

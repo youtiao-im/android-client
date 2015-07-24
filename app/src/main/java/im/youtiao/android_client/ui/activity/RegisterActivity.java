@@ -1,23 +1,15 @@
 package im.youtiao.android_client.ui.activity;
 
-import android.accounts.AccountManager;
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-import android.annotation.TargetApi;
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.inputmethod.EditorInfo;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -26,7 +18,7 @@ import javax.inject.Inject;
 import im.youtiao.android_client.R;
 import im.youtiao.android_client.YTApplication;
 import im.youtiao.android_client.providers.RemoteApiFactory;
-import im.youtiao.android_client.rest.LoginApi;
+import im.youtiao.android_client.rest.OAuthApi;
 import im.youtiao.android_client.rest.RemoteApi;
 import im.youtiao.android_client.ui.widget.ProgressHUD;
 import im.youtiao.android_client.util.NetworkExceptionHandler;
@@ -44,15 +36,8 @@ public class RegisterActivity extends RoboActionBarActivity {
     private EditText mNameEdtTxt;
     @InjectView(R.id.edtTxt_password)
     private EditText mPasswordEdtTxt;
-
-    @InjectView(R.id.email_register_form)
-    private View mProgressView;
-
-    @InjectView(R.id.btn_sign_up)
-    private Button signUpBtn;
-
     @Inject
-    LoginApi loginApi;
+    OAuthApi oAuthApi;
 
     YTApplication getApp() {
         return (YTApplication) getApplication();
@@ -88,14 +73,6 @@ public class RegisterActivity extends RoboActionBarActivity {
                 return false;
             }
         });
-
-        signUpBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                register();
-            }
-        });
-
     }
 
     public void register() {
@@ -147,7 +124,7 @@ public class RegisterActivity extends RoboActionBarActivity {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(resp -> {
                     progressDialog.dismiss();
-                    AppObservable.bindActivity(this, loginApi.getTokenSync("password", email, password))
+                    AppObservable.bindActivity(this, oAuthApi.getTokenSync("password", email, password))
                             .subscribeOn(Schedulers.io())
                             .observeOn(AndroidSchedulers.mainThread())
                             .subscribe(token -> {
@@ -167,26 +144,6 @@ public class RegisterActivity extends RoboActionBarActivity {
                 });
     }
 
-    /**
-     * Shows the progress UI and hides the login form.
-     */
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
-    public void showProgress(final boolean show) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
-            int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
-
-            mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-            mProgressView.animate().setDuration(shortAnimTime).alpha(
-                    show ? 1 : 0).setListener(new AnimatorListenerAdapter() {
-                @Override
-                public void onAnimationEnd(Animator animation) {
-                    mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-                }
-            });
-        } else {
-            mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-        }
-    }
 
 
     private boolean isEmailValid(String email) {
@@ -208,7 +165,10 @@ public class RegisterActivity extends RoboActionBarActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                this.finish();
+                finish();
+                return true;
+            case R.id.action_sign_up:
+                register();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

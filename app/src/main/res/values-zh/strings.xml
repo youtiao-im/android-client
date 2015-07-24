@@ -1,8 +1,8 @@
 <resources>
     <string name="app_name">有条</string>
 
-    <string name="title_activity_login">登录</string>
-    <string name="title_activity_register">注册</string>
+    <string name="title_activity_login">有条</string>
+    <string name="title_activity_register">有条</string>
     <string name="title_activity_bulletin_detail">公告</string>
     <string name="title_activity_group_detail">群组</string>
     <string name="title_activity_new_group">新群组</string>
@@ -39,6 +39,8 @@
     <string name="action_reset">重置</string>
     <string name="action_create">创建</string>
     <string name="action_join">加入</string>
+    <string name="action_sign_in">登录</string>
+    <string name="action_sign_up">注册</string>
 
 
     <string name="bulletin_check">check</string>
@@ -122,5 +124,5 @@
     <string name="one_minute_ago">1分钟前</string>
     <string name="yesterday">昨天</string>
     <string name="tomorrow">明天</string>
-    <string name="welcome">有条,为通知而生</string>
+    <string name="welcome">为通知而生</string>
 </resources>

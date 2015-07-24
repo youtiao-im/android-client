@@ -1,8 +1,8 @@
 <resources>
     <string name="app_name">Youtiao</string>
 
-    <string name="title_activity_login">Sign In</string>
-    <string name="title_activity_register">Sign Up</string>
+    <string name="title_activity_login">Youtiao</string>
+    <string name="title_activity_register">Youtiao</string>
     <string name="title_activity_bulletin_detail">Bulletin</string>
     <string name="title_activity_group_detail">Group</string>
     <string name="title_activity_new_group">New Group</string>
@@ -41,6 +41,8 @@
     <string name="action_send">Send</string>
     <string name="action_create">Create</string>
     <string name="action_join">Join</string>
+    <string name="action_sign_in">Sign in</string>
+    <string name="action_sign_up">Sign up</string>
 
 
     <string name="bulletin_check">check</string>
@@ -92,8 +94,8 @@
     <string name="label_new_password">New Password</string>
     <string name="label_name">Name</string>
     <string name="label_version">Version</string>
-    <string name="btn_sign_in">Sign in</string>
-    <string name="btn_sign_up">Sign up</string>
+    <string name="btn_sign_in">Sign In</string>
+    <string name="btn_sign_up">Sign Up</string>
     <string name="btn_sign_out">Sign out</string>
     <string name="btn_forgot_password">Forgot password?</string>
     <string name="btn_change_password">Password</string>
@@ -128,5 +130,5 @@
 
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_guide">GuideActivity</string>
-    <string name="welcome">Youtiao, born to notification</string>
+    <string name="welcome">Born to Notify</string>
 </resources>

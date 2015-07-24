@@ -9,7 +9,7 @@ import im.youtiao.android_client.dao.DaoSession;
 import im.youtiao.android_client.providers.DaoSessionProvider;
 import im.youtiao.android_client.providers.LoginApiProvider;
 import im.youtiao.android_client.providers.RemoteApiProvider;
-import im.youtiao.android_client.rest.LoginApi;
+import im.youtiao.android_client.rest.OAuthApi;
 import im.youtiao.android_client.rest.RemoteApi;
 
 public class YouTiaoModule extends AbstractModule {
@@ -23,7 +23,7 @@ public class YouTiaoModule extends AbstractModule {
     @Override
     protected void configure() {
         bind(DaoSession.class).toProvider(DaoSessionProvider.class);
-        bind(LoginApi.class).toProvider(LoginApiProvider.class);
+        bind(OAuthApi.class).toProvider(LoginApiProvider.class);
         bind(RemoteApi.class).toProvider(RemoteApiProvider.class);
     }
 }
