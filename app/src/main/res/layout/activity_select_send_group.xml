@@ -3,61 +3,24 @@
     android:layout_height="match_parent"
     tools:context="im.youtiao.android_client.ui.activity.SelectSendGroupActivity">
 
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="10dp"
-        android:background="@android:color/white"
-        android:id="@+id/layout_send_to"
-        android:layout_alignParentTop="true">
-
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <TextView
-                style="@style/layout_row_text"
-                android:text="@string/bulletin_receiver"
-                android:layout_marginRight="10dp" />
-
-            <EditText
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/edtTxt_send_to_group_name"
-                android:layout_weight="1"
-                android:textColor="#ff7aa8e4"
-                android:background="@null"
-                android:paddingTop="10dp"
-                android:paddingBottom="10dp"
-                android:hint="@string/hint_enter_group_name"
-                android:singleLine="true"
-                android:editable="false" />
-
-        </LinearLayout>
-
-        <View style="@style/bg_line"/>
-    </LinearLayout>
-
-
-
-
-    <ListView
-        android:layout_width="wrap_content"
-        android:layout_height="fill_parent"
-        android:id="@+id/lv_group_list"
-        android:layout_above="@+id/btn_done"
-        android:layout_below="@+id/layout_send_to"
-        android:background="@color/listview_background_color"
-        android:choiceMode="singleChoice" />
-
-    <Button
+    <in.srain.cube.views.ptr.PtrClassicFrameLayout
+        android:id="@+id/rotate_header_list_view_frame"
+        xmlns:cube_ptr="http://schemas.android.com/apk/res-auto"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/btn_done"
-        android:id="@+id/btn_done"
-        android:layout_alignParentBottom="true"
-        android:background="@color/btn_background_color" />
+        android:layout_height="fill_parent"
+        cube_ptr:ptr_duration_to_close="200"
+        cube_ptr:ptr_duration_to_close_header="1000"
+        cube_ptr:ptr_keep_header_when_refresh="true"
+        cube_ptr:ptr_pull_to_fresh="false"
+        cube_ptr:ptr_ratio_of_header_height_to_refresh="1.2"
+        cube_ptr:ptr_resistance="1.7">
+        <ListView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/lv_group_list"
+            android:background="@color/listview_background_color"
+            android:choiceMode="singleChoice" />
+    </in.srain.cube.views.ptr.PtrClassicFrameLayout>
+
 
 </RelativeLayout>

@@ -47,7 +47,7 @@
     <string name="bulletin_cross">cross</string>
     <string name="bulletin_comment">bulletin comment</string>
     <string name="bulletin_stamp">bulletin stamp</string>
-    <string name="bulletin_receiver">To:</string>
+    <string name="bulletin_receiver">Send To:</string>
     <string name="my_groups">My Groups</string>
     <string name="joined_groups">Joined Groups</string>
 

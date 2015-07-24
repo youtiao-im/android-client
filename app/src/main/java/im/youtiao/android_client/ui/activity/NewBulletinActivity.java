@@ -90,7 +90,7 @@ public class NewBulletinActivity extends RoboActionBarActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode,
                                     Intent intent) {
-        if (requestCode == 0 && resultCode == 0) {
+        if (requestCode == 0 && resultCode == 1) {
             if (intent != null) {
                 Group sendToGroup = (Group) intent.getSerializableExtra(SelectSendGroupActivity.PARAM_GROUP);
                 if (sendToGroup != null) {
@@ -145,7 +145,7 @@ public class NewBulletinActivity extends RoboActionBarActivity {
                         data.putSerializable(PARAM_NEW_BULLETIN, resp);
                         Intent intent = getIntent();
                         intent.putExtras(data);
-                        NewBulletinActivity.this.setResult(0, intent);
+                        NewBulletinActivity.this.setResult(1, intent);
                         NewBulletinActivity.this.finish();
                     }, error -> NetworkExceptionHandler.handleThrowable(error, this));
         }

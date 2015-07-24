@@ -45,7 +45,7 @@
     <string name="bulletin_cross">cross</string>
     <string name="bulletin_comment">bulletin comment</string>
     <string name="bulletin_stamp">bulletin stamp</string>
-    <string name="bulletin_receiver">To:</string>
+    <string name="bulletin_receiver">发送给:</string>
 
     <string name="my_groups">我的群组</string>
     <string name="joined_groups">加入的群组</string>

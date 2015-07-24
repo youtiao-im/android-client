@@ -3,30 +3,17 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:descendantFocusability="blocksDescendants"
-    android:padding="10dp">
+    android:paddingLeft="10dp"
+    android:paddingTop="5dp"
+    android:paddingBottom="5dp"
+    android:paddingRight="10dp">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Large Text"
         android:id="@+id/tv_group_name"
-        android:textSize="20dp"
+        android:textSize="18dp"
         android:textColor="@android:color/black" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="Small Text"
-        android:id="@+id/tv_group_members_count"
-        android:layout_below="@+id/tv_group_name" />
-
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/iv_group_selected"
-        android:src="@mipmap/check_filled"
-        android:layout_alignParentRight="true"
-        android:layout_centerInParent="true" />
 
 </RelativeLayout>

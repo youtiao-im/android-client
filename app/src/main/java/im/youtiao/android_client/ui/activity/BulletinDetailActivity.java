@@ -98,7 +98,7 @@ public class BulletinDetailActivity extends RoboActionBarActivity {
         mAdapter = new StampArrayAdapter(this, R.layout.row_stamp, stamps);
         stampsLv.setAdapter(mAdapter);
 
-        progressDialog = ProgressHUD.show(this, "", true, true, null);
+
     }
 
     @Override
@@ -121,6 +121,7 @@ public class BulletinDetailActivity extends RoboActionBarActivity {
     }
 
     void sync() {
+        progressDialog = ProgressHUD.show(this, "", true, true, null);
         stamps.clear();
         startStampsSyncing();
         progressDialog.dismiss();

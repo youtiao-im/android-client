@@ -249,7 +249,7 @@ public class BulletinsFragment extends RoboFragment implements LoaderManager.Loa
         public void onBulletinClick(Bulletin bulletin);
     }
 
-    private void refreshData() {
+    public void refreshData() {
         Log.i(TAG, "refreshData");
         AppObservable.bindFragment(this, remoteApi.listBulletins(null, LIMIT))
                 .subscribeOn(Schedulers.io())

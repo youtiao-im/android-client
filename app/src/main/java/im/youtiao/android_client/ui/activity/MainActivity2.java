@@ -243,14 +243,15 @@ public class MainActivity2 extends RoboActionBarActivity implements ActionBar.Ta
     protected void onActivityResult(int requestCode, int resultCode,
                                     Intent intent) {
         Log.i(TAG, "onActivityResult: requestCode=" + requestCode + ", resultCode=" + resultCode);
-        if (requestCode == INTENT_NEW_BULLETIN && resultCode == 0 && intent != null) {
-            Bulletin bulletin = (Bulletin) intent.getSerializableExtra(NewBulletinActivity.PARAM_NEW_BULLETIN);
-            BulletinDao bulletinDao = daoSession.getBulletinDao();
-            bulletinDao.insert(BulletinWrap.validate(bulletin));
-            getContentResolver().notifyChange(BulletinHelper.CONTENT_URI, null);
+        if (requestCode == INTENT_NEW_BULLETIN && resultCode == 1 && intent != null) {
+//            Bulletin bulletin = (Bulletin) intent.getSerializableExtra(NewBulletinActivity.PARAM_NEW_BULLETIN);
+//            BulletinDao bulletinDao = daoSession.getBulletinDao();
+//            bulletinDao.insert(BulletinWrap.validate(bulletin));
+//            getContentResolver().notifyChange(BulletinHelper.CONTENT_URI, null);
+            ((BulletinsFragment) getSupportFragmentManager().getFragments().get(pager.getCurrentItem())).refreshData();
         }
 
-        if (requestCode == INTENT_EDIT_ACCOUNT_NAME && resultCode == 0 && intent != null) {
+        if (requestCode == INTENT_EDIT_ACCOUNT_NAME && resultCode == 1 && intent != null) {
             User user = (User) intent.getSerializableExtra(FieldEditActivity.PARAM_USER);
             ((SettingsFragment) getSupportFragmentManager().getFragments().get(pager.getCurrentItem())).updateAccount(user);
             getApp().onUpdateCurrentAccount(user);

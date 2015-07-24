@@ -24,7 +24,8 @@
             android:layout_weight="1"
             android:background="@null"
             android:textColor="#ff7aa8e4"
-            android:hint="@string/hint_enter_group_name" />
+            android:hint="@string/hint_enter_group_name"
+            android:textSize="18dp" />
     </LinearLayout>
 
     <View style="@style/bg_line"/>

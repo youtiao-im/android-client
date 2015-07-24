@@ -22,9 +22,14 @@ import im.youtiao.android_client.dao.DaoSession;
 import im.youtiao.android_client.dao.GroupDao;
 import im.youtiao.android_client.model.Group;
 import im.youtiao.android_client.rest.RemoteApi;
+import im.youtiao.android_client.ui.widget.ProgressHUD;
 import im.youtiao.android_client.util.NetworkExceptionHandler;
 import im.youtiao.android_client.wrap.GroupWrap;
 import im.youtiao.android_client.util.Log;
+import in.srain.cube.views.ptr.PtrClassicFrameLayout;
+import in.srain.cube.views.ptr.PtrDefaultHandler;
+import in.srain.cube.views.ptr.PtrFrameLayout;
+import in.srain.cube.views.ptr.PtrHandler;
 import roboguice.activity.RoboActionBarActivity;
 import roboguice.inject.InjectView;
 import rx.android.app.AppObservable;
@@ -41,12 +46,6 @@ public class SelectSendGroupActivity extends RoboActionBarActivity {
     @InjectView(R.id.lv_group_list)
     ListView groupsLv;
 
-    @InjectView(R.id.edtTxt_send_to_group_name)
-    EditText sendToGroupNameEdtTxt;
-
-    @InjectView(R.id.btn_done)
-    Button doneBtn;
-
     @Inject
     RemoteApi remoteApi;
 
@@ -58,6 +57,8 @@ public class SelectSendGroupActivity extends RoboActionBarActivity {
     LinkedList<Group> groups = new LinkedList<Group>();
 
     Group sendToGroup;
+
+    PtrClassicFrameLayout mPtrFrame;
 
     @Override
     protected void onStart() {
@@ -87,9 +88,7 @@ public class SelectSendGroupActivity extends RoboActionBarActivity {
 
         Intent intent = getIntent();
         sendToGroup = (Group) intent.getSerializableExtra(PARAM_GROUP);
-        if (sendToGroup != null) {
-            sendToGroupNameEdtTxt.setText(sendToGroup.name);
-        }
+
 
         mAdapter = new GroupArrayAdapter(this, R.layout.row_group_select, groups);
         groupsLv.setAdapter(mAdapter);
@@ -97,19 +96,31 @@ public class SelectSendGroupActivity extends RoboActionBarActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Group group = (Group) mAdapter.getItem(position);
-                sendToGroupNameEdtTxt.setText(group.name);
                 sendToGroup = group;
-                mAdapter.setSelectedIndex(position);
-                mAdapter.notifyDataSetChanged();
-            }
-        });
-
-        doneBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
                 selectedFinish();
             }
         });
+
+        mPtrFrame = (PtrClassicFrameLayout) findViewById(R.id.rotate_header_list_view_frame);
+        mPtrFrame.setLastUpdateTimeRelateObject(this);
+        mPtrFrame.setPtrHandler(new PtrHandler() {
+            @Override
+            public void onRefreshBegin(PtrFrameLayout frame) {
+                refreshGroups();
+            }
+
+            @Override
+            public boolean checkCanDoRefresh(PtrFrameLayout frame, View content, View header) {
+                return PtrDefaultHandler.checkContentCanBePulledDown(frame, content, header);
+            }
+        });
+        // the following are default settings
+        mPtrFrame.setResistance(1.7f);
+        mPtrFrame.setRatioOfHeaderHeightToRefresh(1.2f);
+        mPtrFrame.setDurationToClose(200);
+        mPtrFrame.setDurationToCloseHeader(1000);
+        mPtrFrame.setPullToRefresh(false);
+        mPtrFrame.setKeepHeaderWhenRefresh(true);
     }
 
     @Override
@@ -134,13 +145,34 @@ public class SelectSendGroupActivity extends RoboActionBarActivity {
         data.putSerializable(PARAM_GROUP, sendToGroup);
         Intent intent = getIntent();
         intent.putExtras(data);
-        SelectSendGroupActivity.this.setResult(0, intent);
+        SelectSendGroupActivity.this.setResult(1, intent);
         SelectSendGroupActivity.this.finish();
+    }
+
+    void refreshGroups() {
+        Log.i(TAG, "refreshGroups");
+        AppObservable.bindActivity(this, remoteApi.listGroups())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(resp -> {
+                    Log.i(TAG, "groups size = " + resp.size());
+                    groups.clear();
+                    for (Group group : resp) {
+                        if (group.membership.role.equalsIgnoreCase(Group.Role.OWNER.toString())) {
+                            groups.add(group);
+                        }
+                    }
+                    mPtrFrame.refreshComplete();
+                    mAdapter.notifyDataSetChanged();
+                }, error -> {
+                    mPtrFrame.refreshComplete();
+                    NetworkExceptionHandler.handleThrowable(error, this);
+                });
     }
 
     protected void loadOwnerGroups() {
         Log.i(TAG, "updateData");
-
+        ProgressHUD progressDialog = ProgressHUD.show(this, "", true, true, null);
         GroupDao groupDao = daoSession.getGroupDao();
         List<im.youtiao.android_client.dao.Group> groupsOnDb = groupDao.loadAll();
         if (groupsOnDb.size() > 0) {
@@ -148,9 +180,7 @@ public class SelectSendGroupActivity extends RoboActionBarActivity {
             for (im.youtiao.android_client.dao.Group group : groupsOnDb) {
                 groups.add(GroupWrap.wrap(group));
             }
-            if (sendToGroup != null) {
-                mAdapter.setSelectedIndex(indexOfSendToGroup());
-            }
+            progressDialog.dismiss();
             mAdapter.notifyDataSetChanged();
         } else {
             AppObservable.bindActivity(this, remoteApi.listGroups())
@@ -163,25 +193,13 @@ public class SelectSendGroupActivity extends RoboActionBarActivity {
                             if (group.membership.role.equalsIgnoreCase(Group.Role.OWNER.toString())) {
                                 groups.add(group);
                             }
-                            if (sendToGroup != null) {
-                                mAdapter.setSelectedIndex(indexOfSendToGroup());
-                            }
-                            mAdapter.notifyDataSetChanged();
                         }
-                    }, error -> NetworkExceptionHandler.handleThrowable(error, this));
+                        progressDialog.dismiss();
+                        mAdapter.notifyDataSetChanged();
+                    }, error -> {
+                        progressDialog.dismiss();
+                        NetworkExceptionHandler.handleThrowable(error, this) ;
+                    });
         }
-    }
-
-    private int indexOfSendToGroup() {
-        int index = -1;
-        int counter = 0;
-        for (Group group : groups) {
-            if (group.id.equalsIgnoreCase(sendToGroup.id)) {
-                index = counter;
-                break;
-            }
-            counter ++;
-        }
-        return index;
     }
 }
