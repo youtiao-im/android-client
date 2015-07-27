@@ -8,7 +8,7 @@
         android:layout_height="fill_parent"
         android:id="@+id/imageView"
         android:src="@mipmap/bootstrap"
-        android:scaleType="center" />
+        android:scaleType="centerCrop" />
 
     <TextView
         android:id="@+id/tv_app_name"

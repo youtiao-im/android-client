@@ -41,7 +41,7 @@
     <string name="action_send">Send</string>
     <string name="action_create">Create</string>
     <string name="action_join">Join</string>
-    <string name="action_sign_in">Sign in</string>
+    <string name="action_sign_in">Log in</string>
     <string name="action_sign_up">Sign up</string>
 
 
@@ -78,7 +78,7 @@
     <string name="hint_pick_group_code">Pick a code easy to remember</string>
     <string name="progress_message_change_password">Change Password ...</string>
     <string name="progress_message_save">Save ...</string>
-    <string name="progress_message_sign_in">Sign in ...</string>
+    <string name="progress_message_sign_in">Log in ...</string>
     <string name="progress_message_sing_up">Sign up ...</string>
     <string name="progress_message_create">Create ...</string>
     <string name="progress_message_join">Join ...</string>
@@ -94,7 +94,7 @@
     <string name="label_new_password">New Password</string>
     <string name="label_name">Name</string>
     <string name="label_version">Version</string>
-    <string name="btn_sign_in">Sign In</string>
+    <string name="btn_sign_in">Log In</string>
     <string name="btn_sign_up">Sign Up</string>
     <string name="btn_sign_out">Sign out</string>
     <string name="btn_forgot_password">Forgot password?</string>
