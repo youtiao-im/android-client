@@ -86,7 +86,7 @@ public class GroupMemberActivity extends RoboActionBarActivity {
                 Log.i(TAG, "OnItemClick");
                 Membership membership = (Membership) mAdapter.getItem(position);
                 Bundle data = new Bundle();
-                data.putSerializable(GroupMemberProfileActivity.PARAM_MEMBER, membership);
+                data.putSerializable(GroupMemberProfileActivity.PARAM_MEMBERSHIP, membership);
                 data.putSerializable(GroupMemberProfileActivity.PARAM_GROUP, group);
                 Intent intent = new Intent(GroupMemberActivity.this, GroupMemberProfileActivity.class);
                 intent.putExtras(data);
@@ -118,13 +118,13 @@ public class GroupMemberActivity extends RoboActionBarActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode,
                                     Intent intent) {
-        if (requestCode == 0 && resultCode == 0 && intent != null) {
+        if (requestCode == 0 && resultCode == 1 && intent != null) {
             Log.i(TAG, "onActivityResult: requestCode=" + requestCode + ", resultCode=" + resultCode);
-            Membership membership = (Membership) intent.getSerializableExtra(GroupMemberProfileActivity.PARAM_MEMBER);
+            Membership membership = (Membership) intent.getSerializableExtra(GroupMemberProfileActivity.PARAM_MEMBERSHIP);
             if (membership != null) {
                 for (Membership item : memberships) {
                     if (item.id.equalsIgnoreCase(membership.id)) {
-                        memberships.remove(item);
+                        item.role = membership.role;
                         break;
                     }
                 }

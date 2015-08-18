@@ -46,6 +46,12 @@ public interface RemoteApi {
     @GET(PREFIX + "/memberships.list")
     Observable<List<Membership>> listGroupMemberships(@Query("group_id") String groupId);
 
+    @POST(PREFIX + "/memberships.promote")
+    Observable<Membership> promoteMembership(@Query("id") String id);
+
+    @POST(PREFIX + "/memberships.demote")
+    Observable<Membership> demoteMembership(@Query("id") String id);
+
     @GET(PREFIX + "/bulletins.list")
     Observable<List<Bulletin>> listBulletins(@Query("before_id") String beforeId, @Query("limit") Integer limit);
 

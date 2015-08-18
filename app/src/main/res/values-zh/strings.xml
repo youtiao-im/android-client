@@ -61,6 +61,8 @@
     <string name="tip_unsubscribe_group">确定要退出这个群组吗?</string>
     <string name="tip_sign_out">确定要注销吗?</string>
     <string name="tip_delete_group">确定要删除这个群组吗?</string>
+    <string name="tip_promote">确定要设置为管理员吗?</string>
+    <string name="tip_demote">确定要取消管理员权限吗?</string>
     <string name="tip_btn_yes">确定</string>
     <string name="tip_btn_ok">确定</string>
     <string name="tip_btn_cancel">取消</string>
@@ -110,6 +112,8 @@
     <string name="btn_done">确定</string>
     <string name="btn_create_group">创建群组</string>
     <string name="btn_join_group">加入群组</string>
+    <string name="btn_promote">设为管理员</string>
+    <string name="btn_demote">取消管理员权限</string>
 
     <string name="several_days_ago">%d天前</string>
     <string name="in_several_days">%d天后</string>

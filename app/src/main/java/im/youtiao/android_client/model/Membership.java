@@ -10,6 +10,7 @@ public class Membership implements java.io.Serializable {
 
     public enum Role {
         OWNER,
+        ADMIN,
         MEMBER
     }
 

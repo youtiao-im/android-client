@@ -37,4 +37,19 @@
                 android:layout_toRightOf="@+id/tv_user_email_label" />
         </RelativeLayout>
     </LinearLayout>
+
+    <LinearLayout
+        style="@style/layout_section"
+        android:id="@+id/layout_section2"
+        android:layout_below="@+id/layout_section1">
+
+        <RelativeLayout style="@style/layout_row"
+            android:id="@+id/layout_change_role">
+            <TextView style="@style/layout_row_text"
+                android:id="@+id/tv_change_role"
+                android:text="@string/btn_promote"
+                android:layout_centerInParent="true"
+                android:textColor="@color/red_color" />
+        </RelativeLayout>
+    </LinearLayout>
 </RelativeLayout>
