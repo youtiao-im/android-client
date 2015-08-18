@@ -1,0 +1,42 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="im.youtiao.android_client.ui.activity.FeedbackActivity">
+
+    <LinearLayout
+        style="@style/layout_section"
+        android:layout_alignParentTop="true"
+        android:id="@+id/layout_section1">
+
+        <RelativeLayout style="@style/layout_row"
+            android:id="@+id/layout_email">
+
+            <TextView style="@style/layout_row_label"
+                android:text="@string/label_email"
+                android:id="@+id/tv_email_label"
+                android:layout_alignParentLeft="true" />
+            <TextView style="@style/layout_row_right_text"
+                android:text="@string/feedback_email"
+                android:id="@+id/tv_email"
+                android:layout_alignParentRight="false"
+                android:layout_toRightOf="@+id/tv_email_label" />
+        </RelativeLayout>
+
+        <View  style="@style/bg_line"/>
+
+        <RelativeLayout style="@style/layout_row"
+            android:id="@+id/layout_qq">
+            <TextView style="@style/layout_row_label"
+                android:text="@string/label_qq"
+                android:id="@+id/tv_name_label"
+                android:layout_alignParentLeft="true" />
+            <TextView style="@style/layout_row_right_text"
+                android:text="@string/feedback_qq"
+                android:id="@+id/tv_qq"
+                android:layout_alignParentLeft="false"
+                android:layout_alignParentRight="false"
+                android:layout_toRightOf="@+id/tv_name_label" />
+        </RelativeLayout>
+    </LinearLayout>
+
+</RelativeLayout>

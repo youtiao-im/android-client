@@ -143,7 +143,8 @@ public class NetworkExceptionHandler {
                     displayMessage = getDisplayMessageFromErrorMessage(serverError.errorMessage, context);
                     break;
                 default:
-
+                    displayMessage = context.getString(R.string.error_network_connect);
+                    break;
             }
             AlertDialog.Builder builder = new AlertDialog.Builder(context);
             builder.setMessage(displayMessage)
@@ -160,6 +161,7 @@ public class NetworkExceptionHandler {
 
     private static String getDisplayMessageFromErrorMessage(String errorMessage, Context context) {
         String displayMessage = "";
+        Log.i(TAG, errorMessage);
         String[] items = errorMessage.split(":");
         int resourceId = R.string.error_server_error;
         if (items.length == 2) {

@@ -23,12 +23,11 @@
                     style="@style/font_row_text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentRight="false"
-                    android:layout_toRightOf="@+id/tv_email_label"
                     android:background="@null"
                     android:hint="@string/hint_email_address"
                     android:maxLines="1"
-                    android:singleLine="true" />
+                    android:singleLine="true"
+                    android:inputType="textEmailAddress" />
             </LinearLayout>
 
             <View style="@style/bg_line" />
@@ -42,8 +41,6 @@
                     style="@style/font_row_text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentRight="false"
-                    android:layout_toRightOf="@+id/tv_name_label"
                     android:background="@null"
                     android:hint="@string/hint_name"
                     android:maxLines="1"
@@ -61,14 +58,12 @@
                     style="@style/font_row_text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentRight="false"
-                    android:layout_toRightOf="@+id/tv_password_label"
                     android:background="@null"
                     android:hint="@string/hint_password"
                     android:imeActionId="@+id/register"
                     android:imeActionLabel="@string/btn_sign_up"
                     android:imeOptions="actionUnspecified"
-                    android:inputType="textPassword"
+                    android:inputType="textPassword|text"
                     android:maxLines="1"
                     android:singleLine="true" />
             </LinearLayout>

@@ -52,6 +52,19 @@
         android:layout_below="@+id/layout_section1"
         android:id="@+id/layout_section2">
         <RelativeLayout style="@style/layout_row"
+            android:id="@+id/layout_feedback">
+            <TextView style="@style/layout_row_label"
+                android:text="@string/label_feedback"
+                android:id="@+id/tv_feedback_label"
+                android:layout_alignParentLeft="true" />
+        </RelativeLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        style="@style/layout_section"
+        android:layout_below="@+id/layout_section2"
+        android:id="@+id/layout_section3">
+        <RelativeLayout style="@style/layout_row"
             android:id="@+id/layout_version">
             <TextView style="@style/layout_row_label"
                 android:text="@string/label_version"
@@ -67,8 +80,8 @@
 
     <LinearLayout
         style="@style/layout_section"
-        android:id="@+id/layout_section3"
-        android:layout_below="@+id/layout_section2">
+        android:id="@+id/layout_section4"
+        android:layout_below="@+id/layout_section3">
 
         <RelativeLayout style="@style/layout_row"
             android:id="@+id/layout_sign_out">

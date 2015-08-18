@@ -269,6 +269,11 @@ public class MainActivity extends RoboActionBarActivity implements ActionBar.Tab
         startActivity(intent);
     }
 
+    @Override
+    public void onFeedback() {
+        Intent intent = new Intent(this, FeedbackActivity.class);
+        startActivity(intent);
+    }
 
     @Override
     public void onSignOut() {

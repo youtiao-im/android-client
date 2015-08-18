@@ -178,7 +178,10 @@ public class SelectSendGroupActivity extends RoboActionBarActivity {
         if (groupsOnDb.size() > 0) {
             groups.clear();
             for (im.youtiao.android_client.dao.Group group : groupsOnDb) {
-                groups.add(GroupWrap.wrap(group));
+                Group groupModel = GroupWrap.wrap(group);
+                if (groupModel.membership.role.equalsIgnoreCase(Group.Role.OWNER.toString())) {
+                    groups.add(groupModel);
+                }
             }
             progressDialog.dismiss();
             mAdapter.notifyDataSetChanged();
@@ -198,7 +201,7 @@ public class SelectSendGroupActivity extends RoboActionBarActivity {
                         mAdapter.notifyDataSetChanged();
                     }, error -> {
                         progressDialog.dismiss();
-                        NetworkExceptionHandler.handleThrowable(error, this) ;
+                        NetworkExceptionHandler.handleThrowable(error, this);
                     });
         }
     }

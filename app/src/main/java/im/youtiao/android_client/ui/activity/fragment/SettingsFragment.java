@@ -26,6 +26,7 @@ public class SettingsFragment extends RoboFragment {
     private static final String TAG = SettingsFragment.class.getCanonicalName();
     private TextView emailTv;
     private TextView nameTv;
+    private TextView versionTv;
 
     private OnProfileFragmentInteractionListener mListener;
 
@@ -68,6 +69,9 @@ public class SettingsFragment extends RoboFragment {
         nameTv = (TextView) view.findViewById(R.id.tv_name);
         nameTv.setText(account.getName());
 
+        versionTv = (TextView) view.findViewById(R.id.tv_version);
+        versionTv.setText(getApp().getYTVersion());
+
         RelativeLayout signOutLayout = (RelativeLayout)view.findViewById(R.id.layout_sign_out);
         signOutLayout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -91,6 +95,16 @@ public class SettingsFragment extends RoboFragment {
                 mListener.onChangePasswordClick();
             }
         });
+
+        RelativeLayout feedbackLayout = (RelativeLayout)view.findViewById(R.id.layout_feedback);
+        feedbackLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mListener.onFeedback();
+            }
+        });
+
+
     }
 
 
@@ -122,6 +136,7 @@ public class SettingsFragment extends RoboFragment {
         public void onSignOut();
         public void onAccountNameClick();
         public void onChangePasswordClick();
+        public void onFeedback();
     }
 
 }

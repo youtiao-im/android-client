@@ -3,12 +3,14 @@ package im.youtiao.android_client;
 import android.app.Application;
 import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 
 import com.umeng.analytics.MobclickAgent;
 
+import org.codehaus.jackson.sym.NameN;
 import org.json.JSONArray;
 import org.json.JSONException;
 
@@ -34,7 +36,7 @@ public class YTApplication extends Application {
         super.onCreate();
         JPushInterface.setDebugMode(false);    // just for debug, close it when startup
         JPushInterface.init(this);
-        Log.setDebugMode(true);    // just for debug, close it when startup
+        Log.setDebugMode(false);    // just for debug, close it when startup
         MobclickAgent.setDebugMode(false);
         mPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         mAccounts = new ArrayList<AccountDescriptor>();
@@ -243,5 +245,18 @@ public class YTApplication extends Application {
 
     public String getYTHost() {
         return ytHost;
+    }
+
+    public String getYTVersion() {
+        String version = "";
+        PackageManager manager = getPackageManager();
+        try{
+            PackageInfo info = manager.getPackageInfo(getPackageName(), 0);
+            version = info.versionName;
+            Log.e(TAG, version);
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        return version;
     }
 }

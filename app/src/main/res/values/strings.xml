@@ -21,6 +21,7 @@
     <string name="title_activity_edit_group_code">Group Code</string>
     <string name="title_activity_edit_account_name">Name</string>
     <string name="title_activity_change_password">Password</string>
+    <string name="title_activity_feedback">Feedback</string>
 
 
     <string name="bulletin">Bulletin</string>
@@ -93,7 +94,9 @@
     <string name="label_current_password">Old Password</string>
     <string name="label_new_password">New Password</string>
     <string name="label_name">Name</string>
+    <string name="label_qq">QQ</string>
     <string name="label_version">Version</string>
+    <string name="label_feedback">Feedback</string>
     <string name="btn_sign_in">Log In</string>
     <string name="btn_sign_up">Sign Up</string>
     <string name="btn_sign_out">Sign out</string>
@@ -128,7 +131,8 @@
     <string name="tomorrow">tomorrow</string>
     <string name="title_activity_welcome">WelcomeActivity</string>
 
-    <string name="hello_world">Hello world!</string>
-    <string name="title_activity_guide">GuideActivity</string>
     <string name="welcome">Born to Notify</string>
+    <string name="feedback_email">feng.ye@youtiao.im</string>
+    <string name="feedback_qq">138578696</string>
+
 </resources>

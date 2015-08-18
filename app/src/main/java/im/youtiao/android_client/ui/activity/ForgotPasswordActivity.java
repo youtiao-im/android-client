@@ -42,6 +42,7 @@ public class ForgotPasswordActivity extends RoboActionBarActivity {
 
 
         forgotPasswordWv =  (WebView)findViewById(R.id.wv_forgot_password);
+        forgotPasswordWv.removeJavascriptInterface("searchBoxJavaBredge_");
         forgotPasswordWv.loadUrl(getApp().getYTHost() + "/users/password/new");
         forgotPasswordWv.setWebViewClient(new WebViewClient() {
             @Override

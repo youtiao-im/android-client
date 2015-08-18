@@ -43,8 +43,8 @@ public class LoginApiProvider implements Provider<OAuthApi> {
             request.addHeader("Accept", "application/vnd.youtiao.im+json; version=1");
             YTApplication application = (YTApplication)mContext.getApplicationContext();
             AccountDescriptor account = application.getCurrentAccount();
-            Log.e(TAG, "current account:" + account.getEmail());
             if (account != null) {
+                //Log.e(TAG, "current account:" + account.getEmail());
                 Log.e(TAG, "init oauth api with token");
                 request.addHeader("Authorization", account.getTokenType() + " " + account.getToken());
             }
