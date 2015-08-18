@@ -40,9 +40,9 @@ public class MemberArrayAdapter extends ArrayAdapter<Membership> {
 
         Membership membership = getItem(position);
         viewHolder.userNameTv.setText(membership.user.name);
-        if (Group.Role.OWNER.toString().equalsIgnoreCase(membership.role)) {
+        if (Membership.Role.OWNER.toString().equalsIgnoreCase(membership.role)) {
             viewHolder.memberRoleTv.setText(mContext.getString(R.string.role_owner));
-        }  else if (Group.Role.ADMIN.toString().equalsIgnoreCase(membership.role)) {
+        }  else if (Membership.Role.ADMIN.toString().equalsIgnoreCase(membership.role)) {
             viewHolder.memberRoleTv.setText(mContext.getString(R.string.role_admin));
         } else {
             viewHolder.memberRoleTv.setText(mContext.getString(R.string.role_member));

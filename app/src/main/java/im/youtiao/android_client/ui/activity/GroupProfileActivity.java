@@ -16,9 +16,9 @@ import com.google.inject.Inject;
 import im.youtiao.android_client.R;
 import im.youtiao.android_client.dao.DaoHelper;
 import im.youtiao.android_client.dao.DaoSession;
-import im.youtiao.android_client.dao.GroupDao;
 import im.youtiao.android_client.dao.GroupHelper;
 import im.youtiao.android_client.model.Group;
+import im.youtiao.android_client.model.Membership;
 import im.youtiao.android_client.rest.RemoteApi;
 import im.youtiao.android_client.util.NetworkExceptionHandler;
 import im.youtiao.android_client.wrap.GroupWrap;
@@ -54,7 +54,7 @@ public class GroupProfileActivity extends RoboActionBarActivity {
     static final int INTENT_GROUP_NAME = 0;
     static final int INTENT_GROUP_CODE = 1;
 
-    private boolean isOwner = false;
+    private boolean isAdmin = false;
 
     @Override
     public void onResume() {
@@ -80,11 +80,11 @@ public class GroupProfileActivity extends RoboActionBarActivity {
         Intent intent = getIntent();
         group = (Group) intent.getSerializableExtra(PARAM_GROUP);
 
-        if (group.membership.role.equalsIgnoreCase(Group.Role.OWNER.toString())) {
-            unsubscribeGroupLayout.setVisibility(View.GONE);
-            isOwner = true;
+        if (group.membership.role.equalsIgnoreCase(Membership.Role.MEMBER.toString())) {
+            isAdmin = false;
         } else {
-            isOwner = false;
+            unsubscribeGroupLayout.setVisibility(View.GONE);
+            isAdmin = true;
         }
 
         groupNameTv.setText(group.name);
@@ -163,7 +163,7 @@ public class GroupProfileActivity extends RoboActionBarActivity {
             }
         });
 
-        if (isOwner) {
+        if (isAdmin) {
             groupNameLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

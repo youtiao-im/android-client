@@ -9,12 +9,6 @@ import java.util.Date;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Group implements java.io.Serializable {
-    public enum Role {
-        OWNER,
-        ADMIN,
-        MEMBER
-    }
-
     public String type;
 
     public String id;

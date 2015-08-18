@@ -21,6 +21,7 @@ import im.youtiao.android_client.adapter.GroupArrayAdapter;
 import im.youtiao.android_client.dao.DaoSession;
 import im.youtiao.android_client.dao.GroupDao;
 import im.youtiao.android_client.model.Group;
+import im.youtiao.android_client.model.Membership;
 import im.youtiao.android_client.rest.RemoteApi;
 import im.youtiao.android_client.ui.widget.ProgressHUD;
 import im.youtiao.android_client.util.NetworkExceptionHandler;
@@ -158,7 +159,13 @@ public class SelectSendGroupActivity extends RoboActionBarActivity {
                     Log.i(TAG, "groups size = " + resp.size());
                     groups.clear();
                     for (Group group : resp) {
-                        if (group.membership.role.equalsIgnoreCase(Group.Role.OWNER.toString())) {
+                        Membership.Role role = null;
+                        try {
+                            role = Membership.Role.valueOf(group.membership.role.toUpperCase());
+                        } catch (Exception e) {
+                            role = Membership.Role.MEMBER;
+                        }
+                        if (role.compareTo(Membership.Role.ADMIN) <= 0) {
                             groups.add(group);
                         }
                     }
@@ -179,7 +186,13 @@ public class SelectSendGroupActivity extends RoboActionBarActivity {
             groups.clear();
             for (im.youtiao.android_client.dao.Group group : groupsOnDb) {
                 Group groupModel = GroupWrap.wrap(group);
-                if (groupModel.membership.role.equalsIgnoreCase(Group.Role.OWNER.toString())) {
+                Membership.Role role = null;
+                try {
+                    role = Membership.Role.valueOf(groupModel.membership.role.toUpperCase());
+                } catch (Exception e) {
+                    role = Membership.Role.MEMBER;
+                }
+                if (role.compareTo(Membership.Role.ADMIN) <= 0) {
                     groups.add(groupModel);
                 }
             }
@@ -193,7 +206,13 @@ public class SelectSendGroupActivity extends RoboActionBarActivity {
                         Log.i(TAG, "groups size = " + resp.size());
                         groups.clear();
                         for (Group group : resp) {
-                            if (group.membership.role.equalsIgnoreCase(Group.Role.OWNER.toString())) {
+                            Membership.Role role = null;
+                            try {
+                                role = Membership.Role.valueOf(group.membership.role.toUpperCase());
+                            } catch (Exception e) {
+                                role = Membership.Role.MEMBER;
+                            }
+                            if (role.compareTo(Membership.Role.ADMIN) <= 0) {
                                 groups.add(group);
                             }
                         }

@@ -15,6 +15,7 @@ import im.youtiao.android_client.R;
 import im.youtiao.android_client.dao.DaoSession;
 import im.youtiao.android_client.dao.GroupHelper;
 import im.youtiao.android_client.model.Group;
+import im.youtiao.android_client.model.Membership;
 import im.youtiao.android_client.wrap.GroupWrap;
 import im.youtiao.android_client.util.Log;
 
@@ -88,9 +89,9 @@ public class GroupCursorAdapter extends CursorAdapter {
 //        }
         holder.separatorTv.setVisibility(View.GONE);
         holder.nameTv.setText(name);
-        if (Group.Role.OWNER.toString().equalsIgnoreCase(role)) {
+        if (Membership.Role.OWNER.toString().equalsIgnoreCase(role)) {
             holder.roleTv.setText(mActivity.getString(R.string.role_owner));
-        }  else if (Group.Role.ADMIN.toString().equalsIgnoreCase(role)) {
+        }  else if (Membership.Role.ADMIN.toString().equalsIgnoreCase(role)) {
             holder.roleTv.setText(mActivity.getString(R.string.role_admin));
         } else {
             holder.roleTv.setText(mActivity.getString(R.string.role_member));

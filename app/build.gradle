@@ -43,8 +43,8 @@ android {
         applicationId "im.youtiao.android_client"
         minSdkVersion 15
         targetSdkVersion 22
-        versionCode 4
-        versionName "1.0.3"
+        versionCode 6
+        versionName "1.1.1"
     }
     buildTypes {
         release {
