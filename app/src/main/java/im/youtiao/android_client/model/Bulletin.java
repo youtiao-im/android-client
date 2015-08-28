@@ -23,13 +23,16 @@ public class Bulletin implements java.io.Serializable {
     public String createdByType;
 
     @JsonProperty("checks_count")
-    public String checksCount;
+    public int checksCount;
 
     @JsonProperty("crosses_count")
-    public String crossesCount;
+    public int crossesCount;
+
+    @JsonProperty("eyes_count")
+    public int eyesCount;
 
     @JsonProperty("comments_count")
-    public String comments_count;
+    public int comments_count;
 
     @JsonProperty("created_at")
     public String createdAt;

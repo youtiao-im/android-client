@@ -13,16 +13,19 @@ import java.util.LinkedList;
 
 import im.youtiao.android_client.R;
 import im.youtiao.android_client.model.Stamp;
+import im.youtiao.android_client.util.Log;
 import im.youtiao.android_client.util.TimeWrap;
 
 public class StampArrayAdapter extends ArrayAdapter<Stamp> {
 
     private int resourceId;
     private Context mContext;
-    public StampArrayAdapter(Context context, int resource, LinkedList<Stamp> objects) {
+    private String currentUserId;
+    public StampArrayAdapter(Context context, int resource, LinkedList<Stamp> objects, String currentUserId) {
         super(context, resource, objects);
         this.resourceId = resource;
         this.mContext = context;
+        this.currentUserId = currentUserId;
     }
 
     @Override
@@ -41,7 +44,11 @@ public class StampArrayAdapter extends ArrayAdapter<Stamp> {
         }
 
         Stamp stamp = getItem(position);
-        viewHolder.userNameText.setText(stamp.createdBy.name);
+        if (stamp.createdById.equalsIgnoreCase(this.currentUserId)) {
+            viewHolder.userNameText.setText(mContext.getResources().getString(R.string.stamp_by_myself));
+        } else {
+            viewHolder.userNameText.setText(stamp.createdBy.name);
+        }
         viewHolder.createdAtTv.setText((TimeWrap.wrapTimeDisplyValue(Math.round(1000 * Double.parseDouble(stamp.createdAt)), mContext)));
         if (stamp != null && stamp.symbol != null) {
             switch (Stamp.Mark.valueOf(stamp.symbol.toUpperCase())) {
@@ -53,6 +60,9 @@ public class StampArrayAdapter extends ArrayAdapter<Stamp> {
                     viewHolder.stampStatusIv.setImageResource(R.mipmap.cross_filled);
                     viewHolder.stampStatusIv.setColorFilter(mContext.getResources().getColor(R.color.icon_stamp_cross_selected_color));
                     break;
+                case EYE:
+                    viewHolder.stampStatusIv.setImageResource(R.mipmap.eye_filled);
+                    viewHolder.stampStatusIv.setColorFilter(mContext.getResources().getColor(R.color.icon_stamp_eye_selected_color));
                 default:
             }
         }

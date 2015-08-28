@@ -6,14 +6,14 @@
     android:background="#ffffffff"
     android:descendantFocusability="blocksDescendants"
     android:orientation="vertical"
-    android:paddingLeft="15dp"
-    android:paddingTop="12dp"
-    android:paddingRight="12dp">
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp"
+    android:paddingTop="12dp">
 
     <RelativeLayout
+        android:id="@+id/layout_group"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/layout_group"
         android:layout_alignParentTop="true">
 
         <TextView
@@ -22,37 +22,37 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_centerInParent="true"
+            android:paddingBottom="5dp"
+            android:paddingRight="5dp"
             android:text="Large Text"
             android:textColor="@color/text_focus_color"
             android:textIsSelectable="false"
             android:textSize="16dp"
-            android:textStyle="bold"
-            android:paddingRight="5dp"
-            android:paddingBottom="5dp" />
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/tv_created_info"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentLeft="false"
             android:layout_alignParentRight="true"
+            android:layout_alignParentTop="false"
+            android:layout_centerInParent="true"
             android:layout_weight="1"
             android:text="56 mins ago"
-            android:layout_centerInParent="true"
-            android:layout_alignParentLeft="false"
-            android:textSize="14dp"
-            android:layout_alignParentTop="false" />
+            android:textSize="14dp" />
 
     </RelativeLayout>
 
 
     <LinearLayout
+        android:id="@+id/layout_content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:orientation="vertical"
-        android:id="@+id/layout_content"
         android:layout_below="@+id/layout_group"
-        android:layout_marginTop="5dp">
+        android:layout_gravity="bottom"
+        android:layout_marginTop="5dp"
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/tv_bulletin_text"
@@ -61,89 +61,123 @@
             android:phoneNumber="false"
             android:singleLine="false"
             android:text="I&apos;m not great with layouts, but I have noticed in the past that ListView rows often ignore LayoutParams. I have no idea where this happens or if it&apos;s possible to override"
-            android:textSize="18dp"
             android:textColor="#f2070301"
-            android:textIsSelectable="false" />
+            android:textIsSelectable="false"
+            android:textSize="18dp" />
 
     </LinearLayout>
 
     <RelativeLayout
+        android:id="@+id/layout_stamp"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:background="#ffffffff"
-        android:layout_alignParentLeft="false"
-        android:id="@+id/layout_stamp"
-        android:layout_alignParentTop="false"
-        android:layout_centerVertical="true"
         android:layout_alignParentBottom="false"
-        android:layout_below="@+id/layout_content">
+        android:layout_alignParentLeft="false"
+        android:layout_alignParentTop="false"
+        android:layout_below="@+id/layout_content"
+        android:layout_centerVertical="true"
+        android:background="#ffffffff">
 
-            <LinearLayout
-                android:id="@+id/layout_check"
+        <LinearLayout
+            android:id="@+id/layout_check"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerInParent="true"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:paddingBottom="12dp"
+            android:paddingRight="10dp"
+            android:paddingTop="10dp">
+
+            <ImageView
+                android:id="@+id/imgBtn_bulletin_check"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:orientation="horizontal"
-                android:layout_alignParentLeft="true"
-                android:layout_centerInParent="true"
-                android:paddingTop="10dp"
-                android:paddingRight="10dp"
-                android:paddingBottom="12dp">
+                android:adjustViewBounds="false"
+                android:background="#00000000"
+                android:contentDescription="@string/bulletin_check"
+                android:src="@mipmap/check_filled" />
 
-                <ImageView
-                    android:id="@+id/imgBtn_bulletin_check"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:adjustViewBounds="false"
-                    android:background="#00000000"
-                    android:contentDescription="@string/bulletin_check"
-                    android:src="@mipmap/check_filled" />
-
-                <TextView
-                    android:id="@+id/tv_bulletin_checks_count"
-                    style="@style/bulletin_stamp_font_style"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    android:contentDescription="@string/bulletin_check"
-                    android:text="4"
-                    android:textSize="14dp" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/layout_cross"
+            <TextView
+                android:id="@+id/tv_bulletin_checks_count"
+                style="@style/bulletin_stamp_font_style"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:orientation="horizontal"
-                android:layout_alignParentRight="false"
-                android:layout_toRightOf="@+id/layout_check"
-                android:layout_marginLeft="50dp"
-                android:paddingLeft="10dp"
-                android:paddingTop="10dp"
-                android:paddingRight="10dp"
-                android:paddingBottom="12dp">
+                android:layout_marginLeft="5dp"
+                android:contentDescription="@string/bulletin_check"
+                android:text="4"
+                android:textSize="14dp" />
+        </LinearLayout>
 
-                <ImageView
-                    android:id="@+id/imgBtn_bulletin_cross"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:adjustViewBounds="false"
-                    android:background="#00000000"
-                    android:contentDescription="@string/bulletin_cross"
-                    android:src="@mipmap/cross_filled" />
+        <LinearLayout
+            android:id="@+id/layout_cross"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="false"
+            android:layout_marginLeft="50dp"
+            android:layout_toRightOf="@+id/layout_check"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:paddingBottom="12dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:paddingTop="10dp">
 
-                <TextView
-                    android:id="@+id/tv_bulletin_crosses_count"
-                    style="@style/bulletin_stamp_font_style"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    android:contentDescription="@string/bulletin_cross"
-                    android:text="4"
-                    android:textSize="14dp" />
-            </LinearLayout>
+            <ImageView
+                android:id="@+id/imgBtn_bulletin_cross"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:adjustViewBounds="false"
+                android:background="#00000000"
+                android:contentDescription="@string/bulletin_cross"
+                android:src="@mipmap/cross_filled" />
+
+            <TextView
+                android:id="@+id/tv_bulletin_crosses_count"
+                style="@style/bulletin_stamp_font_style"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:contentDescription="@string/bulletin_cross"
+                android:text="4"
+                android:textSize="14dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layout_eye"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="false"
+            android:layout_marginLeft="50dp"
+            android:layout_toRightOf="@+id/layout_cross"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:paddingBottom="12dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:paddingTop="10dp">
+
+            <ImageView
+                android:id="@+id/imgBtn_bulletin_eye"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:adjustViewBounds="false"
+                android:background="#00000000"
+                android:src="@mipmap/eye_filled" />
+
+            <TextView
+                android:id="@+id/tv_bulletin_eyes_count"
+                style="@style/bulletin_stamp_font_style"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:contentDescription="@string/bulletin_cross"
+                android:text="4"
+                android:textSize="14dp" />
+        </LinearLayout>
     </RelativeLayout>
 </RelativeLayout>

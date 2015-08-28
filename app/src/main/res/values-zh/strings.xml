@@ -135,4 +135,6 @@
     <string name="welcome">为通知而生</string>
     <string name="feedback_email">feng.ye@youtiao.im</string>
     <string name="feedback_qq">138578696</string>
+
+    <string name="stamp_by_myself">你</string>
 </resources>

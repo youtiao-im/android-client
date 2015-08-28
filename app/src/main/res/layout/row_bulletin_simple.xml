@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:fancy="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="#ffffffff"
+    android:descendantFocusability="blocksDescendants"
+    android:orientation="vertical"
+    android:paddingLeft="5dp"
+    android:paddingTop="12dp"
+    android:paddingRight="10dp"
+    android:paddingBottom="12dp">
+
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:id="@+id/layout_left"
+        android:layout_centerInParent="true"
+        android:layout_marginRight="5dp">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/iv_unread"
+            android:src="@mipmap/unread"
+            android:layout_alignParentLeft="true"
+            android:layout_centerInParent="true" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/layout_right"
+        android:layout_toRightOf="@+id/layout_left">
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/layout_group"
+            android:layout_alignParentTop="true">
+
+            <TextView
+                android:id="@+id/tv_group_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerInParent="true"
+                android:text="Large Text"
+                android:textIsSelectable="false"
+                android:textSize="16dp"
+                android:textStyle="bold"
+                android:paddingRight="5dp"
+                android:textColor="@color/text_focus_color" />
+
+            <TextView
+                android:id="@+id/tv_created_info"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_weight="1"
+                android:text="56 mins ago"
+                android:layout_centerInParent="true"
+                android:layout_alignParentLeft="false"
+                android:textSize="14dp"
+                android:layout_alignParentTop="false" />
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:orientation="vertical"
+            android:id="@+id/layout_content"
+            android:layout_below="@+id/layout_group"
+            android:layout_marginTop="2dp">
+
+            <TextView
+                android:id="@+id/tv_bulletin_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:phoneNumber="false"
+                android:singleLine="true"
+                android:text="I&apos;m not great with layouts, but I have noticed in the past that ListView rows often ignore LayoutParams. I have no idea where this happens or if it&apos;s possible to override"
+                android:textSize="18dp"
+                android:textIsSelectable="false"
+                android:textColor="@android:color/black" />
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</RelativeLayout>

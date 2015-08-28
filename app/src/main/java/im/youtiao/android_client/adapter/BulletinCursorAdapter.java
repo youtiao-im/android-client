@@ -92,16 +92,17 @@ public class BulletinCursorAdapter extends CursorAdapter {
 
     View inflateBulletinItem() {
         ViewHolder viewHolder = new ViewHolder();
-        View convertView = mInflater.inflate(R.layout.row_bulletin, null);
+        View convertView = mInflater.inflate(R.layout.row_bulletin_simple, null);
         viewHolder.createdInfoTv = (TextView) convertView.findViewById(R.id.tv_created_info);
         viewHolder.feedContentTv = (TextView) convertView.findViewById(R.id.tv_bulletin_text);
         viewHolder.groupNameTv = (TextView) convertView.findViewById(R.id.tv_group_name);
-        viewHolder.checkImgBtn = (ImageView) convertView.findViewById(R.id.imgBtn_bulletin_check);
-        viewHolder.crossImgBtn = (ImageView) convertView.findViewById(R.id.imgBtn_bulletin_cross);
-        viewHolder.checksCountTv = (TextView) convertView.findViewById(R.id.tv_bulletin_checks_count);
-        viewHolder.crossesCountTv = (TextView) convertView.findViewById(R.id.tv_bulletin_crosses_count);
-        viewHolder.checkLayout = (LinearLayout) convertView.findViewById(R.id.layout_check);
-        viewHolder.crossLayout = (LinearLayout) convertView.findViewById(R.id.layout_cross);
+        viewHolder.unreadIv = (ImageView) convertView.findViewById(R.id.iv_unread);
+//        viewHolder.checkImgBtn = (ImageView) convertView.findViewById(R.id.imgBtn_bulletin_check);
+//        viewHolder.crossImgBtn = (ImageView) convertView.findViewById(R.id.imgBtn_bulletin_cross);
+//        viewHolder.checksCountTv = (TextView) convertView.findViewById(R.id.tv_bulletin_checks_count);
+//        viewHolder.crossesCountTv = (TextView) convertView.findViewById(R.id.tv_bulletin_crosses_count);
+//        viewHolder.checkLayout = (LinearLayout) convertView.findViewById(R.id.layout_check);
+//        viewHolder.crossLayout = (LinearLayout) convertView.findViewById(R.id.layout_cross);
         convertView.setTag(viewHolder);
         return convertView;
     }
@@ -128,35 +129,41 @@ public class BulletinCursorAdapter extends CursorAdapter {
         String creatorName = bulletin.createdBy.name;
         viewHolder.createdInfoTv.setText(createdAt);
         viewHolder.groupNameTv.setText(bulletin.group.name);
-        viewHolder.checksCountTv.setText("" + bulletin.checksCount);
-        viewHolder.crossesCountTv.setText("" + bulletin.crossesCount);
-
-        viewHolder.checkImgBtn.setColorFilter(mActivity.getResources().getColor(R.color.icon_unselected_color));
-        viewHolder.crossImgBtn.setColorFilter(mActivity.getResources().getColor(R.color.icon_unselected_color));
-        viewHolder.checksCountTv.setTextColor(mActivity.getResources().getColor(R.color.icon_unselected_color));
-        viewHolder.crossesCountTv.setTextColor(mActivity.getResources().getColor(R.color.icon_unselected_color));
-        if (bulletin.stamp != null && bulletin.stamp.symbol != null) {
-            switch (Stamp.Mark.valueOf(bulletin.stamp.symbol.toUpperCase())) {
-                case CHECK:
-                    viewHolder.checkImgBtn.setColorFilter(mActivity.getResources().getColor(R.color.icon_stamp_check_selected_color));
-                    viewHolder.checksCountTv.setTextColor(mActivity.getResources().getColor(R.color.icon_stamp_check_selected_color));
-                    break;
-                case CROSS:
-                    viewHolder.crossImgBtn.setColorFilter(mActivity.getResources().getColor(R.color.icon_stamp_cross_selected_color));
-                    viewHolder.crossesCountTv.setTextColor(mActivity.getResources().getColor(R.color.icon_stamp_cross_selected_color));
-                    break;
-                default:
-            }
+        if (bulletin.stamp == null) {
+            viewHolder.unreadIv.setVisibility(View.VISIBLE);
+            viewHolder.unreadIv.setColorFilter(mActivity.getResources().getColor(R.color.icon_unread_color));
+        } else {
+            viewHolder.unreadIv.setVisibility(View.INVISIBLE);
         }
-
-        viewHolder.checkLayout.setOnClickListener(v -> {
-            EventBus.getDefault().post(new BulletinStampEvent(bulletin, Stamp.Mark.CHECK.toString().toLowerCase()));
-
-        });
-
-        viewHolder.crossLayout.setOnClickListener(v -> {
-            EventBus.getDefault().post(new BulletinStampEvent(bulletin, Stamp.Mark.CROSS.toString().toLowerCase()));
-        });
+//        viewHolder.checksCountTv.setText("" + bulletin.checksCount);
+//        viewHolder.crossesCountTv.setText("" + bulletin.crossesCount);
+//
+//        viewHolder.checkImgBtn.setColorFilter(mActivity.getResources().getColor(R.color.icon_unselected_color));
+//        viewHolder.crossImgBtn.setColorFilter(mActivity.getResources().getColor(R.color.icon_unselected_color));
+//        viewHolder.checksCountTv.setTextColor(mActivity.getResources().getColor(R.color.icon_unselected_color));
+//        viewHolder.crossesCountTv.setTextColor(mActivity.getResources().getColor(R.color.icon_unselected_color));
+//        if (bulletin.stamp != null && bulletin.stamp.symbol != null) {
+//            switch (Stamp.Mark.valueOf(bulletin.stamp.symbol.toUpperCase())) {
+//                case CHECK:
+//                    viewHolder.checkImgBtn.setColorFilter(mActivity.getResources().getColor(R.color.icon_stamp_check_selected_color));
+//                    viewHolder.checksCountTv.setTextColor(mActivity.getResources().getColor(R.color.icon_stamp_check_selected_color));
+//                    break;
+//                case CROSS:
+//                    viewHolder.crossImgBtn.setColorFilter(mActivity.getResources().getColor(R.color.icon_stamp_cross_selected_color));
+//                    viewHolder.crossesCountTv.setTextColor(mActivity.getResources().getColor(R.color.icon_stamp_cross_selected_color));
+//                    break;
+//                default:
+//            }
+//        }
+//
+//        viewHolder.checkLayout.setOnClickListener(v -> {
+//            EventBus.getDefault().post(new BulletinStampEvent(bulletin, Stamp.Mark.CHECK.toString().toLowerCase()));
+//
+//        });
+//
+//        viewHolder.crossLayout.setOnClickListener(v -> {
+//            EventBus.getDefault().post(new BulletinStampEvent(bulletin, Stamp.Mark.CROSS.toString().toLowerCase()));
+//        });
 
         viewHolder.groupNameTv.setOnClickListener(v -> {
             //Log.i(TAG, "groupNameTv click");
@@ -168,11 +175,12 @@ public class BulletinCursorAdapter extends CursorAdapter {
         public TextView feedContentTv;
         public TextView groupNameTv;
         public TextView createdInfoTv;
-        public ImageView checkImgBtn;
-        public TextView checksCountTv;
-        public ImageView crossImgBtn;
-        public TextView crossesCountTv;
-        public LinearLayout checkLayout;
-        public LinearLayout crossLayout;
+        public ImageView unreadIv;
+//        public ImageView checkImgBtn;
+//        public TextView checksCountTv;
+//        public ImageView crossImgBtn;
+//        public TextView crossesCountTv;
+//        public LinearLayout checkLayout;
+//        public LinearLayout crossLayout;
     }
 }

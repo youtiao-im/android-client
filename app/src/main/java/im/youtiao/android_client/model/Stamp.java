@@ -10,6 +10,7 @@ import java.util.Date;
 public class Stamp implements java.io.Serializable {
 
     public enum Mark {
+        EYE,
         CHECK,
         CROSS,
     }

@@ -18,7 +18,7 @@ public class Group implements java.io.Serializable {
     public String code;
 
     @JsonProperty("memberships_count")
-    public Integer membershipsCount;
+    public int membershipsCount;
 
     @JsonProperty("created_at")
     public String createdAt;

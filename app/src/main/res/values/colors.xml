@@ -20,6 +20,8 @@
     <color name="white_color">#ffffffff</color>
     <color name="icon_stamp_check_selected_color">#ff2fcc70</color>
     <color name="icon_stamp_cross_selected_color">#ffe84e3c</color>
+    <color name="icon_stamp_eye_selected_color">#ffffcd03</color>
+    <color name="icon_unread_color">#ffe84e3c</color>
 
     <color name="stamp_font_color">#ffacacac</color>
 
